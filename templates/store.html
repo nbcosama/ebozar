@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Detail</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/store_ifo.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <nav class="navbar" id="navbar">
+        <a href="/">
+            <div class="logo">
+                <img src="/static/assets/Ebozar.svg" alt="">
+            </div>
+        </a>
+        <div class="hiddenoption">
+            <a href="/signup">
+                <div class="buttons">
+                    <img src="/static/assets/store.svg" alt="Search Icon" class="search-icon">
+                    <p>Become seller</p>
+                </div>
+            </a>
+            <a href="/login">
+                <div class="buttons">
+                    <img src="/static/assets/account.svg" alt="Search Icon" class="search-icon">
+                    <p>Login</p>
+                </div>
+            </a>
+        </div>
+        <div class="search-bar">
+            <form method="GET" action="{% url 'landingpage' %}" id="searchForm">
+                <input type="search" name="q" value="{{ request.GET.q }}" id="searchInput" placeholder="Search saman or pasal">
+            </form>
+            <img src="/static/assets/serchicon.svg" alt="Search Icon" class="search-icon">
+        </div>
+
+        <div class="nav-buttons">
+            <div class="buttons">
+                <img src="/static/assets/cart.svg" alt="Search Icon" class="search-icon">
+                <p>Cart</p>
+            </div>
+            <a href="/signup">
+                <div class="buttons">
+                    <img src="/static/assets/store.svg" alt="Search Icon" class="search-icon">
+                    <p>Become seller</p>
+                </div>
+            </a>
+            <a href="/login">
+                <div class="buttons">
+                    <img src="/static/assets/account.svg" alt="Search Icon" class="search-icon">
+                    <p>Login</p>
+                </div>
+            </a>
+            <button class="citybutton">Biratnagar</button>
+        </div>
+    </nav>
+    <h4 class="HeadingTag">Store</h4>
+    <div class="store_section">
+        <section class="store_info">
+            <div class="store_heading">
+                <div class="store_logo">
+                    <img src="{{profile.logo.url}}" alt="">
+                </div>
+                <div class="store_meta_data">
+                    <div class="store_name">
+                        <p>Store:</p>
+                        <p class="gree_color">{{profile.store_name}}</p>
+                        <span>{{profile.city}}</span>
+                    </div>
+                    <p>Available: Sun to Fri 10am to 8pm</p>
+                    <p>Contact No: {{profile.phone_number}}</p>
+                    <p>Location:<div class="ovreflostack"><a href="https://www.google.com/maps/search/?api=1&query={{ profile.address|urlencode }}" target="_blank">{{profile.address}}</a></div></p>
+                </div>
+            </div>
+            <div class="bio">
+                <h5>BIO</h5>
+                <p>{{profile.bio}}</p>
+            </div>
+
+            {% comment %} <div class="store_branch">
+                <div class="store_name">
+                    <h5>BRANCH STORES OF:</h5>
+                    <h5 class="gree_color">New Store </h5>
+                </div>
+                <p>Kathmandu: <a href="https://www.google.com/maps/search/?api=1&query={{ profile.address|urlencode }}">url of exact location of the store</a> </p>
+                <p>Ithari: <a href="https://www.google.com/maps/search/?api=1&query={{ profile.address|urlencode }}">url of exact location of the store</a> </p>
+            </div> {% endcomment %}
+            <div class="store_allproducts">
+                <h5>PRODUCT WE HAVE</h5>
+                <div class="store_product_types">
+                    <p>Shop</p>
+                </div>
+
+            </div>
+        </section>
+        <section class="main">
+            <div class="product-grid">
+                <!-- Card 1 -->
+                {% for store_product in store_products %}
+                <a href="/preview?id={{store_product.id}}">
+                    <div class="product-card">
+                        <div class="store-name">
+                            <div class="circle">
+                                <div class="small-circle"></div>
+                            </div>
+                            <p>{{store_product.user.store_name}}</p>
+                        </div>
+                        {% if store_product.product_image %}
+                        <img src="{{store_product.product_image.url}}"
+                            alt="Product 1">
+                        {% else %}
+                        <h1>Image not found</h1>
+                        {% endif %}
+                        <div class="product-info">
+                            <h3>{{store_product.product_name}}</h3>
+                            <p>{{store_product.price}}</p>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+</body>
+<script>
+    const navbar = document.getElementById('navbar');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('elevated');
+        } else {
+            navbar.classList.remove('elevated');
+        }
+    });
+
+</script>
+
+</html>

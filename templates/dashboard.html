@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <title>Ebozar Dashboard</title>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="/">
+            <h2 class="logo">Ebozar</h2>
+        </a>
+        <ul>
+            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a href="/add_product">Add Products</a></li>
+            <li><a href="/profile">Edit Profile</a></li>
+        </ul>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+  
+            <button class="logout-btn">Log Out</button>
+        </form>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="topbar">
+            <a href="/profile">
+                <div class="user-info">
+                    {% if user_profile.logo %}
+                        <img src="{{user_profile.logo.url}}" alt="Profile Picture">
+                        <span class="user-name">{{user_profile.store_name}}</span>
+                    {% else %}
+                        <img src="/static/assets/camera.png" alt="Profile Picture">
+                        <span class="user-name">{{user_profile.store_name}}</span>
+                    {% endif %}
+                </div>
+            </a>
+            <div class="addprt">
+                <a class="add_product_button" href="/add_product"><button>Add product</button></a>
+                <a href="/logout"><button>Log Out</button></a>
+            </div>
+        </div>
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="dashboard">
+            <div class="addprt">
+                <h2>Dashboard</h2>
+                <a class="hidden_button" href="/add_product"><button>Add product</button></a>
+            </div>
+           
+
+            <div class="product-list">
+                <h3>All Products</h3>
+                {% for user_product in user_products %}
+                <a href="/update_product?product_id={{user_product.id}}">
+                    <div class="product-item">
+                        <p>{{user_product.product_name}}</p>
+                        <p class="price">Price:{{user_product.price}}</p>
+                        <p class="display_none">{{user_product.color}}</p>
+                        <p class="display_none">{{user_product.brand}}</p>
+                        <p>Date: {{user_product.date}}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

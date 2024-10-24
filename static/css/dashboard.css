@@ -1,0 +1,268 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    display: flex;
+}
+
+.success{
+    margin: 10px 0;
+    text-decoration: none;
+    list-style: none;
+    border: 1px solid #a2ff93;
+    padding: 10px;
+    font-size: 15px;
+    background: #1ea7090f;
+}
+
+
+
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #f3f3f3;
+    height: 100vh;
+    padding: 20px;
+}
+
+.sidebar .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: green;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    margin-bottom: 20px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar ul li a.active {
+    color: green;
+    font-weight: bold;
+}
+
+.sidebar .logout-btn {
+    background: linear-gradient(90deg, #1EA709 0%, #076C2E 100%);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 50px;
+    cursor: pointer;
+}
+
+
+.sidebar a{
+    text-decoration: none;
+}
+
+
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Top bar */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+
+.topbar a{
+    text-decoration: none;
+    color: black;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    border:1px solid #ddd;
+    object-fit: cover;
+}
+
+.user-info .user-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.cart-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.cart-info span {
+    font-size: 16px;
+}
+
+/* Dashboard Stats */
+.dashboard h2 {
+    color: green;
+    margin-bottom: 20px;
+}
+
+.stats-cards {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    width: 30%;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card p {
+    font-size: 14px;
+    color: #666;
+}
+
+.card h3 {
+    font-size: 24px;
+    color: green;
+    margin-top: 10px;
+}
+
+/* Product List */
+.product-list {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-list h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #eaeaea;
+}
+
+.product-item p {
+    font-size: 14px;
+    color: #555;
+    margin-right: 20px;
+    width: 30%;
+    overflow: hidden;
+}
+
+.product-item:last-child {
+    border-bottom: none;
+}
+
+.product-item .price {
+    color: green;
+}
+
+.addprt{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.addprt button{
+    padding: 9px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    background: linear-gradient(90deg, #1EA709 0%, #076C2E 100%);
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+
+.hidden_button{
+    display: none;
+}
+
+
+.product-list a{
+    text-decoration: none;
+}
+
+
+@media (max-width: 768px){
+
+    .topbar{
+        padding: 20px 0px 20px 10px;
+    }
+
+    .addprt{
+        padding: 0 7px;
+    }
+
+    .sidebar{
+        display: none;
+    }
+    .display_none{
+        display: none;
+    }
+
+
+    .hidden_button {
+        display: flex;
+        height: 37px;
+        text-decoration: none;
+    }
+
+    .main-content {
+        flex: 1;
+        padding: 14px;
+    }
+
+    .add_product_button{
+        display: none;
+    }
+
+
+    .product-item p {
+        width: 30%;
+        margin-right: 0;
+        overflow: hidden;
+    }
+}

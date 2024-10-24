@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/profile.css">
+    <title>Ebozar Dashboard</title>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="/">
+            <h2 class="logo">Ebozar</h2>
+        </a>
+        <ul>
+            <li><a href="/dashboard" >Dashboard</a></li>
+            <li><a href="/add_product">Add Products</a></li>
+            <li><a href="/profile" class="active">Edit Profile</a></li>
+        </ul>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+  
+            <button class="logout-btn">Log Out</button>
+        </form>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="topbar">
+            <a href="/profile">
+                <div class="user-info">
+                    {% if user_profile.logo %}
+                        <img src="{{user_profile.logo.url}}" alt="Profile Picture">
+                        <span class="user-name">{{user_profile.store_name}}</span>
+                    {% else %}
+                        <img src="/static/assets/camera.png" alt="Profile Picture">
+                        <span class="user-name">{{user_profile.store_name}}</span>
+                    {% endif %}
+                </div>
+            </a>
+            <div class="addprt">
+                <a class="add_product_button" href="/add_product"><button>Add product</button></a>
+                <a href="/logout"><button>Log Out</button></a>
+            </div>
+        </div>
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="dashboard">
+            <div class="addprt">
+                <h2>Profile</h2>
+                <a class="hidden_button" href="/dashboard"><button>Dashboard</button></a>
+            </div>
+            <div class="form-container">
+                <h2>Edit Profile</h2>
+                <form method="POST" action="/profile/?action=update_logo" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="profile_picture">Profile Picture:  </label>
+                        {% if user_profile.logo %}
+                            <a href="{{ user_profile.logo.url }}" target="_blank">
+                                <div class="image_url">
+                                    {{ user_profile.logo.url }}
+                                </div>
+                            </a>
+                        {% else %}
+                            <p>No profile picture uploaded</p>
+                        {% endif %}
+                        <input type="file"  name="logo" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn-primary">Update Logo</button>
+                </form>
+                <form method="POST" action="/profile/?action=update_profile">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" name="name" value="{{user_profile.store_name}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" name="email" value="{{user_profile.email}}" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <input type="text" name="bio" value="{{user_profile.bio}}" >
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" name="phone_number" value="{{user_profile.phone_number}}" placeholder="Enter your phone number" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <textarea id="address" name="address" placeholder="Enter your address">{{user_profile.address}}</textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

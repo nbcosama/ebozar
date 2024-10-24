@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/add_product.css">
+    <title>Add Product</title>
+</head>
+
+<body>     
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="/">
+            <h2 class="logo">Ebozar</h2>
+        </a>
+        <ul>
+            <li><a href="/dashboard" >Dashboard</a></li>
+            <li><a href="#" class="active">Add Products</a></li>
+            <li><a href="/profile">Edit Profile</a></li>
+        </ul>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+  
+            <button class="logout-btn">Log Out</button>
+        </form>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="topbar">
+            <a href="/profile">
+                <div class="user-info">
+                    <img src="{{user_profile.logo.url}}" alt="Profile Picture">
+                    <span class="user-name">{{user_profile.store_name}}</span>
+                </div>
+            </a>
+            <div class="addprt">
+                <a class="add_product_button" href="/dashboard"><button>Dashboard</button></a>
+                <a href="/logout"><button>Log Out</button></a>
+            </div>
+        </div>
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+        <div class="dashboard">
+            <div class="addprt">
+                <h2>Update Product</h2>
+                <a class="hidden_button" href="/dashboard"><button>Dashboard</button></a>
+            </div>
+            <section class="form-section">
+               
+                <form class="product-form" method="POST" action="{% url 'update_product' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label><i class="fas fa-tag"></i> Product Name</label>
+                        <input type="text" value="{{product.product_name}}" name="product_name"  placeholder="Product Name" required>
+                        <input type="hidden" name="product_id" value="{{product.id}}">
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-dollar-sign"></i> Price</label>
+                        <input type="text" value="{{product.price}}" name="price" placeholder="Price" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-image"></i> Product Image</label>
+                        <input type="file" name="image" placeholder="Product Image " style="background-color: white;" accept="image/*" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-sort-amount-up-alt"></i> Quantity</label>
+                        <input type="number" value="{{product.quantity}}" name="quantity" placeholder="Quantity" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-apple-alt"></i> Brand</label>
+                        <input type="text" value="{{product.brand}}" name="brand" placeholder="Brand" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-cubes"></i> Condition</label>
+                        <input type="text" value="{{product.condtion}}" name="condtion" placeholder="Condition" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-palette"></i> Color</label>
+                        <input type="text" value="{{product.color}}" name="color" placeholder="Color" required>
+                    </div>
+                    <div class="form-group">
+                      <button type="submit" class="submit-btn"><i class="fas fa-check"></i> Submit</button>
+                    </div>
+                    
+                </form>
+            </section>
+        </div>
+    </div>
+</body>
+
+</html>
