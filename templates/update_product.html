@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <link rel="stylesheet" href="/static/css/add_product.css">
     <title>Add Product</title>
+    <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
 </head>
 
 <body>     
@@ -33,7 +34,11 @@
         <div class="topbar">
             <a href="/profile">
                 <div class="user-info">
-                    <img src="{{user_profile.logo.url}}" alt="Profile Picture">
+                    {% if profile.logo %}
+                        <img src="{{user_profile.logo.url}}" alt="Profile Picture">
+                    {% else %}
+                        <img src="/static/assets/camera.png" alt="Profile Picture">
+                    {% endif %}
                     <span class="user-name">{{user_profile.store_name}}</span>
                 </div>
             </a>
@@ -55,7 +60,14 @@
                 <a class="hidden_button" href="/dashboard"><button>Dashboard</button></a>
             </div>
             <section class="form-section">
-               
+                
+                <form method="POST" action="/dashboard/?action=delete_product&id={{product.id}}">
+                        {% csrf_token %}
+                    <div class="delete_product" >
+                        <button class="status_button" style="background:red" type="submit">Delete This Product</button>
+                    </div>
+                </form>
+                
                 <form class="product-form" method="POST" action="{% url 'update_product' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">

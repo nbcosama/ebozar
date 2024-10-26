@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/dashboard.css">
-    <title>Ebozar Dashboard</title>
+    <title>Ebazaar Dashboard</title>
+    <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
 </head>
 
 <body>
@@ -13,7 +14,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <a href="/">
-            <h2 class="logo">Ebozar</h2>
+            <h2 class="logo">Ebazaar</h2>
         </a>
         <ul>
             <li><a href="#" class="active">Dashboard</a></li>
@@ -69,10 +70,22 @@
                         <p class="price">Price:{{user_product.price}}</p>
                         <p class="display_none">{{user_product.color}}</p>
                         <p class="display_none">{{user_product.brand}}</p>
-                        <p>Date: {{user_product.date}}</p>
+                        <p class="display_none">Date: {{user_product.date}}</p>
+                        <form method="POST" action="/dashboard/?action=update_product&id={{user_product.id}}">
+                            {% csrf_token %}
+                            {% if user_product.status == True %}
+                            <button class="status_button" type="submit">Available</button>
+                            {% else %}
+                            <button class="status_button" style="background:red" type="submit">Unavailable</button>
+                            {% endif %}
+                        </form>
+                        
                     </div>
                 </a>
-                {% endfor %}
+               
+                {% endfor %} 
+                
+                
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preview</title>
+    <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/product_preview.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -74,7 +75,15 @@
             {% endif %}
         </div>
         <div class="product_info">
-            <h3>{{product.product_name}}</h3>
+            <h3>
+                {{product.product_name}}
+                {% if product.status == True %}
+                <button class="status_button" type="submit">Available</button>
+                {% else %}
+                <button class="status_button" style="background:red" type="submit">Unavailable</button>
+                {% endif %}
+
+            </h3>
             <div class="info">
                 <span class="product_name gree_color">Price: </span>
                 <p class="product_price gree_color">{{product.price}}</p>

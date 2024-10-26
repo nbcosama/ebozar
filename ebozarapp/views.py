@@ -13,7 +13,7 @@ from django.db.models import Q
 
 def landingpage(request):
     query = request.GET.get('q', '')
-    products = Product.objects.all()
+    products = Product.objects.all().order_by('-id')
     stores = Profile.objects.all()
     if query:
         products = products.filter(
@@ -33,34 +33,30 @@ def landingpage(request):
             Q(city__icontains=query) |
             Q(user__username__icontains=query)
         )
-    
     context = {'products': products, 'query': query, 'stores': stores}
     return render(request, 'landingpage.html', context)
+
 
 
 
 def login(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
-    
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        
         if not username or not password:
             messages.error(request, 'Username and password are required.')
             return redirect('login')
-        
         user = authenticate(request, username=username, password=password)
-        
+        verified_user = Profile.objects.get(user=user)
         if user is not None:
             auth_login(request, user)
-            messages.success(request, 'Logged In successful')
+            messages.success(request, 'Log In successful')
             return redirect('dashboard')
         else:
             messages.error(request, 'Invalid username or password')
             return redirect('login')
-    
     return render(request, 'login.html')
 
 
@@ -88,7 +84,14 @@ def signup(request):
         country = request.POST.get('country')
         city = request.POST.get('city')
         user_type = request.POST.get('user_type')
-        
+        if user_type == 'seller' or user_type == 'buyer':
+            pass
+        else:
+            messages.error(request, 'Invalid user type')
+            return redirect('signup')
+        if not email or not password or not store_name or not phone_number or not address or not country or not city or not user_type:
+            messages.error(request, 'All fields are required')
+            return redirect('signup')
         user_data = {
             "email": email,
             "password": password, 
@@ -100,7 +103,6 @@ def signup(request):
             "city": city,
             "user_type": user_type
         }
-        
         user_data_json = json.dumps(user_data)
         username = store_name.replace(" ", "_").lower()
         if User.objects.filter(email=email).exists():
@@ -109,7 +111,6 @@ def signup(request):
         elif User.objects.filter(username=username).exists():
             messages.error(request, 'Username already exists.')
             return redirect('signup')
-        
         random_number = random.randint(1000, 9999)
         send_otp = sendemail(request, email, random_number)
         save_otp = OTP(otp = random_number, email = email, json_data = user_data_json )
@@ -117,6 +118,8 @@ def signup(request):
         context = {'email':email}
         return render(request, 'verify_otp.html', context)
     return render(request, 'signup.html')
+
+
 
 
 
@@ -131,7 +134,6 @@ def verify_otp(request):
             if otp_record.is_valid():
                 messages.success(request, 'OTP verified successfully! Your username has been sent to your email.' )
                 otp_record.delete()  # Remove the OTP after successful verification
-            
                 emails = data['email']
                 password = data['password']
                 store_name = data['store_name']
@@ -178,8 +180,26 @@ def verify_otp(request):
 @login_required(login_url='/login')
 def dashboard(request):
     user = request.user
+    if request.method == 'POST':
+        if request.GET.get("action") == "update_product":
+            product_id = request.GET.get('id')
+            product = Product.objects.get(id=product_id)
+            if product.status == True:
+                product.status = False
+                product.save()
+                return redirect('dashboard')
+            elif product.status == False:
+                product.status = True
+                product.save()
+                return redirect('dashboard')
+        if request.GET.get("action") == "delete_product":
+            product_id = request.GET.get('id')
+            product = Product.objects.get(id=product_id)
+            product.delete()
+            messages.error(request, 'Product deleted successfully')
+            return redirect('dashboard')
     user_profile = Profile.objects.get(user=user)
-    user_product = Product.objects.filter(user=user_profile)
+    user_product = Product.objects.filter(user=user_profile).order_by('-id')
     context = {'user_profile': user_profile, 'user_products': user_product}
     return render(request, 'dashboard.html', context)
 
@@ -198,6 +218,12 @@ def add_product(request):
         color = request.POST.get('color')
         quantity = request.POST.get('quantity')
         product_image = request.FILES.get('image')
+        if not product_name or not price or not condtion or not quantity or not product_image:
+            messages.error(request, 'All fields are required')
+            return redirect('add_product')
+        if user_profile.verify == False:
+            messages.error(request, 'Please verify your account to add product. To verify account contact support team')
+            return redirect('dashboard')
         product = Product(user=user_profile, product_name=product_name, price=price, condtion=condtion, product_image=product_image, brand=brand, color=color, quantity=quantity)
         product.save()
         messages.success(request, 'Product added successfully')
@@ -285,10 +311,8 @@ def preview(request):
 
 def store(request):
     id = request.GET.get('id')
-    print(id)
     profile = Profile.objects.get(id=id)
     store_product = Product.objects.filter(user=profile)    
-   
     context = {'profile': profile, 'store_products': store_product}
     return render(request, 'store.html', context)
 
@@ -297,7 +321,6 @@ def store(request):
 
 def product_search(request):
     query = request.GET.get('q', '')
-
     # Filter products based on query if there is any search input
     products = Product.objects.all()
     if query:
@@ -308,8 +331,7 @@ def product_search(request):
             Q(price__icontains=query) |
             Q(condtion__icontains=query) |
             Q(quantity__icontains=query) |
-            Q(user__store_name__icontains=query)  # Assuming user has a name field in Profile model
+            Q(user__store_name__icontains=query) 
         )
-    
     # Render search results
     return render(request, 'product_search.html', {'products': products, 'query': query})

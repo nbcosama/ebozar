@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <link rel="stylesheet" href="/static/css/profile.css">
-    <title>Ebozar Dashboard</title>
+    <title>Profile</title>
+    <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
 </head>
 
 <body>
@@ -14,7 +15,7 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <a href="/">
-            <h2 class="logo">Ebozar</h2>
+            <h2 class="logo">Ebazaar</h2>
         </a>
         <ul>
             <li><a href="/dashboard" >Dashboard</a></li>
@@ -74,7 +75,7 @@
                         {% else %}
                             <p>No profile picture uploaded</p>
                         {% endif %}
-                        <input type="file"  name="logo" accept="image/*">
+                        <input type="file"  name="logo" accept="image/*" required>
                     </div>
                     <button type="submit" class="btn-primary">Update Logo</button>
                 </form>

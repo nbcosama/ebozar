@@ -72,6 +72,15 @@
     color: green;
   }
 
+  .delete_product button{
+    cursor: pointer;
+  }
+
+
+  .delete_product{
+    display: flex;
+    justify-content: flex-end;
+  }
 
 
   

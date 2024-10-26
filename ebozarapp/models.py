@@ -21,6 +21,7 @@ class Profile(models.Model):
     address = models.CharField(max_length=255, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
+    verify  = models.BooleanField(default=True)
     date = models.DateField(auto_now_add=True)
     date_time = models.DateTimeField(auto_now_add=True)
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
@@ -39,6 +40,7 @@ class Product(models.Model):
     quantity = models.CharField(max_length=5)
     color = models.CharField(max_length=100)
     Location = models.CharField(max_length=255)
+    status = models.BooleanField(default=False)
     date = models.DateField(auto_now_add=True)
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
    

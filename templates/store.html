@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Store Detail</title>
+    <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/store_ifo.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -68,7 +69,11 @@
         <section class="store_info">
             <div class="store_heading">
                 <div class="store_logo">
-                    <img src="{{profile.logo.url}}" alt="">
+                    {% if profile.logo %}
+                        <img src="{{profile.logo.url}}" alt="Profile Picture">
+                    {% else %}
+                        <img src="/static/assets/camera.png" alt="Profile Picture">
+                    {% endif %}
                 </div>
                 <div class="store_meta_data">
                     <div class="store_name">
@@ -83,7 +88,11 @@
             </div>
             <div class="bio">
                 <h5>BIO</h5>
-                <p>{{profile.bio}}</p>
+                {% if profile.bio %}
+                    <p>{{profile.bio}}</p>
+                {% else %}
+                    <p>No bio available</p>
+                {% endif %}
             </div>
 
             {% comment %} <div class="store_branch">
