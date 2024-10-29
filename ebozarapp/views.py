@@ -8,11 +8,14 @@ from django.contrib.auth.models import User
 from .models import *
 from .functions import *
 from django.db.models import Q
+from django.http import JsonResponse
+
 
 
 
 def landingpage(request):
     query = request.GET.get('q', '')
+
     products = Product.objects.all().order_by('-id')
     stores = Profile.objects.all()
     if query:
@@ -23,6 +26,7 @@ def landingpage(request):
             Q(price__icontains=query) |
             Q(condtion__icontains=query) |
             Q(quantity__icontains=query) |
+            Q(product_description=query) |
             Q(user__store_name__icontains=query)
         )
         stores = stores.filter(
@@ -237,8 +241,6 @@ def dashboard(request):
 
 
 
-
-
 @login_required(login_url='/login')
 def add_product(request):
     if request.method == 'POST':
@@ -249,14 +251,17 @@ def add_product(request):
         condtion = request.POST.get('condtion')
         brand = request.POST.get('brand')
         color = request.POST.get('color')
+        key_words = request.POST.get('key_words')
         quantity = request.POST.get('quantity')
-        product_image = request.FILES.get('image')
+        product_image = request.FILES.get('compressedFile')
         if not product_name or not price or not condtion or not quantity or not product_image:
-            messages.error(request, 'All fields are required')
-            return redirect('add_product')
+          
+            return JsonResponse({"message":'All fields are required', "status": "error" })
         if user_profile.verify == False:
-            messages.error(request, 'Please verify your account to add product. To verify account contact support team')
-            return redirect('dashboard')
+         
+            return JsonResponse({"message": 'Please verify your account to add product. To verify account contact support team', "error": "sucess" })
+        
+        
         product = Product(
             user=user_profile, 
             product_name=product_name, 
@@ -265,11 +270,13 @@ def add_product(request):
             product_image=product_image, 
             brand=brand, 
             color=color, 
+            product_description = key_words,
+            hidden_key_word = product_name,
             quantity=quantity
             )
         product.save()
         messages.success(request, 'Product added successfully')
-        return redirect('add_product')
+        return JsonResponse({"message":'Product added successfully', "status": "sucess" })
     user = request.user
     user_profile = Profile.objects.get(user=user)
     context = {'user_profile': user_profile}
@@ -293,6 +300,7 @@ def update_product(request):
         condtion = request.POST.get('condtion')
         brand = request.POST.get('brand')
         color = request.POST.get('color')
+        key_words = request.POST.get('key_words')
         quantity = request.POST.get('quantity')
         product_image = request.FILES.get('image')
         product.product_name = product_name
@@ -300,6 +308,7 @@ def update_product(request):
         product.condtion = condtion
         product.brand = brand
         product.color = color
+        product.product_description = key_words
         product.quantity = quantity
         if product_image:
             product.product_image = product_image

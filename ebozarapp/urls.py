@@ -18,5 +18,4 @@ urlpatterns = [
     path('update_product/', views.update_product, name='update_product'),
     path('send_username/', views.send_username, name='send_username'),
     
-    
     ]

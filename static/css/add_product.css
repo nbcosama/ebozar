@@ -83,6 +83,11 @@
   }
 
 
+
+  #wrapper img{
+    height: 100px;
+  }
+
   
 @media (max-width: 768px){
     .form-group {

@@ -9,7 +9,6 @@
     justify-content: center;
     align-items: center;
     width: 462px;
-    height: 250px;
     overflow: hidden;
     background: #F8F8F8;
     border-radius: 7px;
@@ -88,7 +87,8 @@
    }
 
    .product_img img{
-        height: 153px;
+        height: 210px;
+        width: 90%;
    }
 
    .info p {

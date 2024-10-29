@@ -148,18 +148,26 @@ body {
 
 .product-info {
     padding: 10px 0;
+    
 }
 
 .product-info h3 {
-    font-size: 18px;
+    font-size: 14px;
     color: #333;
     margin-bottom: 5px;
+    text-align: start;
+    overflow: hidden;
+    /* white-space: nowrap; */
+    text-overflow: ellipsis;
+    
+
 }
 
 .product-info p {
     font-size: 16px;
     color: #ff5722;
     font-weight: bold;
+    text-align: start;
 }
 
 .store-name {
@@ -244,26 +252,35 @@ body {
     }
 
     .main {
-        margin: 0 20px;
+        margin: 0 10px;
     }
 
     .product-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
-        gap: 10px; 
+        gap: 5px; 
         margin-bottom: 20px;
     }
-
+    
     .product-card img {
-        width: 70%;
-        height: 80px; 
+        width: 90%;
+        height: 170px; 
+    }
+
+    .product-card {
+        border-radius: unset;
     }
 
     .product-info h3 {
-        font-size: 16px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 14px;
+        text-align: start;
     }
-
+    
     .product-info p {
         font-size: 14px; 
+        text-align: start;
     }
 }
 
