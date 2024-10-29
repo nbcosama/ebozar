@@ -54,6 +54,12 @@
                 {% endfor %}
         </ul>
         {% endif %}
+        {% if user_profile.verify == False %}
+        <div class="alert">
+            <p>Your account is not verified. Please verify your account to add products, or contact the support team for more details.</p>
+        </div>
+        {% endif %}
+        
         <div class="dashboard">
             <div class="addprt">
                 <h2>Dashboard</h2>

@@ -9,7 +9,8 @@
     justify-content: center;
     align-items: center;
     width: 462px;
-    min-height: 250px;
+    height: 250px;
+    overflow: hidden;
     background: #F8F8F8;
     border-radius: 7px;
 }
@@ -48,8 +49,17 @@
     height: 227px;
     object-fit: contain;
     margin: 10px;
+    transition: 0.3s;
 }
 
+
+.product_img img:hover {
+    margin-top: 100px;
+    cursor: pointer;
+    position: absolute;
+    height: 420px;
+    transition: 0.5s;
+}
 
 .status_button{
     padding: 8px;

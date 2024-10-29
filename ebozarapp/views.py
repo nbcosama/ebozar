@@ -39,25 +39,34 @@ def landingpage(request):
 
 
 
+
+
 def login(request):
     if request.user.is_authenticated:
         return redirect('dashboard')
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        if not username or not password:
-            messages.error(request, 'Username and password are required.')
-            return redirect('login')
-        user = authenticate(request, username=username, password=password)
-        verified_user = Profile.objects.get(user=user)
-        if user is not None:
-            auth_login(request, user)
-            messages.success(request, 'Log In successful')
-            return redirect('dashboard')
-        else:
-            messages.error(request, 'Invalid username or password')
-            return redirect('login')
+    try:
+        if request.method == 'POST':
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+            if not username or not password:
+                messages.error(request, 'Username and password are required.')
+                return redirect('login')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                verified_user = Profile.objects.get(user=user)
+                auth_login(request, user)
+                messages.success(request, 'Log In successful')
+                return redirect('dashboard')
+            else:
+                messages.error(request, 'Invalid username or password')
+                return redirect('login')
+    except Exception as e:
+        messages.error(request, str(e))
+        return redirect('login')
     return render(request, 'login.html')
+
+
+
 
 
 
@@ -66,6 +75,10 @@ def logout(request):
     auth_logout(request)
     messages.success(request, 'Log Out successfully')
     return redirect('login')
+
+
+
+
 
 
 
@@ -123,16 +136,23 @@ def signup(request):
 
 
 
+
+
+
 def verify_otp(request):
+    user = request.user
+    if user.is_authenticated:
+        messages.error(request, 'Invalid request')
+        return redirect('dashboard')
     if request.method == 'POST':
         try:
             email = request.POST.get('email')
             otp = request.POST.get('otp')
-            store_data = OTP.objects.get(email=email, otp=otp)
-            data = json.loads(store_data.json_data)
             otp_record = OTP.objects.get(email=email, otp=otp)
             if otp_record.is_valid():
                 messages.success(request, 'OTP verified successfully! Your username has been sent to your email.' )
+                store_data = OTP.objects.get(email=email, otp=otp)
+                data = json.loads(store_data.json_data)
                 otp_record.delete()  # Remove the OTP after successful verification
                 emails = data['email']
                 password = data['password']
@@ -168,9 +188,17 @@ def verify_otp(request):
             else:
                 messages.error(request, 'OTP has expired or is invalid.')
         except OTP.DoesNotExist:
-            messages.error(request, 'Invalid OTP. Please try again.')
-            return redirect('signup')
+            message = "Invalid OTP please try again."
+            context = { 'email': email, 'messages': message}
+            return render(request, 'verify_otp.html', context)
+        except Exception as e:
+            message = str(e)
+            context = { 'email': email, 'messages': message}
+            return render(request, 'verify_otp.html', context)
     return render(request, 'verify_otp.html')
+
+
+
 
 
 
@@ -206,6 +234,11 @@ def dashboard(request):
 
 
 
+
+
+
+
+
 @login_required(login_url='/login')
 def add_product(request):
     if request.method == 'POST':
@@ -224,7 +257,16 @@ def add_product(request):
         if user_profile.verify == False:
             messages.error(request, 'Please verify your account to add product. To verify account contact support team')
             return redirect('dashboard')
-        product = Product(user=user_profile, product_name=product_name, price=price, condtion=condtion, product_image=product_image, brand=brand, color=color, quantity=quantity)
+        product = Product(
+            user=user_profile, 
+            product_name=product_name, 
+            price=price,
+            condtion=condtion, 
+            product_image=product_image, 
+            brand=brand, 
+            color=color, 
+            quantity=quantity
+            )
         product.save()
         messages.success(request, 'Product added successfully')
         return redirect('add_product')
@@ -232,6 +274,12 @@ def add_product(request):
     user_profile = Profile.objects.get(user=user)
     context = {'user_profile': user_profile}
     return render(request, 'add_product.html', context)
+
+
+
+
+
+
 
 
 
@@ -253,7 +301,8 @@ def update_product(request):
         product.brand = brand
         product.color = color
         product.quantity = quantity
-        product.product_image = product_image
+        if product_image:
+            product.product_image = product_image
         product.save()
         messages.success(request, 'Product updated successfully')
         return redirect('dashboard')
@@ -263,6 +312,13 @@ def update_product(request):
     product = Product.objects.get(id=id)
     context = {'user_profile':user_profile, 'product': product}
     return render(request, 'update_product.html', context)
+
+
+
+
+
+
+
 
 
 
@@ -299,12 +355,22 @@ def profile(request):
 
 
 
+
+
+
+
+
 def preview(request):
     id = request.GET.get('id')
     product = Product.objects.get(id=id)
-    all_products = Product.objects.all()
+    all_products = Product.objects.all().order_by('-id')
     context = {'product': product, 'all_products':all_products}
     return render(request, 'preview.html', context)
+
+
+
+
+
 
 
 
@@ -319,19 +385,6 @@ def store(request):
 
 
 
-def product_search(request):
-    query = request.GET.get('q', '')
-    # Filter products based on query if there is any search input
-    products = Product.objects.all()
-    if query:
-        products = products.filter(
-            Q(product_name__icontains=query) |
-            Q(brand__icontains=query) |
-            Q(color__icontains=query) |
-            Q(price__icontains=query) |
-            Q(condtion__icontains=query) |
-            Q(quantity__icontains=query) |
-            Q(user__store_name__icontains=query) 
-        )
-    # Render search results
-    return render(request, 'product_search.html', {'products': products, 'query': query})
+
+
+

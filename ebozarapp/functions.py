@@ -3,6 +3,8 @@ from email.mime.text import MIMEText
 from django.http import JsonResponse
 import re
 
+
+
 def sendemail(request, email, random_number):
     to_email = email
     random_num = random_number
@@ -65,3 +67,8 @@ def send_username(request, email, username):
     except Exception as e:
         print(f"Error: {str(e)}")
         return JsonResponse({"message": "Error", "mail": str(e)})
+    
+    
+    
+
+
