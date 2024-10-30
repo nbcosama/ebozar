@@ -18,13 +18,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from ebozarapp import views 
+
+# Custom 404 error handler
+handler404 = views.custom_404_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("ebozarapp.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
-# + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
 # if settings.DEBUG:

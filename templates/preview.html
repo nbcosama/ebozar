@@ -4,7 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preview</title>
+    <title>{{product.product_name}} - Explore Local Markets: Buy, Browse & Discover Deals Near You | eBazaar</title>
+    <meta name="description" content="{{ product.product_description|truncatewords:25 }}">
+    <meta property="og:title" content="{{ product.product_name }}">
+    <meta property="og:description" content="{{ product.product_description|truncatewords:25 }}">
+    <meta property="og:image" content="{{ product.product_image.url }}">
+    <meta property="product:price:amount" content="{{ product.price }}">
+    <meta property="product:availability" content="{% if product.status == True %}Available{% else %}Not Available{% endif %}">
+    <meta property="og:url" content="https://ebazaar.live/preview/?id={{ product.id }}">
+    <meta property="og:type" content="product">
+
     <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/product_preview.css">
@@ -33,7 +42,7 @@
             <a href="/login">
                 <div class="buttons">
                     <img src="/static/assets/account.svg" alt="Search Icon" class="search-icon">
-                    <p>Login</p>
+                    {% if user == 'AnonymousUser' %} <p>Login</p> {% else %} <p>Profile</p>{% endif %}
                 </div>
             </a>
         </div>
@@ -58,7 +67,7 @@
             <a href="/login">
                 <div class="buttons">
                     <img src="/static/assets/account.svg" alt="Search Icon" class="search-icon">
-                    <p>Login</p>
+                    {% if user == 'AnonymousUser' %} <p>Login</p> {% else %} <p>Profile</p>{% endif %}
                 </div>
             </a>
             <button class="citybutton">Biratnagar</button>
@@ -69,7 +78,7 @@
         <div class="product_img">
             {% if product.product_image %}
             <img src="{{product.product_image.url}}"
-                alt="">
+                alt="{{product.product_name}}">
             {% else %}
             <h1>Image not found</h1>
             {% endif %}
@@ -84,7 +93,7 @@
                 {% endif %}
 
             </h3>
-            <div class="info">
+            <div class="info rupees_style">
                 <span class="product_name gree_color">Price: </span>
                 <p class="product_price gree_color">{{product.price}}</p>
             </div>
@@ -120,7 +129,7 @@
             </a>
             <div class="info">
                 <span class="product_name">Contact Number: </span>
-                <p class="product_price gree_color">{{product.user.store_name}}</p>
+                <p class="product_price gree_color">{{product.user.phone_number}}</p>
             </div>
         </div>
     </section>
@@ -130,17 +139,17 @@
             <!-- Card 1 -->
             {% for product in all_products %}
             <!-- Card 1 -->
-            <a href="/preview?id={{product.id}}">
+            <a href="/preview/{{product.slug}}">
                 <div class="product-card">
                     <div class="store-name">
                         <div class="circle">
                             <div class="small-circle"></div>
                         </div>
-                        <p>{{product.user.store_name}}</p>
+                        <p>{{product.store_name}}</p>
                     </div>
                     {% if product.product_image %}
                     <img src="{{product.product_image.url}}"
-                        alt="Product 1">
+                        alt="{{product.product_name}}">
                     {% else %}
                     <h1>Image not found</h1>
                     {% endif %}

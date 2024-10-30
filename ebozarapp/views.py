@@ -8,14 +8,20 @@ from django.contrib.auth.models import User
 from .models import *
 from .functions import *
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+import re
+
+
+
+def custom_404_view(request, exception):
+    return render(request, '404_error.html', status=404)
 
 
 
 
 def landingpage(request):
     query = request.GET.get('q', '')
-
+    user = str(request.user)
     products = Product.objects.all().order_by('-id')
     stores = Profile.objects.all()
     if query:
@@ -37,7 +43,8 @@ def landingpage(request):
             Q(city__icontains=query) |
             Q(user__username__icontains=query)
         )
-    context = {'products': products, 'query': query, 'stores': stores}
+    product_data = prepareProduct(products)
+    context = {'products': product_data, 'query': query, 'stores': stores, 'user' :user}
     return render(request, 'landingpage.html', context)
 
 
@@ -255,13 +262,10 @@ def add_product(request):
         quantity = request.POST.get('quantity')
         product_image = request.FILES.get('compressedFile')
         if not product_name or not price or not condtion or not quantity or not product_image:
-          
             return JsonResponse({"message":'All fields are required', "status": "error" })
         if user_profile.verify == False:
-         
             return JsonResponse({"message": 'Please verify your account to add product. To verify account contact support team', "error": "sucess" })
-        
-        
+        slugs = Slug.objects.all()
         product = Product(
             user=user_profile, 
             product_name=product_name, 
@@ -275,6 +279,16 @@ def add_product(request):
             quantity=quantity
             )
         product.save()
+        product_name = product.product_name
+        # Replace spaces with underscores and remove special characters
+        product_name_slug = re.sub(r'[^a-zA-Z0-9_]+', '', product_name.replace(" ", "-").replace("/", "")).lower()
+        if slugs.filter(product_slug = product_name_slug):
+            product_name_slug += str(product.pk)
+        add_product_slug = Slug(
+            prooduct_id = product.pk,
+            product_slug = product_name_slug
+        )
+        add_product_slug.save()
         messages.success(request, 'Product added successfully')
         return JsonResponse({"message":'Product added successfully', "status": "sucess" })
     user = request.user
@@ -366,13 +380,17 @@ def profile(request):
 
 
 
-
-
-
-def preview(request):
-    id = request.GET.get('id')
-    product = Product.objects.get(id=id)
-    all_products = Product.objects.all().order_by('-id')
+def preview(request, slug):
+    slug = Slug.objects.filter(product_slug=slug)
+    if not slug:
+        return render(request, '404_error.html')
+    id = slug[0].prooduct_id
+    if not id:
+        return redirect('landingpage')
+    else:
+        product = Product.objects.get(id=id)
+        all_products = Product.objects.all().order_by('-id')
+        all_products = prepareProduct(all_products)
     context = {'product': product, 'all_products':all_products}
     return render(request, 'preview.html', context)
 
@@ -387,8 +405,9 @@ def preview(request):
 def store(request):
     id = request.GET.get('id')
     profile = Profile.objects.get(id=id)
-    store_product = Product.objects.filter(user=profile)    
-    context = {'profile': profile, 'store_products': store_product}
+    products = Product.objects.filter(user=profile)   
+    product_data = prepareProduct(products) 
+    context = {'profile': profile, 'store_products': product_data}
     return render(request, 'store.html', context)
 
 
