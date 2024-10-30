@@ -13,10 +13,10 @@ class ProductSitemap(Sitemap):
             data.append(f'/preview/{product.product_slug}')
         data+=[
             "/",
-            "login/",
-            "signup/",
-            "preview/",
-            "store/",
+            "/login/",
+            "/signup/",
+            "/preview/",
+            "/store/",
         ]
         return data
 
