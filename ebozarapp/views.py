@@ -381,6 +381,7 @@ def profile(request):
 
 
 def preview(request, slug):
+    user = str(request.user)
     slug = Slug.objects.filter(product_slug=slug)
     if not slug:
         return render(request, '404_error.html')
@@ -391,7 +392,7 @@ def preview(request, slug):
         product = Product.objects.get(id=id)
         all_products = Product.objects.all().order_by('-id')
         all_products = prepareProduct(all_products)
-    context = {'product': product, 'all_products':all_products}
+    context = {'product': product, 'all_products':all_products, 'user':user}
     return render(request, 'preview.html', context)
 
 
@@ -404,10 +405,11 @@ def preview(request, slug):
 
 def store(request):
     id = request.GET.get('id')
+    user = str(request.user)
     profile = Profile.objects.get(id=id)
     products = Product.objects.filter(user=profile)   
     product_data = prepareProduct(products) 
-    context = {'profile': profile, 'store_products': product_data}
+    context = {'profile': profile, 'store_products': product_data, 'user':user}
     return render(request, 'store.html', context)
 
 
