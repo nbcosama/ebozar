@@ -54,7 +54,7 @@ yarn-error.log
 # Compiled static files
 *.css.map
 *.js.map
-static/
+
 
 # DigitalOcean spaces or S3 storage (optional if used)
 *.bak
