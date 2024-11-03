@@ -23,5 +23,6 @@ urlpatterns = [
     path('update_product/', views.update_product, name='update_product'),
     path('send_username/', views.send_username, name='send_username'),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    path('search_query/', views.search_query, name='search'),
     
     ]

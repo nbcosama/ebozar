@@ -16,6 +16,15 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T4NTT1Q7Q9"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-T4NTT1Q7Q9');
+    </script>
 
 </head>
 
@@ -40,11 +49,16 @@
                 </div>
             </a>
         </div>
-        <div class="search-bar">
-            <form method="GET" action="{% url 'landingpage' %}" id="searchForm">
-                <input type="search" name="q" value="{{ request.GET.q }}" id="searchInput" placeholder="Search saman or pasal">
-            </form>
-            <img src="/static/assets/serchicon.svg" alt="Search Icon" class="search-icon">
+        <div class="main_search_box" id="search_box">
+            <div class="search-bar">
+                <form method="GET" action="{% url 'landingpage' %}" id="searchForm">
+                    <input type="search" autocomplete="off" name="q" value="{{ request.GET.q }}" id="searchInput" placeholder="Search saman or pasal">
+                </form>
+                <img src="/static/assets/serchicon.svg" alt="Search Icon" class="search-icon">
+            </div>
+            <ul id="search_suggestions">
+                
+            </ul>
         </div>
 
         <div class="nav-buttons">
@@ -143,17 +157,5 @@
         </section>
     </div>
 </body>
-<script>
-    const navbar = document.getElementById('navbar');
-
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('elevated');
-        } else {
-            navbar.classList.remove('elevated');
-        }
-    });
-
-</script>
-
+<script src="/static/js/search.js"></script>
 </html>

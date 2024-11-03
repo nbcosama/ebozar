@@ -1,6 +1,6 @@
 # sitemaps.py
 from django.contrib.sitemaps import Sitemap
-from .models import Slug  # Replace with your actual Product model
+from .models import Slug, Profile  # Replace with your actual Product model
 
 class ProductSitemap(Sitemap):
     changefreq = "daily"
@@ -8,15 +8,18 @@ class ProductSitemap(Sitemap):
 
     def items(self):
         products = Slug.objects.all()
+        stores = Profile.objects.all()
+        
         data = []
         for product in products:
             data.append(f'/preview/{product.product_slug}')
+
+        for store in stores:
+            data.append(f'/store/?id={store.id}')
         data+=[
             "/",
             "/login/",
             "/signup/",
-            "/preview/",
-            "/store/",
         ]
         return data
 

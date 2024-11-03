@@ -10,6 +10,7 @@ from .functions import *
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 import re
+from .ai import *
 
 
 
@@ -21,28 +22,13 @@ def custom_404_view(request, exception):
 
 def landingpage(request):
     query = request.GET.get('q', '')
-    user = str(request.user)
-    products = Product.objects.all().order_by('-id')
-    stores = Profile.objects.all()
+    resp_list = []
     if query:
-        products = products.filter(
-            Q(product_name__icontains=query) |
-            Q(brand__icontains=query) |
-            Q(color__icontains=query) |
-            Q(price__icontains=query) |
-            Q(condtion__icontains=query) |
-            Q(quantity__icontains=query) |
-            Q(product_description=query) |
-            Q(user__store_name__icontains=query)
-        )
-        stores = stores.filter(
-            Q(store_name__icontains=query) |
-            Q(phone_number__icontains=query) |
-            Q(address__icontains=query) |
-            Q(country__icontains=query) |
-            Q(city__icontains=query) |
-            Q(user__username__icontains=query)
-        )
+        resp_list =get_search_results(query)
+    user = str(request.user)
+    stores = Profile.objects.filter(verify=True)
+    products = Product.objects.filter(id__in=resp_list) if query else Product.objects.all()
+   
     product_data = prepareProduct(products)
     context = {'products': product_data, 'query': query, 'stores': stores, 'user' :user}
     return render(request, 'landingpage.html', context)
@@ -398,18 +384,15 @@ def preview(request, slug):
 
 
 
-
-
-
-
-
 def store(request):
     id = request.GET.get('id')
     user = str(request.user)
-    profile = Profile.objects.get(id=id)
-    products = Product.objects.filter(user=profile)   
+    profile = Profile.objects.filter(id=id)
+    if not profile:
+        return render(request, '404_error.html', {})
+    products = Product.objects.filter(user=profile[0])   
     product_data = prepareProduct(products) 
-    context = {'profile': profile, 'store_products': product_data, 'user':user}
+    context = {'profile': profile[0], 'store_products': product_data, 'user':user}
     return render(request, 'store.html', context)
 
 
@@ -418,3 +401,7 @@ def store(request):
 
 
 
+def search_query(request):
+    query = request.GET.get('q', '')
+    resp_list = getSearchFieldSuggestions(query)
+    return JsonResponse(resp_list, safe=False)

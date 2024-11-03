@@ -31,8 +31,7 @@ body {
 
 .search-bar {
     position: relative;
-    margin-left: 20px;
-    width: 47%;
+    margin-left: 0px;
 }
 
 .search-bar input {
@@ -47,13 +46,20 @@ body {
 
 }
 
+
+.main_search_box{
+    border-radius: 28px;
+    width: 47%;
+}
+
 .search-bar input::placeholder {
     color: #aaa;
 }
 
 .search-bar input:focus {
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    border:none;
+    background-color: #E0FF9E;
 }
 
 .search-bar img.search-icon {
@@ -199,6 +205,7 @@ body {
 
 
 .navbar.elevated {
+    border: none !important;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -215,6 +222,43 @@ body {
     display: none;
 }
 
+
+#search_suggestions{
+    display: none;
+    list-style: none;
+}
+
+#search_suggestions li {
+    text-decoration: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.main_search_box::-webkit-scrollbar {
+    width: 0; /* Hides scrollbar for Chrome/Safari */
+    background: transparent; /* Background color of the scrollbar */
+}
+
+
+
+.page_not_found {
+    text-align: center;
+}
+
+.page_not_found_icon {
+    font-size: 100px;
+    color: #ccc;
+}
+
+.page_not_found_icon_message {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.page_not_found_icon_sub-message {
+    font-size: 16px;
+}
 
 
 
@@ -237,8 +281,13 @@ body {
     }
 
     .search-bar {
-        width: 100%;
         margin:0 0; 
+    }
+
+
+    .main_search_box {
+        position: unset !important;
+        width: 100%;
     }
 
     .logo img {
