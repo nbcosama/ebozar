@@ -4,35 +4,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{product.product_name}} - Explore Local Markets: Buy, Browse & Discover Deals Near You | eBazaar</title>
+    <title>{{product.product_name}} - {{product.user.city}} | {{product.user.country}}</title>
     <meta name="description" content="{{ product.product_description|truncatewords:25 }}">
     <meta property="og:title" content="{{ product.product_name }}">
     <meta property="og:description" content="{{ product.product_description|truncatewords:25 }}">
     <meta property="og:image" content="{{ product.product_image.url }}">
     <meta property="product:price:amount" content="{{ product.price }}">
     <meta property="product:availability" content="{% if product.status == True %}Available{% else %}Not Available{% endif %}">
-    <meta property="og:url" content="https://ebazaar.live/preview/?id={{ product.id }}">
     <meta property="og:type" content="product">
-
+    
     <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/product_preview.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap" rel="stylesheet">
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-T4NTT1Q7Q9"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-    gtag('config', 'G-T4NTT1Q7Q9');
+        gtag('config', 'G-T4NTT1Q7Q9');
     </script>
 
+    <!-- Schema Markup for Product -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": "{{ product.product_name }}",
+      "description": "{{ product.product_description }}",
+      "image": "{{ product.product_image.url }}",
+      "sku": "{{ product.sku }}",
+      "offers": {
+        "@type": "Offer",
+        "url": "https://ebazaar.live/preview/{{slug}}",
+        "priceCurrency": "NPR",
+        "price": "{{ product.price }}",
+        "availability": "{% if product.status == True %} https://schema.org/InStock {% else %} https://schema.org/OutOfStock {% endif %}",
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": {
+          "@type": "Organization",
+          "name": "eBazaar"
+        }
+        "areaServed": {
+            "@type": "Place",
+            "name": "{{ product.user.city }}"
+          }
+      }
+    }
+    </script>
 </head>
+
 
 <body>
     <nav class="navbar" id="navbar">
@@ -109,7 +134,7 @@
             </h3>
             <div class="info rupees_style">
                 <span class="product_name gree_color">Price: </span>
-                <p class="product_price gree_color">{{product.price}}</p>
+                <p class="product_price gree_color">Rs.{{product.price}}</p>
             </div>
             <div class="info">
                 <span class="product_name">Brand: </span>

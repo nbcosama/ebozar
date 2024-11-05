@@ -3,9 +3,9 @@ from email.mime.text import MIMEText
 from django.http import JsonResponse
 from .models import *
 import re
+import random, string
 
-
-
+# Function to send email to user
 def sendemail(request, email, random_number):
     to_email = email
     random_num = random_number
@@ -32,7 +32,7 @@ def sendemail(request, email, random_number):
 
 
 
-
+# Function to send username to user
 def send_username(request, email, username):
     to_email = email
     user_name = username
@@ -63,7 +63,7 @@ def send_username(request, email, username):
 
 
 
-
+# Function to prepare product data for display
 def prepareProduct(products):
     product_data = []
     slugs = Slug.objects.all()
@@ -90,3 +90,20 @@ def prepareProduct(products):
         }
         product_data.append(data)
     return product_data
+
+
+
+
+
+# SKU generator function
+def generate_sku(product_name, brand, color, description):
+    # Convert inputs to uppercase and take the first three characters of each attribute to keep SKU concise
+    product_name_part = (product_name[:3] if product_name else "GEN").upper()
+    brand_part = (brand[:3] if brand else "UNK").upper()
+    color_part = (color[:3] if color else "STD").upper()
+    description_part = (''.join(word[0] for word in description.split()[:2]) if description else "KW").upper()
+    # Generate a random 4-digit number for uniqueness
+    unique_id = ''.join(random.choices(string.digits, k=4))
+    # Combine all parts to form the SKU
+    sku = f"{product_name_part}-{brand_part}-{color_part}-{description_part}-{unique_id}"
+    return sku

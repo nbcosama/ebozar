@@ -18,6 +18,8 @@ def custom_404_view(request, exception):
     return render(request, '404_error.html', status=404)
 
 
+def ebazaar_support(request):
+    return render(request, 'support.html')
 
 
 def landingpage(request):
@@ -244,7 +246,7 @@ def add_product(request):
         condtion = request.POST.get('condtion')
         brand = request.POST.get('brand')
         color = request.POST.get('color')
-        key_words = request.POST.get('key_words')
+        description = request.POST.get('description')
         quantity = request.POST.get('quantity')
         product_image = request.FILES.get('compressedFile')
         if not product_name or not price or not condtion or not quantity or not product_image:
@@ -252,6 +254,9 @@ def add_product(request):
         if user_profile.verify == False:
             return JsonResponse({"message": 'Please verify your account to add product. To verify account contact support team', "error": "sucess" })
         slugs = Slug.objects.all()
+
+        # Generate SKU
+        sku = generate_sku(product_name, brand, color, description)
         product = Product(
             user=user_profile, 
             product_name=product_name, 
@@ -260,8 +265,8 @@ def add_product(request):
             product_image=product_image, 
             brand=brand, 
             color=color, 
-            product_description = key_words,
-            hidden_key_word = product_name,
+            product_description = description,
+            sku = sku,
             quantity=quantity
             )
         product.save()
@@ -369,6 +374,7 @@ def profile(request):
 def preview(request, slug):
     user = str(request.user)
     slug = Slug.objects.filter(product_slug=slug)
+    
     if not slug:
         return render(request, '404_error.html')
     id = slug[0].prooduct_id
@@ -378,7 +384,7 @@ def preview(request, slug):
         product = Product.objects.get(id=id)
         all_products = Product.objects.all().order_by('-id')
         all_products = prepareProduct(all_products)
-    context = {'product': product, 'all_products':all_products, 'user':user}
+    context = {'product': product, 'all_products':all_products, 'user':user, 'slug':slug[0].product_slug}
     return render(request, 'preview.html', context)
 
 
