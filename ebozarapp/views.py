@@ -22,6 +22,12 @@ def ebazaar_support(request):
     return render(request, 'support.html')
 
 
+def became_a_seller(request):
+    user = str(request.user)
+    context = {'user': user}
+    return render(request, 'become_a_seller.html', context)
+
+
 def landingpage(request):
     query = request.GET.get('q', '')
     resp_list = []

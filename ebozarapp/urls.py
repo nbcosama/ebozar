@@ -25,5 +25,6 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('search_query/', views.search_query, name='search'),
     path('ebazaar_support/', views.ebazaar_support, name='ebazaar_support'),
+    path('become-a-seller/', views.became_a_seller, name='become-a-seller'),
     
     ]

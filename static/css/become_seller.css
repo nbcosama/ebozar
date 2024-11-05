@@ -1,0 +1,123 @@
+.main_info_box{
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title_color{
+    color: #1EA707;
+}
+
+.title_box{
+    display: flex;
+    margin-left: 79px;
+    height: 298px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title_box a{
+    cursor: unset;
+}
+
+.title_box p{
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.become_seller_button{
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+    text-decoration: none;
+    padding: 16px;
+    border: none;
+    background-color: #1EA707;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.title_box h1{
+    font-family: "Open Sans", sans-serif;
+    font-weight: bold;
+    font-size: 64px;
+}
+
+
+.img_box{
+    margin-right: 5%;
+}
+
+
+
+.img_box img{
+    height: 470px;
+    
+}
+
+.benifit_box{
+    margin: 60px 40px;
+}
+
+.benifits_heading{
+    margin-bottom: 40px;
+}
+
+.benifits_heading h1{
+    font-family: "Open Sans", sans-serif;
+    font-weight: bold;
+    font-size: 40px;
+    color: #1EA707;
+}
+
+.benifits{
+    background-color: #b2c0ff21;
+    padding: 24px;
+    border-radius: 10px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.benifits p{
+    font-family: "Open Sans", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 5px;
+}
+
+
+@media screen and (max-width: 768px){
+    .main_info_box{
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+
+    .title_box{
+        margin: 23px;
+        text-align: center;
+        height: 200px;
+    }
+
+    .title_box h1 {
+        font-size: 30px;
+    }
+
+
+    .become_seller_button{
+        font-size: 14px;
+        padding: 14px;
+        width: 120px;
+    }
+
+    .img_box img {
+        height: 218px;
+    }
+
+    .benifits_heading h1{
+        text-align: center;
+        font-size: 27px;
+    }
+}

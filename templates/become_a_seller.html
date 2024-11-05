@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a seller | eBazaar Nepal</title>
+    <meta name="description" content="Discover your local market from home and buy best products at resonable price through eBazaar, Nepal's premier local marketplace. Shop products near you today!">
+    <meta name="keywords" content="eBazaar, online shopping Nepal, local products Nepal, buy mobiles Nepal, fashion deals Nepal, marketplace Nepal">
+    <!-- Canonical Link: To avoid duplicate content issues -->
+    <link rel="canonical" href="https://ebazaar.live/">
+    <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/become_seller.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T4NTT1Q7Q9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-T4NTT1Q7Q9');
+    </script>
+    <!-- Schema Markup for Product -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "Become a Seller",
+            "url": "https://ebazaar.live/become-a-seller",
+            "description": "Join eBazaar as a seller to expand your reach, grow your business, and access tools designed for your success. Currently, there are no fees to become a seller. Sign up easily through our simple single-page form.",
+            "areaServed": {
+                "@type": "Country",
+                "name": "Nepal"
+            },
+            "breadcrumb": {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Home",
+                  "item": "https://ebazaar.live"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Become a Seller",
+                  "item": "https://ebazaar.live/become-a-seller"
+                }
+              ]
+            },
+            "mainEntity": {
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "How can I join eBazaar as a seller?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "To join eBazaar as a seller, simply fill out our easy single-page registration form on this page."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What are the advantages of selling on eBazaar?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Selling on eBazaar allows you to reach a wide audience and access customer support tailored for sellers."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Is there a cost associated with becoming a seller on eBazaar?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Currently, there are no fees to become a seller on eBazaar. Join today and start selling without any costs for now."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How can I manage my seller account?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "You can manage your seller account through our dashboard"
+                  }
+                }
+              ]
+            },
+            "potentialAction": {
+              "@type": "RegisterAction",
+              "name": "Sign Up to Become a Seller",
+              "target": "https://ebazaar.live/signup/"
+            }
+          }
+          
+    </script>
+</head>
+
+<body>
+    <nav class="navbar" id="navbar">
+        <a href="/">
+            <div class="logo">
+                <img src="/static/assets/Ebozar.svg" alt="">
+            </div>
+        </a>
+        <div class="hiddenoption">
+            <a href="/become-a-seller">
+                <div class="buttons">
+                    <img src="/static/assets/store.svg" alt="Search Icon" class="search-icon">
+                    <p>Become seller</p>
+                </div>
+            </a>
+            <a href="/login">
+                <div class="buttons">
+                    <img src="/static/assets/account.svg" alt="Search Icon" class="search-icon">
+                    {% if user == 'AnonymousUser' %} <p>Login</p> {% else %} <p>Profile</p>{% endif %}
+                </div>
+            </a>
+        </div>
+        <div class="main_search_box" id="search_box">
+            <div class="search-bar">
+                <form method="GET" action="{% url 'landingpage' %}" id="searchForm">
+                    <input type="search" autocomplete="off" name="q" value="{{ request.GET.q }}" id="searchInput" placeholder="Search saman or pasal">
+                </form>
+                <img src="/static/assets/serchicon.svg" alt="Search Icon" class="search-icon">
+            </div>
+        <ul id="search_suggestions">
+           
+        </ul>
+        </div>
+
+        <div class="nav-buttons">
+            <div class="buttons">
+                <img src="/static/assets/cart.svg" alt="cart" class="search-icon">
+                <p>Cart</p>
+            </div>
+            <a href="/become-a-seller">
+                <div class="buttons">
+                    <img src="/static/assets/store.svg" alt="seller" class="search-icon">
+                    <p>Become seller</p>
+                </div>
+            </a>
+            <a href="/login">
+                <div class="buttons">
+                    <img src="/static/assets/account.svg" alt="auth" class="search-icon">
+                    {% if user == 'AnonymousUser' %} <p>Login</p> {% else %} <p>Profile</p>{% endif %}
+                </div>
+            </a>
+            <button class="citybutton">Biratnagar</button>
+        </div>
+    </nav>
+    <section class="main">
+        <div class="main_info_box">
+            <div class="title_box">
+                <h1 class="become_seller_heading">Become A Seller On e<span class="title_color" >Ba</span>zaar Nepal</h1>
+                <p class="become_seller_heading">Start registration process by clicking <span class="title_color" >Sign up</span> button <span class="title_color" >for Free Now</span>.</p>
+                <a href="/signup" ><button class="become_seller_button">Sign Up Free</button> </a>
+            </div>
+            <div class="img_box">
+                <img class="seller_image" src="/static/assets/bagpack.svg" alt="Seller" >
+            </div>
+        </div>
+    </section>
+    <section class="benifit_box">
+        <div class="benifits_heading">
+            <h1>Why Sell On eBazaar?</h1>
+            <div class="benifits">
+                <h3>Local Reach</h3>
+                <p>Connect directly with nearby customers in your city.</p>
+            </div>
+            <div class="benifits">
+                <h3>Community Support</h3>
+                <p>Build visibility and brand trust within the local market.</p>
+            </div>
+            <div class="benifits">
+                <h3>Easy Online Presence</h3>
+                <p>Quickly set up and manage an online storefront.</p>
+            </div>
+            <div class="benifits">
+                <h3>Marketing Support</h3>
+                <p>eBazaar provides promotional help to boost product visibility.</p>
+            </div>
+            <div class="benifits">
+               <h3>Efficient Deliveries - Comming Soon</h3>
+                <p>Localized service allows faster, more reliable deliveries.</p>
+            </div>
+            <div class="benifits">
+                <h3>Streamlined Sales Process - Comming Soon</h3>
+                 <p>Simplifies transactions, making it easy to connect with buyers.</p>
+             </div>
+        </div>
+
+        <div class="benifits_heading">
+            <h1>Finish Your Registration Process In Three Simple Steps</h1>
+            <div class="benifits">
+                <h3>Register Account</h3>
+                <p>Fill out the simple single-page registration form.</p>
+            </div>
+            <div class="benifits">
+                <h3>Set Up Your Profile</h3>
+                <p>Complete your profile, upload logo, set bio and contact informtions.</p>
+            </div>
+            <div class="benifits">
+                <h3>Add Your Product</h3>
+                <p>Upload your products, set price and start selling.</p>
+            </div>
+        </div>
+        
+    </section>
+</body>
+<script src="/static/js/search.js"></script>
+
+</html>

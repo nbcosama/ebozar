@@ -20,6 +20,8 @@ class ProductSitemap(Sitemap):
             "/",
             "/login/",
             "/signup/",
+            "/ebazaar_support/",
+            "/become-a-seller/",
         ]
         return data
 
