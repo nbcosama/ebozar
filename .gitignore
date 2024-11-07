@@ -67,3 +67,7 @@ backup/
 # Ignore coverage reports
 htmlcov/
 .coverage
+
+
+ebozar/__pycache__/
+ebozarapp/__pycache__/

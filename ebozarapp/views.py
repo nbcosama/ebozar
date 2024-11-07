@@ -417,3 +417,12 @@ def search_query(request):
     query = request.GET.get('q', '')
     resp_list = getSearchFieldSuggestions(query)
     return JsonResponse(resp_list, safe=False)
+
+
+
+def ai_image(request):
+    process = productDetailLoader(request)
+    if process["status"] == "success":
+        return JsonResponse(process["data"])
+    print(process)
+    return render(request, 'ai_image.html')

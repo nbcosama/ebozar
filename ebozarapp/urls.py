@@ -26,5 +26,6 @@ urlpatterns = [
     path('search_query/', views.search_query, name='search'),
     path('ebazaar_support/', views.ebazaar_support, name='ebazaar_support'),
     path('become-a-seller/', views.became_a_seller, name='become-a-seller'),
+    path('ai_image/', views.ai_image, name='ai_image'),
     
     ]

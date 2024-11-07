@@ -1,97 +1,11 @@
-# api_gemini = 'AIzaSyByyocXau7I7pyMl2oQVmXfA_ntb9FHeT8'
-# import google.generativeai as genai
-# from .models import *
+from PIL import Image
+import io
+import json
+import os
+from dotenv import load_dotenv
 
 
-# genai.configure(api_key=api_gemini)
-# model = genai.GenerativeModel("gemini-1.5-flash")
-
-
-# def get_search_results(query):
-#     products = Product.objects.all()
-#     prompt_parts = []
-
-#     # Build the product list in a cleaner, more compact format.
-#     for product in products:
-#         prompt_parts.append(
-#             f"ID: {product.id}, Name: {product.product_name}, Description: {product.product_description}, "
-#             f"Brand: {product.brand}, Color: {product.color}, Condition: {product.condtion}, "
-#             f"Price: {product.price}, Quantity: {product.quantity}, CIty: {product.user.city} Store:  {product.user.store_name}"
-#         )
-    
-#     # Combine all product information into a single prompt
-#     product_list = "\n".join(prompt_parts)
-#     final_prompt = (
-#         f"You are a search engine for an e-commerce platform. Here are the products in the store:\n\n"
-#         f"First you need to focus on name. Keyword must be related to name. \n\n"
-#         f"If You found very unfamilier keyword, done return anything \n\n"
-#         f"Also if multiple result found, make them assending order based on best matches. \n\n"
-#         f"If user entered address in keyword, only return the product of that address \n\n"
-#         f"{product_list}\n\n"
-#         f"The search keyword is '{query}'. "
-#         f"Please return only the IDs of the products that match this keyword, separated by commas. "
-#         f"Do not include any other text or explanations."
-#     )
-
-#     try:
-#         response = model.generate_content(final_prompt)
-
-#         # Attempt to parse the response to ensure it contains only IDs
-#         response_text = response.text.strip()
-#         product_ids = [int(id.strip()) for id in response_text.split(",") if id.strip().isdigit()]
-#         return product_ids
-#     except ValueError:
-#         print("Unexpected response format:", response_text)
-#         return get_search_results(query)
-
-
-# def getSearchFieldSuggestions(query):
-#     products = Product.objects.all()
-#     prompt_parts = []
-
-#     # Build the product list in a cleaner, more compact format.
-#     for product in products:
-#         prompt_parts.append(
-#             f"ID: {product.id}, Name: {product.product_name}, Description: {product.product_description}, "
-#             f"Brand: {product.brand}, Color: {product.color}, Condition: {product.condtion}, "
-#             f"Price: {product.price}, Quantity: {product.quantity}, CIty: {product.user.city} Store:  {product.user.store_name}"
-#         )
-    
-#     # Combine all product information into a single prompt
-#     product_list = "\n".join(prompt_parts)
-#     final_prompt = (
-#         f"You are a search engine suggestion maker for an e-commerce platform. Here are the products in the store:\n\n"
-#         f"{product_list}\n\n"
-#         f"First you need to focus on name. Keyword must be related to name. \n\n"
-#         f"If You found very unfamilier keyword, done return anything \n\n"
-#         f"Also if multiple result found, make them assending order based on best matches. \n\n"
-#         f"If user entered address in keyword, only return the product of that address \n\n"
-       
-#         f"The search keyword is '{query}'. "
-#         f"Please create some search query suggestions based on this keyword. And return them as a list, separated by commas. follow this pattern: 'keyword1, keyword2, keyword3'. any how follow the patern. complete system is based on this pattern."
-#         f"If no suggestion found, return null"
-       
-#     )
-#     try:
-#         response = model.generate_content(final_prompt)
-#         response_text = response.text.strip()
-#         if response_text == "null":
-#             return []
-#         lst = response_text.split(",")
-#         return lst
-#     except Exception as e:
-#         print(e)
-#         return getSearchFieldSuggestions(query)
-
-
-
-
-
-
-
-
-
-api_gemini = 'AIzaSyByyocXau7I7pyMl2oQVmXfA_ntb9FHeT8'
+api_gemini =  os.getenv("gemin_api")
 import google.generativeai as genai
 from .models import *
 
@@ -188,3 +102,45 @@ def getSearchFieldSuggestions(query):
         print("Error occurred:", e)
         print("Fallback triggered for suggestions.")
         return []
+
+
+
+def productDetailLoader(request):
+    print("yes")
+    print("Files in request:", request.FILES.get("image"))
+    if request.method == "POST" and request.FILES.get("image"):
+        img = request.FILES["image"]
+        image = Image.open(img)
+        buffer = io.BytesIO()
+        image.save(buffer, format="JPEG")
+        buffer.seek(0)
+
+        try:
+            # Upload the file using genai (ensure `upload_file` works with Django's `UploadedFile` or convert as needed)
+            myfile = genai.upload_file(buffer, mime_type="image/jpeg")
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            result = model.generate_content(
+                [
+                    myfile,
+                    "\n\n",
+                    "Provide product details with the following JSON structure:",
+                    '{"product": "product name", "price": "price range or estimate", "color": "primary colors", "condition": "new or used", "description": "brief product description", "brand": "", "quantity": ""}',
+                    "Avoid adding extra text, do not use double quotes around keys or values, and follow this structure strictly."
+                    "price must be in nepali rupees. only use single number"
+                    "only one price expected. dont put Rs. if unknown price return 0. But do your best to guess the price."
+                    "if no brand found, return unknown"
+                    "for quantity, products that comes in pair, if one pair found return 1, and try to count number of product in image."
+                    "for color only return one main primary color."
+                    "in descrption try to put all color. make it seo friendly."
+                    "make the title eye catchy and SEO Friendly"
+                ]
+            )
+
+            print(result.text)
+            data = json.loads(result.text)
+            # Further processing can be done here with `myfile`
+            return {"status": "success", "data": data}
+        except Exception as e:
+            return {"status": "error", "message": str(e)}
+
+    return {"status": "error", "message": "Invalid request"} 
