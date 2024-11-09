@@ -36,7 +36,7 @@
       "@type": "Product",
       "name": "{{ product.product_name }}",
       "description": "{{ product.product_description }}",
-      "image": "{{ product.product_image.url }}",
+      "image": "https://ebazaar.live{{ product.product_image.url }}",
       "sku": "{{ product.sku }}",
       "offers": {
         "@type": "Offer",
@@ -116,10 +116,18 @@
     <section class="product_preview">
         <div class="product_img">
             {% if product.product_image %}
-            <img src="{{product.product_image.url}}"
-                alt="{{product.product_name}}">
+                <img src="{{product.product_image.url}}" alt="{{product.product_name}}" id="mainImage">
             {% else %}
-            <h1>Image not found</h1>
+                <h1>Image not found</h1>
+            {% endif %}
+        </div>
+        <div class="secondary_images sec_img_hidden">
+            {% if sec_images %}
+                {% for sec_image in sec_images %}
+                    <div class="sec_img"><img src="{{sec_image.secondary_image.url}}" id="{{sec_image.id}}" alt="{{sec_image.product.product_name}}" onclick="updateMainImage(this)"></div>
+                {% endfor %}
+            {% else %}
+                <h5>Image not found</h5>
             {% endif %}
         </div>
         <div class="product_info">
@@ -172,6 +180,15 @@
             </div>
         </div>
     </section>
+    <div class="secondary_images">
+        {% if sec_images %}
+            {% for sec_image in sec_images %}
+                <div class="sec_img"><img src="{{sec_image.secondary_image.url}}" id="{{sec_image.id}}" alt="{{sec_image.product.product_name}}" onclick="updateMainImage(this)"></div>
+            {% endfor %}
+        {% else %}
+            <h5>Image not found</h5>
+        {% endif %}
+    </div>
     <h4 class="HeadingTag">Product</h4>
     <section class="main">
         <div class="product-grid">
@@ -204,6 +221,17 @@
     </section>
 </body>
 <script src="/static/js/search.js"></script>
-
+<script>
+    function updateMainImage(secImage) {
+        // Select the main image element in the preview
+        const mainImage = document.getElementById('mainImage');
+        
+        // Update the main image's src attribute with the src of the clicked secondary image
+        if (mainImage && secImage) {
+            mainImage.src = secImage.src;
+        }
+    }
+    
+</script>
 
 </html>

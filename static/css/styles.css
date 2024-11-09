@@ -264,6 +264,9 @@ body {
 
 /* Responsive Styles */
 @media (max-width: 768px) {
+    body {
+        padding-top: unset;
+    }
     .navbar {
         padding: 10px;
         flex-direction: column;

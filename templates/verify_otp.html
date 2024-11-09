@@ -18,12 +18,13 @@
         {% endif %}
         {% if email %}
         <p>OTP has been sent to your email address. Please enter the OTP to verify your email address. Valid For 5 minuts</p>
-        <form method="POST" action="{% url 'verify_otp' %}">
+        <div id="loader" class="loader"><p></p></div>
+        <form method="POST" action="{% url 'verify_otp' %}" onsubmit="showLoader()">
             {% csrf_token %}
             <label for="otp">Enter OTP:</label>
             <input type="text" id="otp" name="otp" required>
             <input type="hidden" value="{{email}}" name="email">
-            <button type="submit">Verify OTP</button>
+            <button type="submit" id="verifyButton">Verify OTP</button>
             
         </form>
         {% else %}
@@ -31,5 +32,14 @@
         {% endif %}
         
     </div>
+    <script>
+        function showLoader() {
+            // Show loader
+            document.getElementById('loader').style.display = 'block';
+
+            // Disable the button to prevent multiple submissions
+            document.getElementById('verifyButton').disabled = true;
+        }
+    </script>
 </body>
 </html>

@@ -67,8 +67,11 @@ def send_username(request, email, username):
 def prepareProduct(products):
     product_data = []
     slugs = Slug.objects.all()
+    secondary_image = Secondary_images.objects.all()
+        
     for product in products:
         slug =  slugs.filter(prooduct_id=product.id)
+        sec_images = secondary_image.filter(product_id=product.id)
         if not slug:
             product_name = product.product_name
             # Replace spaces with underscores and remove special characters
@@ -86,7 +89,8 @@ def prepareProduct(products):
             'condtion' : product.condtion,
             'quantity' : product.quantity,
             'color' : product.color,
-            'slug': slug[0]
+            'slug': slug[0],
+            'sec_images': [x.secondary_image.url for x in sec_images]
         }
         product_data.append(data)
     return product_data

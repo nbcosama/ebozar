@@ -11,6 +11,7 @@ from django.db.models import Q
 from django.http import JsonResponse, HttpResponse
 import re
 from .ai import *
+from django.core.paginator import Paginator
 
 
 
@@ -28,6 +29,7 @@ def became_a_seller(request):
     return render(request, 'become_a_seller.html', context)
 
 
+
 def landingpage(request):
     query = request.GET.get('q', '')
     resp_list = []
@@ -35,10 +37,13 @@ def landingpage(request):
         resp_list =get_search_results(query)
     user = str(request.user)
     stores = Profile.objects.filter(verify=True)
-    products = Product.objects.filter(id__in=resp_list) if query else Product.objects.all()
-   
+    products = Product.objects.filter(id__in=resp_list).order_by("-id") if query else Product.objects.all().order_by("-id")
     product_data = prepareProduct(products)
-    context = {'products': product_data, 'query': query, 'stores': stores, 'user' :user}
+    # pegination
+    paginator = Paginator(product_data, 30)  # Show 10 products per page
+    page_number = request.GET.get('page')
+    product_dat = paginator.get_page(page_number)
+    context = {'products': product_dat, 'query': query, 'stores': stores, 'user' :user}
     return render(request, 'landingpage.html', context)
 
 
@@ -255,6 +260,7 @@ def add_product(request):
         description = request.POST.get('description')
         quantity = request.POST.get('quantity')
         product_image = request.FILES.get('compressedFile')
+        product_images = request.FILES.getlist('secondaryimages')
         if not product_name or not price or not condtion or not quantity or not product_image:
             return JsonResponse({"message":'All fields are required', "status": "error" })
         if user_profile.verify == False:
@@ -277,6 +283,7 @@ def add_product(request):
             )
         product.save()
         product_name = product.product_name
+        
         # Replace spaces with underscores and remove special characters
         product_name_slug = re.sub(r'[^a-zA-Z0-9_]+', '', product_name.replace(" ", "-").replace("/", "")).lower()
         if slugs.filter(product_slug = product_name_slug):
@@ -286,6 +293,14 @@ def add_product(request):
             product_slug = product_name_slug
         )
         add_product_slug.save()
+
+        for secondary_image in product_images:
+            image = secondary_image
+            secondary_img = Secondary_images(
+            secondary_image=image, 
+            product_id = product.pk
+            )
+            secondary_img.save()
         messages.success(request, 'Product added successfully')
         return JsonResponse({"message":'Product added successfully', "status": "sucess" })
     user = request.user
@@ -352,6 +367,8 @@ def profile(request):
             phone_number = request.POST.get('phone_number')
             address = request.POST.get('address')
             bio = request.POST.get('bio')
+            store_timing = request.POST.get('store_timing')
+            user_profile.store_timing = store_timing
             user_profile.phone_number = phone_number
             user_profile.address = address
             user_profile.bio = bio
@@ -388,9 +405,10 @@ def preview(request, slug):
         return redirect('landingpage')
     else:
         product = Product.objects.get(id=id)
+        sec_images = Secondary_images.objects.filter(product_id=product.id)
         all_products = Product.objects.all().order_by('-id')
         all_products = prepareProduct(all_products)
-    context = {'product': product, 'all_products':all_products, 'user':user, 'slug':slug[0].product_slug}
+    context = {'product': product, 'sec_images': sec_images, 'all_products':all_products, 'user':user, 'slug':slug[0].product_slug}
     return render(request, 'preview.html', context)
 
 

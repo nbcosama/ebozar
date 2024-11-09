@@ -2,12 +2,15 @@
 
 const WIDTH = 800;
 let selectedCompressedFile;
+let secondaryImageFiles = [];
 
 let input = document.getElementById("product_image");
+let secondary_img = document.getElementById("secondary_image")
 
 input.addEventListener("change", (event) => {
     let image_file = event.target.files[0];
-
+    document.getElementById("wrapper").replaceChildren()
+    selectedCompressedFile = null
     let reader = new FileReader();
     reader.readAsDataURL(image_file);
 
@@ -39,6 +42,51 @@ input.addEventListener("change", (event) => {
 
     };
 });
+
+
+secondary_img.addEventListener("change", (event) => {
+    let image_files = event.target.files;
+    document.getElementById("wrapper2").replaceChildren()
+    secondaryImageFiles = []
+    
+    // Iterate over each selected file
+    for (let image_file of image_files) {
+        let reader = new FileReader();
+        
+        reader.readAsDataURL(image_file);
+        
+        reader.onload = (event) => {
+            let image_url = event.target.result;
+            let image = new Image(); // Create an Image object
+
+            image.src = image_url;
+
+            image.onload = (e) => {
+                // Create a canvas to resize the image
+                let canvas = document.createElement("canvas");
+                let ratio = WIDTH / e.target.width;
+                canvas.width = WIDTH;
+                canvas.height = e.target.height * ratio;
+
+                const context = canvas.getContext("2d");
+                context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+                // Compress the image as a JPEG with 98% quality
+                let new_image_url = canvas.toDataURL("image/jpeg", 0.98);
+                let new_image = document.createElement("img");
+                new_image.src = new_image_url;
+                document.getElementById("wrapper2").appendChild(new_image);
+
+                // Optional: Convert the data URL back to a file
+                secondaryImageFiles.push(urlToFile(new_image_url, image_file.name));
+
+            };
+        };
+    }
+});
+
+
+
 
 async function loadImageInfo() {
     aiEnhancing = document.createElement("div")
@@ -150,7 +198,18 @@ formElem.onsubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(formElem)
     data.append('compressedFile', selectedCompressedFile)
+    if (Array.isArray(secondaryImageFiles)) {
+        // Append each secondary image file individually
+        secondaryImageFiles.forEach(file => {
+            data.append('secondaryimages', file);
+        });
+    } else {
+        // If it's not an array, log an error (optional)
+        console.error('secondaryImageFiles is not an array or is undefined');
+    }
+   
     data.delete("image")
+    data.delete("secondary_image")
     let response = await fetch(window.location.href, {
         method: 'POST',
         body: data,

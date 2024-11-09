@@ -98,7 +98,7 @@
                         <p class="gree_color">{{profile.store_name}}</p>
                         <span>{{profile.city}}</span>
                     </div>
-                    <p>Available: Sun to Fri 10am to 8pm</p>
+                    <p>Available: {% if profile.store_timing == None %} Not Set {%else%} {{profile.store_timing}} {% endif %}</p>
                     <p>Contact No: {{profile.phone_number}}</p>
                     <p>Location:<div class="ovreflostack"><a href="https://www.google.com/maps/search/?api=1&query={{ profile.address|urlencode }}" target="_blank">{{profile.address}}</a></div></p>
                 </div>

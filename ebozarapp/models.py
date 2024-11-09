@@ -11,12 +11,12 @@ class Profile(models.Model):
         ('buyer', 'Buyer'),
         ('seller', 'Seller'),
     ]
-
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     store_name = models.CharField(max_length=255)
     email = models.EmailField(max_length=254)
     phone_number = models.CharField(max_length=30)
     bio = models.TextField(null=True, blank=True)
+    store_timing = models.CharField(max_length=255, null=True, blank=True, default="Not Set")
     logo = models.ImageField(upload_to='media/', null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
@@ -48,6 +48,14 @@ class Product(models.Model):
     def __str__(self):
         return self.product_name
     
+
+
+class Secondary_images(models.Model):
+    secondary_image = models.ImageField(upload_to='media/', null=True, blank=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.product.product_name
+
 
 
 class Slug(models.Model):

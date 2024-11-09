@@ -67,7 +67,26 @@
         }
         </script>
         
-
+        <style>
+            .pagination {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                margin-top: 20px;
+            }
+            
+            .pagination a, .pagination span {
+                padding: 8px 12px;
+                text-decoration: none;
+                color: #333;
+            }
+            
+            .pagination a:hover {
+                background-color: #f0f0f0;
+                border-radius: 4px;
+            }
+            
+        </style>
 </head>
 
 <body>
@@ -151,6 +170,24 @@
             </a>
             {% endfor %}
             
+        </div>
+        <!-- Pagination Controls -->
+        <div class="pagination">
+            {% if products.has_previous %}
+                {% if query %}
+                    <a href="?page={{ products.previous_page_number }}&q={{query}}">Previous</a>
+                {% else %}
+                    <a href="?page={{ products.previous_page_number }}">Previous</a>
+                {% endif %}
+            {% endif %}
+            <span>Page {{ products.number }} of {{ products.paginator.num_pages }}</span>
+            {% if products.has_next %}
+                {% if query %}
+                    <a href="?page={{ products.next_page_number }}&q={{query}}">Next</a>
+                {% else %}
+                    <a href="?page={{ products.next_page_number }}">Next</a>
+                {% endif %}
+            {% endif %}
         </div>
     </section>
     {% else %}
