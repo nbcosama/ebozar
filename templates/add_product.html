@@ -32,6 +32,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="topbar">
+            <a class="log_out_btn" href="/logout"><img src="/static/assets/logout.svg" alt="Profile Picture"></a>
             <a href="/profile">
                 <div class="user-info">
                     {% if user_profile.logo %}
@@ -44,9 +45,10 @@
                 </div>
             </a>
             <div class="addprt">
-                <a class="add_product_button" href="/dashboard"><button>Dashboard</button></a>
-                <a href="/logout"><button>Log Out</button></a>
+                <a class="add_product_button" href="/add_product"><button>Add product</button></a>
+                <a class="add_product_button" href="/logout"><button>Log Out</button></a>
             </div>
+            <a class="edit_btn" href="/profile">Edit</a>
         </div>
         <ul id = "messagesPlace">
         {% if messages %}
@@ -62,6 +64,7 @@
                 <h2>Add Product</h2>
                 <a class="hidden_button" href="/dashboard"><button>Dashboard</button></a>
             </div>
+            
             <section class="form-section">
                
                 <form id="form" class="product-form" method="POST" action="{% url 'add_product' %}" enctype="multipart/form-data">
@@ -106,15 +109,30 @@
                         <input type="text" name="description" placeholder="Enter description">
                     </div>
                     <div class="form-group">
-                      <button type="submit" class="submit-btn"><i class="fas fa-check"></i> Submit</button>
+                      <button type="submit" class="submit-btn"><i class="fas fa-check" ></i> <div id="loader" class="spinner" style="display: none;"></div>Submit</button>
                     </div>
                     
                 </form>
+                
+
                 
             </section>
         </div>
     </div>
    <script src="/static/js/form.js"></script>
+   <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('form');
+            const loader = document.getElementById('loader');
+            const submitButton = form.querySelector('.submit-btn');
+        
+            form.addEventListener('submit', function (event) {
+                loader.style.display = 'block';  // Show the loader
+                submitButton.disabled = true;    // Disable the submit button
+                submitButton.style.opacity = 0.5;  // Optional: visually indicate button is disabled
+            });
+        });
+   </script>
 </body>
 
 </html>

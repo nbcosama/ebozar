@@ -208,4 +208,13 @@ body {
     .login-box form {
         margin-bottom: 40px;
     }
+
+    .firstbox{
+        display: none;
+    }
+
+    .logo{
+        position: unset !important;
+        height: 17px !important;
+    }
 }

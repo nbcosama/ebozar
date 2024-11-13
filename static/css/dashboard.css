@@ -11,6 +11,8 @@ body {
 }
 
 .success{
+    display: flex;
+    align-items: center;
     margin: 10px 0;
     text-decoration: none;
     list-style: none;
@@ -20,7 +22,15 @@ body {
     background: #1ea7090f;
 }
 
+.error img,
+.success img{
+    height: 20px;
+    margin-right: 10px;
+}
+
 .error{
+    display: flex;
+    align-items: center;
     margin: 10px 0;
     text-decoration: none;
     list-style: none;
@@ -190,8 +200,10 @@ body {
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.1);
 }
+
+
 
 .product-list h3 {
     margin-bottom: 20px;
@@ -259,11 +271,80 @@ body {
     
 }
 
+.edit_btn,
+.log_out_btn{
+    display: none;
+}
+
+.add_first_product{
+    display: flex;
+    border: 1px solid #ddd;
+    border-radius: 2px;
+    background-color: #fff;
+    text-align: center;
+    min-height: 34%;
+    width: 20%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.add_first_product_btn{
+    display: flex;
+    height: 75px;
+    width: 75px;
+    padding: 14px;
+    border-radius: 100%;
+    background: #1ea7072e;
+    margin-bottom: 10px;
+}
+
+
+
+.Ai_alert_card{
+    position: absolute;
+    bottom: 10px; 
+    right: 10px; 
+    background-color: green; 
+    color: white;
+}
+
 
 @media (max-width: 768px){
 
     .topbar{
-        padding: 20px 0px 20px 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        padding: 10px 0px 10px 10px;
+        height: 180px;
+        border-radius: 24px;
+        box-shadow: 0px 0px 5px 1px rgb(0 0 0 / 5%);
+    
+    }
+    .edit_btn{
+        display: block;
+        color: #6969eb !important;
+    }
+
+    .log_out_btn{
+        display: block;
+        position: absolute;
+        right: 35px;
+        top: 35px;
+        
+    }
+
+    .log_out_btn img{
+        height: 30px;
+    }
+
+    .user-info img {
+        width: 100px;
+        height: 100px;
+        margin: 0px;
     }
 
     .addprt{
@@ -298,5 +379,22 @@ body {
         width: 30%;
         margin-right: 0;
         overflow: hidden;
+    }
+
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .addprt_btn{
+        display: none;
+    }
+
+    .add_first_product{
+        min-height: 64%;
+        width: 50%;
     }
 }

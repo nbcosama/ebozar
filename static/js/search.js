@@ -1,12 +1,22 @@
 const navbar = document.getElementById('navbar');
+const heading = document.getElementById('heading');
+const sub_h = document.getElementById('sub_h');
+const bottom_portion = document.getElementById('bottom_portion');
 
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.classList.add('elevated');
-    } else {
-        navbar.classList.remove('elevated');
-    }
-});
+
+if (navbar) {
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('elevated');
+        } else {
+            navbar.classList.remove('elevated');
+        }
+    });
+}
+
+  
+
+
 
 
 
@@ -24,24 +34,22 @@ search_suggestions.addEventListener('click', function(event) {
 });
 // Function to apply styles to the search box
 function showSearchBox() {
-    searchBox.style.position = 'absolute';
-    searchBox.style.top = '7px';
-    searchBox.style.left = '160px';
+    searchBox.style.top = '0px';
     searchBox.style.padding = '5px';
     searchBox.style.backgroundColor = 'white';
-    searchBox.style.boxShadow = '0 2px 8px 1px rgba(64, 60, 67, .24)';
+    searchBox.style.border = '1px solid #eee';
     searchBox.style.maxHeight = '50vh'; // Use camelCase for max-height
     searchBox.style.overflowY = 'auto';
     search_suggestions.style.display = 'block';
 }
 // Function to remove styles from the search box
 function hideSearchBox() {
-    searchBox.style.position = '';
     searchBox.style.top = '';
     searchBox.style.left = '';
     searchBox.style.padding = '';
     searchBox.style.height = '';
     searchBox.style.boxShadow = '';
+    searchBox.style.border = '';
     search_suggestions.style.display = 'none';
 }
 // Add click event listener to the search field
@@ -53,7 +61,6 @@ searchField.addEventListener('click', function(event) {
 document.addEventListener('click', function() {
     hideSearchBox();
 });
-
 
 
 

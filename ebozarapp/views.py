@@ -65,7 +65,7 @@ def login(request):
             if user is not None:
                 verified_user = Profile.objects.get(user=user)
                 auth_login(request, user)
-                messages.success(request, 'Log In successful')
+                messages.success(request, 'Logged In successfully')
                 return redirect('dashboard')
             else:
                 messages.error(request, 'Invalid username or password')
@@ -83,7 +83,7 @@ def login(request):
 
 def logout(request):
     auth_logout(request)
-    messages.success(request, 'Log Out successfully')
+    messages.success(request, 'Logged Out successfully')
     return redirect('login')
 
 
@@ -130,7 +130,7 @@ def signup(request):
         username = store_name.replace(" ", "_").lower()
         if User.objects.filter(email=email).exists():
             messages.error(request, 'Email already in use.')
-            return redirect('signup')
+            return redirect('become-a-seller')
         elif User.objects.filter(username=username).exists():
             messages.error(request, 'Username already exists.')
             return redirect('signup')

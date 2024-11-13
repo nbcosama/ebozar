@@ -91,6 +91,7 @@
 
 @media screen and (max-width: 768px){
     .main_info_box{
+        display: none;
         flex-direction: column-reverse;
         align-items: center;
     }
@@ -107,9 +108,14 @@
 
 
     .become_seller_button{
+        display: none;
         font-size: 14px;
         padding: 14px;
         width: 120px;
+    }
+    
+    .register_store_form {
+        display: flex !important;
     }
 
     .img_box img {

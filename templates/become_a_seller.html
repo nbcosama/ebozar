@@ -99,61 +99,139 @@
           }
           
     </script>
+    <style>
+       
+        .register_store_form {
+            display: none;
+            max-width: 450px;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin: 20px;
+        }
+
+        .login-box h2 {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .login-box label {
+            font-weight: bold;
+            color: #555;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .input-box, .select_type {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #333;
+            outline: none;
+        }
+
+        .input-box:focus, .select_type:focus {
+            border-color: #1EA707;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+        }
+
+        .region {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .input-group {
+            flex: 1;
+        }
+
+        .account-type {
+            margin: 15px 0;
+        }
+
+        .select_type {
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+
+        .remember input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .remember label {
+            color: #555;
+        }
+
+        .signin-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #1EA707;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .signin-btn:hover {
+            background-color: #1EA707;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .region {
+                flex-direction: column;
+            }
+
+            .remember {
+                font-size: 12px;
+            }
+        }
+
+    </style>
 </head>
 
 <body>
     <nav class="navbar" id="navbar">
-        <a href="/">
-            <div class="logo">
-                <img src="/static/assets/Ebozar.svg" alt="">
+        <div class="top_portion">
+            <a href="/">
+                <div class="logo">
+                    <img src="/static/assets/eBazaar.svg" alt="">
+                </div>
+            </a>
+            <div class="nav-buttons">
+                <a href="/become-a-seller">
+                    <button class="citybutton">add your store</button>
+                </a>
+                <a href="/login">
+                    <div class="buttons">
+                        {% if user == 'AnonymousUser' %} <p>log in</p> {% else %} <p>Profile</p>{% endif %}
+                    </div>
+                </a>
+                
             </div>
-        </a>
-        <div class="hiddenoption">
-            <a href="/become-a-seller">
-                <div class="buttons">
-                    <img src="/static/assets/store.svg" alt="Search Icon" class="search-icon">
-                    <p>Become seller</p>
-                </div>
-            </a>
-            <a href="/login">
-                <div class="buttons">
-                    <img src="/static/assets/account.svg" alt="Search Icon" class="search-icon">
-                    {% if user == 'AnonymousUser' %} <p>Login</p> {% else %} <p>Profile</p>{% endif %}
-                </div>
-            </a>
         </div>
-        <div class="main_search_box" id="search_box">
-            <div class="search-bar">
-                <form method="GET" action="{% url 'landingpage' %}" id="searchForm">
-                    <input type="search" autocomplete="off" name="q" value="{{ request.GET.q }}" id="searchInput" placeholder="Search saman or pasal">
-                </form>
-                <img src="/static/assets/serchicon.svg" alt="Search Icon" class="search-icon">
-            </div>
-        <ul id="search_suggestions">
-           
-        </ul>
-        </div>
-
-        <div class="nav-buttons">
-            <div class="buttons">
-                <img src="/static/assets/cart.svg" alt="cart" class="search-icon">
-                <p>Cart</p>
-            </div>
-            <a href="/become-a-seller">
-                <div class="buttons">
-                    <img src="/static/assets/store.svg" alt="seller" class="search-icon">
-                    <p>Become seller</p>
-                </div>
-            </a>
-            <a href="/login">
-                <div class="buttons">
-                    <img src="/static/assets/account.svg" alt="auth" class="search-icon">
-                    {% if user == 'AnonymousUser' %} <p>Login</p> {% else %} <p>Profile</p>{% endif %}
-                </div>
-            </a>
-            <button class="citybutton">Biratnagar</button>
-        </div>
+        
     </nav>
+   
     <section class="main">
         <div class="main_info_box">
             <div class="title_box">
@@ -164,6 +242,61 @@
             <div class="img_box">
                 <img class="seller_image" src="/static/assets/bagpack.svg" alt="Seller" >
             </div>
+        </div>
+    </section>
+    <section class="register_store_form">
+        <div class="login-box">
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div>{{ message }}</div>
+                {% endfor %}
+                </div>
+            {% endif %}
+            <h2>Register Your Shop</h2>
+            <form method="POST" action="{% url 'signup' %}">
+                {% csrf_token %}
+                <label for="storename">Store Name</label>
+                <input class="input-box" type="text" id="storename" name="store_name" placeholder="Store Name" required>
+
+                <label for="password">Gmail</label>
+                <input class="input-box" type="gmail" id="gmail" name="email" placeholder="Gmail" required>
+
+                <div class="region">
+                    <div class="input-group" style="width: 100%;">
+                        <label for="country">Country</label>
+                        <input class="input-box" type="text" id="country" name="country" placeholder="Country" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="city">City</label>
+                        <input class="input-box" type="text" id="city" name="city" placeholder="City" required>
+                    </div>
+
+                </div>
+                <label for="address">Store Name With Location</label>
+                <input class="input-box" type="text" id="address" name="address" placeholder="abc store, Biratnagar 06, Jharna chowk" required>
+
+                <label for="phone">Phone</label>
+                <input class="input-box" type="text" id="phone" name="phone_number" placeholder="+9779800000000" required>
+
+                <label for="password">Password</label>
+                <input class="input-box" type="password" id="password" name="password" placeholder="Password" required>
+                <label for="password">Account Type</label>
+                <div class="account-type">
+                    {% comment %} <input type="radio" id="buyer" value="buyer" checked><label for="buyer">Buyer</label>
+                    <input type="radio" id="seller" value="seller" ><label for="seller">Seller</label> {% endcomment %}
+                    <select class="select_type" id="user_type" name="user_type" required>
+                        {% comment %} <option value="buyer">Buyer</option> {% endcomment %}
+                        <option value="seller" selected>Seller</option>
+                    </select>
+                </div>
+
+                <div class="remember">
+                    <input type="checkbox" id="policy"><label for="policy">I agree to the Terms of Service and Privacy Policy.</label>
+                </div>
+
+                <button type="submit" class="signin-btn">Submit</button>
+            </form>
         </div>
     </section>
     <section class="benifit_box">

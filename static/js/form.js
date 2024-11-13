@@ -1,6 +1,7 @@
 
 
 const WIDTH = 800;
+const SWIDTH = 800;
 let selectedCompressedFile;
 let secondaryImageFiles = [];
 
@@ -51,37 +52,54 @@ secondary_img.addEventListener("change", (event) => {
     
     // Iterate over each selected file
     for (let image_file of image_files) {
-        let reader = new FileReader();
-        
-        reader.readAsDataURL(image_file);
-        
-        reader.onload = (event) => {
-            let image_url = event.target.result;
-            let image = new Image(); // Create an Image object
+        // Check if file size exceeds 100 KB
+        if (image_file.size > 102400) {  // 100 KB in bytes
+            let reader = new FileReader();
+            
+            reader.readAsDataURL(image_file);
+            
+            reader.onload = (event) => {
+                let image_url = event.target.result;
+                let image = new Image(); // Create an Image object
 
-            image.src = image_url;
+                image.src = image_url;
 
-            image.onload = (e) => {
-                // Create a canvas to resize the image
-                let canvas = document.createElement("canvas");
-                let ratio = WIDTH / e.target.width;
-                canvas.width = WIDTH;
-                canvas.height = e.target.height * ratio;
+                image.onload = (e) => {
+                    // Create a canvas to resize the image
+                    let canvas = document.createElement("canvas");
+                    let ratio = SWIDTH / e.target.width;
+                    canvas.width = SWIDTH;
+                    canvas.height = e.target.height * ratio;
 
-                const context = canvas.getContext("2d");
-                context.drawImage(image, 0, 0, canvas.width, canvas.height);
+                    const context = canvas.getContext("2d");
+                    context.drawImage(image, 0, 0, canvas.width, canvas.height);
 
-                // Compress the image as a JPEG with 98% quality
-                let new_image_url = canvas.toDataURL("image/jpeg", 0.98);
+                    // Compress the image as a JPEG with 98% quality
+                    let new_image_url = canvas.toDataURL("image/jpeg", 98);
+                    let new_image = document.createElement("img");
+                    new_image.src = new_image_url;
+                    document.getElementById("wrapper2").appendChild(new_image);
+
+                    // Optional: Convert the data URL back to a file
+                    secondaryImageFiles.push(urlToFile(new_image_url, image_file.name));
+
+                };
+            } 
+        }else {
+            // If file is 100 KB or smaller, read it directly without compression
+            let reader = new FileReader();
+            reader.readAsDataURL(image_file);
+            
+            reader.onload = (event) => {
+                let image_url = event.target.result;
                 let new_image = document.createElement("img");
-                new_image.src = new_image_url;
+                new_image.src = image_url;
                 document.getElementById("wrapper2").appendChild(new_image);
-
-                // Optional: Convert the data URL back to a file
-                secondaryImageFiles.push(urlToFile(new_image_url, image_file.name));
-
+                
+                // Optional: Add the file directly to secondaryImageFiles without compression
+                secondaryImageFiles.push(image_file);
             };
-        };
+        }
     }
 });
 
@@ -91,8 +109,8 @@ secondary_img.addEventListener("change", (event) => {
 async function loadImageInfo() {
     aiEnhancing = document.createElement("div")
     aiEnhancing.id = "ai_enhancing"
-    aiEnhancing.innerHTML = `Reading Image info`
-    aiEnhancing.style = "position: absolute; bottom: 10px; right: 10px; background-color: green; color: white;"
+    aiEnhancing.innerHTML = `Analyzing image... Just a moment please.`
+    aiEnhancing.className = "Ai_alert_card"
     aiEnhancing.style.padding = "10px";
     document.body.append(aiEnhancing)
 
@@ -194,6 +212,8 @@ let urlToFile = (url) => {
 
 
 const formElem = document.getElementById("form");
+const loader = document.getElementById('loader');
+const submitButton = form.querySelector('.submit-btn');
 formElem.onsubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(formElem)
@@ -224,6 +244,10 @@ formElem.onsubmit = async (e) => {
         const newMessage = document.createElement("li")
         newMessage.innerHTML = `<li class="${result['status']}">${result['message']}</li>`
         messages.append(newMessage)
+        loader.style.display = "none";
+        submitButton.disabled = false;
+        submitButton.style.opacity = 1;
+
     } else {
         window.location.href = "/add_product/"
 
@@ -246,3 +270,8 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+
+
+
+

@@ -32,6 +32,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="topbar">
+            <a class="log_out_btn" href="/logout"><img src="/static/assets/logout.svg" alt="Profile Picture"></a>
             <a href="/profile">
                 <div class="user-info">
                     {% if user_profile.logo %}
@@ -45,8 +46,9 @@
             </a>
             <div class="addprt">
                 <a class="add_product_button" href="/add_product"><button>Add product</button></a>
-                <a href="/logout"><button>Log Out</button></a>
+                <a class="add_product_button" href="/logout"><button>Log Out</button></a>
             </div>
+            <a class="edit_btn" href="/profile">Edit</a>
         </div>
         {% if messages %}
         <ul>

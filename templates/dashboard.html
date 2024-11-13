@@ -40,6 +40,7 @@
     <!-- Main Content -->
     <div class="main-content">
         <div class="topbar">
+            <a class="log_out_btn" href="/logout"><img src="/static/assets/logout.svg" alt="Profile Picture"></a>
             <a href="/profile">
                 <div class="user-info">
                     {% if user_profile.logo %}
@@ -53,13 +54,14 @@
             </a>
             <div class="addprt">
                 <a class="add_product_button" href="/add_product"><button>Add product</button></a>
-                <a href="/logout"><button>Log Out</button></a>
+                <a class="add_product_button" href="/logout"><button>Log Out</button></a>
             </div>
+            <a class="edit_btn" href="/profile">Edit</a>
         </div>
         {% if messages %}
         <ul>
             {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}><img src="/static/assets/info.svg" alt="Profile Picture">{{ message }}</li>
                 {% endfor %}
         </ul>
         {% endif %}
@@ -68,14 +70,12 @@
             <p>Your account is not verified. Please verify your account to add products, or contact the support team for more details.</p>
         </div>
         {% endif %}
-        
+        {% if user_products %}
         <div class="dashboard">
             <div class="addprt">
                 <h2>Dashboard</h2>
                 <a class="hidden_button" href="/add_product"><button>Add product</button></a>
             </div>
-           
-
             <div class="product-list">
                 <h3>All Products</h3>
                 {% for user_product in user_products %}
@@ -103,6 +103,16 @@
                 
             </div>
         </div>
+        {% else %}
+        <div class="add_first_product" >
+            <a href="/add_product">
+                <div class="add_first_product_btn" >
+                    <img src="/static/assets/plus.svg" alt="Add Product">
+                </div>
+            </a>
+            <h4>Add your first product</h4>
+        </div>
+        {% endif %}
     </div>
 </body>
 
