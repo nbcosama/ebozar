@@ -274,9 +274,11 @@ body {
 
 
 .bottom_portion h1{
+    font-family: "Open Sans", sans-serif;
     color: #333333;
     font-size: 42px;
     font-weight: 600;
+    padding: 15px;
 }
 
 .bottom_portion span{
@@ -320,7 +322,8 @@ body {
     }
 
     .bottom_portion h1 {
-        font-size: 15px;
+        margin-top: 4px;
+        font-size: 26px;
         text-align: center;
     }
 
@@ -328,7 +331,7 @@ body {
         font-size: 12px;
         text-align: center;
         margin-bottom: 14px;
-        padding: 10px;
+        padding: 10px 28px
     }
 
     .top_portion {
@@ -348,7 +351,7 @@ body {
 
     .main_search_box {
         position: unset !important;
-        width: 95%;
+        width: 88%;
     }
 
     .logo img {
