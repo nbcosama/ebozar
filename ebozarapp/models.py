@@ -33,7 +33,7 @@ class Profile(models.Model):
 
 class Product(models.Model):
     product_image = models.ImageField(upload_to='media/', null=True, blank=True)
-    product_name = models.CharField(max_length=255)
+    product_name = models.CharField(max_length=255, db_index=True)
     price = models.CharField(max_length=10)
     brand = models.CharField(max_length=50)
     condtion = models.CharField(max_length=50)
@@ -81,3 +81,14 @@ class OTP(models.Model):
 
     def __str__(self):
         return self.email
+    
+
+
+
+class Searched_Query(models.Model):
+    query = models.CharField(max_length=255, db_index=True)
+    ip_address = models.CharField(max_length=255 , null=True, blank=True)
+    date = models.DateField(auto_now_add=True)
+    date_time = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.query

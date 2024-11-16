@@ -29,15 +29,28 @@ def became_a_seller(request):
     return render(request, 'become_a_seller.html', context)
 
 
-
+from django.utils.crypto import get_random_string
 def landingpage(request):
     query = request.GET.get('q', '')
+    
     resp_list = []
-    if query:
-        resp_list =get_search_results(query)
+    if query.strip():
+        # resp_list =get_search_results(query)
+        if not Searched_Query.objects.filter(query=query).exists():
+            searched_query = Searched_Query(query=query)
+            searched_query.save() 
+        products = Product.objects.filter(
+        Q(product_name__icontains=query) |
+        Q(product_description__icontains=query) |
+        Q(brand__icontains=query) |
+        Q(color__icontains=query) |
+        Q(sku__icontains=query)
+         ).order_by("-id")
+    else:
+        products = Product.objects.all().order_by("-id")
     user = str(request.user)
     stores = Profile.objects.filter(verify=True)
-    products = Product.objects.filter(id__in=resp_list).order_by("-id") if query else Product.objects.all().order_by("-id")
+    # products = Product.objects.filter(id__in=resp_list).order_by("-id") if query else Product.objects.all().order_by("-id")
     product_data = prepareProduct(products)
     # pegination
     paginator = Paginator(product_data, 30)  # Show 10 products per page

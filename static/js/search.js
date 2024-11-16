@@ -39,7 +39,7 @@ function showSearchBox() {
     searchBox.style.backgroundColor = 'white';
     searchBox.style.border = '1px solid #eee';
     searchBox.style.maxHeight = '50vh'; // Use camelCase for max-height
-    searchBox.style.overflowY = 'auto';
+    // searchBox.style.overflowY = 'auto';
     search_suggestions.style.display = 'block';
 }
 // Function to remove styles from the search box

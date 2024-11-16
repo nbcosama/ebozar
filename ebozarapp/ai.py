@@ -133,6 +133,8 @@ def productDetailLoader(request):
                     "for color only return one main primary color."
                     "in descrption try to put all color. make it seo friendly."
                     "make the title eye catchy and SEO Friendly"
+                    "strictly follow the structure."
+                    "avoid ```json from start and ``` in end. just start from '{ and end in }'"
                 ]
             )
 

@@ -36,7 +36,7 @@
                     <img src="/static/assets/eBazaar.svg" alt="">
                 </div>
             </a>
-            <div class="main_search_box" id="search_box">
+            <div class="main_search_box" id="search_box" style="margin:0px">
                 <div class="search-bar">
                     <form method="GET" action="{% url 'landingpage' %}" id="searchForm">
                         <input type="search" autocomplete="off" name="q" value="{{ request.GET.q }}" id="searchInput" placeholder="Search saman or pasal">
