@@ -1,59 +1,77 @@
 .store_section {
     display: flex;
+    flex-direction: column;
 }
 
-.main {
-    width: 70%;
-}
+
 
 .gree_color {
     color: #1EA707;
 }
 
 .store_info {
-    position: sticky;
-    top: 100px;
-    flex-shrink: 0;
-    margin: 0 0 0 40px;
-    width: 30%;
-    max-height: 85vh;
+    display: flex;
+    margin: 0 40px 40px 40px;
     background: #F8F8F8;
     border-radius: 7px;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 16px;
+    padding-bottom: 50px;
+    padding-top: 20px;
+    border: 1px solid #eee;
+}
+
+.store_info h1{
+    font-size: 50px;
+    font-weight: 600;
+}
+
+.store_info p{
+    font-size: 20px;
+    color: #808080;
+    text-align: center;
+    width: 50%;
 }
 
 
 .store_heading {
     display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .store_logo {
-    width: 40%;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 143px;
-    height: 131px;
+    width: 100px;
+    height: 100px;
     background: #FFFFFF;
-    border-radius: 22px;
+    border-radius: 100%;
     margin: 14px 14px;
-
+    overflow: hidden;
 }
 
 .store_meta_data {
-    width: 60%;
     display: flex;
     flex-direction: column;
-    margin-top: 14px;
-    padding-bottom: 16px;
-    padding-right: 10px;
     justify-content: space-between;
+    align-items: center;
 }
 
 .store_meta_data p {
     font-family: "Open Sans", sans-serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 2px;
+}
+
+.store_meta_data span{
+    font-family: "Open Sans", sans-serif;
     font-weight: 400;
     font-size: 14px;
-
+    color: #00897B;
 }
 
 .store_logo img {
@@ -63,89 +81,19 @@
 }
 
 
-.store_name {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
 
-}
-
-
-.store_name p {
-    padding-right: 5px;
-    font-size: 16px;
-    font-weight: 600;
-
-}
-
-
-.store_name span {
-    font-size: 12px;
-    margin-top: 3px;
-}
-
-.store_allproducts,
-.store_branch,
-.bio {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: #FFFFFF;
-    border-radius: 22px;
-    margin: 14px;
-    padding: 15px 22px 15px 22px
-}
-
-.bio p {
-    font-family: "Open Sans", sans-serif;
-    font-weight: 400;
-    margin-top: 5px;
-    font-size: 14px;
-}
-
-.store_branch p {
-    font-family: "Open Sans", sans-serif;
-    font-weight: bold;
-    font-size: 14px;
-    padding: 3px 0 0 0;
-}
-
-.store_branch p a {
-    font-family: "Open Sans", sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-}
-
-
-.store_allproducts p {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: "Open Sans", sans-serif;
-    font-weight: 500;
-    font-size: 14px;
-    margin: 5px 10px 0 0;
-    padding: 4px;
-    border-radius: 20px;
-    background-color: rgba(0, 157, 255, 0.086);
-
-}
-
-.store_product_types {
-    display: flex;
-    flex-wrap: wrap;
-}
 
 .ovreflostack a{
     text-decoration: none;
     font-size: 14px;
-    color:rgb(59, 59, 233);
+    color:rgb(0 181 24);
 
 
 }
 
 
 .ovreflostack{
+    text-align: center;
     width: 200px;
     overflow: hidden;
     white-space: nowrap;
@@ -153,6 +101,21 @@
     cursor: pointer;
 }
 
+.social_media {
+    display: flex;
+    margin-top: 12px;
+    width: 10%;
+    justify-content: space-between;
+}
+
+.social_media a{
+    text-decoration: none;
+    list-style: none;
+}
+
+.social_media a img{
+    height: 24px;
+}
 
 
 @media (max-width: 768px) {
@@ -177,16 +140,27 @@
     }
 
     
-    .store_name p {
-        font-size: 16px !important;
+    .store_info h1 {
+        font-size: 29px;
+        text-align: center;
     }
 
+    .store_info p{
+        text-align: center;
+        font-size: 14px;
+        padding: 0 13px;
+        width: 100%;
+    }
+
+    .social_media{
+        width: 38%;
+    }
     .store_meta_data p {
-        font-size: 12px;
+        font-size: 16px;
     }
 
     .store_logo {
-        width: 127px;
+        width: 107px;
         height: 107px;
     }
 

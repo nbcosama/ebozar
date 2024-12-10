@@ -32,7 +32,9 @@ def became_a_seller(request):
 from django.utils.crypto import get_random_string
 def landingpage(request):
     query = request.GET.get('q', '')
-    
+    category = request.GET.get('category')
+    product_category = request.GET.get('product_category')
+
     resp_list = []
     if query.strip():
         # resp_list =get_search_results(query)
@@ -46,6 +48,8 @@ def landingpage(request):
         Q(color__icontains=query) |
         Q(sku__icontains=query)
          ).order_by("-id")
+    elif product_category:
+        products = Product.objects.filter(product_category=product_category).order_by("-id")
     else:
         products = Product.objects.all().order_by("-id")
     user = str(request.user)
@@ -56,7 +60,8 @@ def landingpage(request):
     paginator = Paginator(product_data, 30)  # Show 10 products per page
     page_number = request.GET.get('page')
     product_dat = paginator.get_page(page_number)
-    context = {'products': product_dat, 'query': query, 'stores': stores, 'user' :user}
+    product_category = ProductCategories.objects.all()
+    context = {'products': product_dat, 'query': query, 'stores': stores, 'category':category, 'product_category':product_category, 'user' :user}
     return render(request, 'landingpage.html', context)
 
 
@@ -270,8 +275,10 @@ def add_product(request):
         condtion = request.POST.get('condtion')
         brand = request.POST.get('brand')
         color = request.POST.get('color')
+        category = request.POST.get('category')
         description = request.POST.get('description')
         quantity = request.POST.get('quantity')
+        discount = request.POST.get('discount')
         product_image = request.FILES.get('compressedFile')
         product_images = request.FILES.getlist('secondaryimages')
         if not product_name or not price or not condtion or not quantity or not product_image:
@@ -290,8 +297,10 @@ def add_product(request):
             product_image=product_image, 
             brand=brand, 
             color=color, 
+            product_category_id = category,
             product_description = description,
             sku = sku,
+            discount = discount,
             quantity=quantity
             )
         product.save()
@@ -317,8 +326,9 @@ def add_product(request):
         messages.success(request, 'Product added successfully')
         return JsonResponse({"message":'Product added successfully', "status": "sucess" })
     user = request.user
+    product_category = ProductCategories.objects.all()
     user_profile = Profile.objects.get(user=user)
-    context = {'user_profile': user_profile}
+    context = {'user_profile': user_profile, 'product_category':product_category}
     return render(request, 'add_product.html', context)
 
 
@@ -339,14 +349,18 @@ def update_product(request):
         condtion = request.POST.get('condtion')
         brand = request.POST.get('brand')
         color = request.POST.get('color')
+        category = request.POST.get('category')
         key_words = request.POST.get('key_words')
         quantity = request.POST.get('quantity')
+        discount = request.POST.get('discount')
         product_image = request.FILES.get('image')
         product.product_name = product_name
         product.price = price
         product.condtion = condtion
         product.brand = brand
         product.color = color
+        product.discount = discount
+        product.product_category_id = category
         product.product_description = key_words
         product.quantity = quantity
         if product_image:
@@ -356,9 +370,10 @@ def update_product(request):
         return redirect('dashboard')
     id = request.GET.get('product_id')
     user = request.user
+    product_category = ProductCategories.objects.all()
     user_profile = Profile.objects.get(user=user)
     product = Product.objects.get(id=id)
-    context = {'user_profile':user_profile, 'product': product}
+    context = {'user_profile':user_profile, 'product': product, 'product_category':product_category}
     return render(request, 'update_product.html', context)
 
 
@@ -380,11 +395,17 @@ def profile(request):
             phone_number = request.POST.get('phone_number')
             address = request.POST.get('address')
             bio = request.POST.get('bio')
+            facebook = request.POST.get('facebook')
+            instagram = request.POST.get('instagram')
+            morelink = request.POST.get('morelink')
             store_timing = request.POST.get('store_timing')
             user_profile.store_timing = store_timing
             user_profile.phone_number = phone_number
             user_profile.address = address
             user_profile.bio = bio
+            user_profile.facebook = facebook
+            user_profile.instagram = instagram
+            user_profile.morelink = morelink
             user_profile.save()
             messages.success(request, 'Profile updated successfully')
             return redirect('profile')
@@ -421,7 +442,8 @@ def preview(request, slug):
         sec_images = Secondary_images.objects.filter(product_id=product.id)
         all_products = Product.objects.all().order_by('-id')
         all_products = prepareProduct(all_products)
-    context = {'product': product, 'sec_images': sec_images, 'all_products':all_products, 'user':user, 'slug':slug[0].product_slug}
+    product_category = ProductCategories.objects.all()
+    context = {'product': product, 'sec_images': sec_images, 'product_category':product_category, 'all_products':all_products, 'user':user, 'slug':slug[0].product_slug}
     return render(request, 'preview.html', context)
 
 
@@ -455,5 +477,4 @@ def ai_image(request):
     process = productDetailLoader(request)
     if process["status"] == "success":
         return JsonResponse(process["data"])
-    print(process)
     return render(request, 'ai_image.html')

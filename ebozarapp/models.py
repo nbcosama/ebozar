@@ -16,6 +16,9 @@ class Profile(models.Model):
     email = models.EmailField(max_length=254)
     phone_number = models.CharField(max_length=30)
     bio = models.TextField(null=True, blank=True)
+    facebook = models.CharField(max_length=200, null=True, default="")
+    instagram = models.CharField(max_length=200, null=True, default="")
+    morelink = models.CharField(max_length=200, null=True, default="")
     store_timing = models.CharField(max_length=255, null=True, blank=True, default="Not Set")
     logo = models.ImageField(upload_to='media/', null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
@@ -31,12 +34,22 @@ class Profile(models.Model):
         return self.user.username
 
 
+class ProductCategories(models.Model):
+    category_name = models.CharField( max_length=100)
+    created_at = models.DateField(auto_now_add=True)
+    def __str__(self):
+        return self.category_name
+
+
+
 class Product(models.Model):
+    product_category = models.ForeignKey(ProductCategories, on_delete=models.CASCADE, null=True, default="")
     product_image = models.ImageField(upload_to='media/', null=True, blank=True)
     product_name = models.CharField(max_length=255, db_index=True)
     price = models.CharField(max_length=10)
     brand = models.CharField(max_length=50)
     condtion = models.CharField(max_length=50)
+    discount = models.CharField(max_length=50, default="")
     quantity = models.CharField(max_length=10)
     color = models.CharField(max_length=100)
     sku = models.CharField(max_length=255, default="")

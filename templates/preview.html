@@ -61,30 +61,32 @@
 
 <body>
     <nav class="navbar" id="navbar">
-        <div class="top_portion">
+        <div class="nav_portion">
+            
             <a href="/">
-                <div class="logo">
-                    <img src="/static/assets/eBazaar.svg" alt="">
-                </div>
-            </a>
-            <div class="main_search_box" id="search_box" style="margin:0px">
-                <div class="search-bar">
-                    <form method="GET" action="{% url 'landingpage' %}" id="searchForm">
-                        <input type="search" autocomplete="off" name="q" value="{{ request.GET.q }}" id="searchInput" placeholder="Search saman or pasal">
-                    </form>
-                    <img src="/static/assets/serchicon.svg" alt="Search Icon" class="search-icon">
-                </div>
-                <ul id="search_suggestions">
                 
-                </ul>
-            </div>
-            <div class="nav-buttons">
-                <a href="/become-a-seller">
-                    <button class="citybutton">add your store</button>
+            </a>
+            
+            <div class="nav-buttons2">
+                <a href="/">
+                    <div class="logo">
+                        <img src="/static/assets/eBazaar.svg" alt="">
+                    </div>
                 </a>
+                <div class="main_search_box" id="search_box" style="margin:0px; width:60%">
+                    <div class="search-bar">
+                        <form method="GET" action="{% url 'landingpage' %}" id="searchForm">
+                            <input type="search" autocomplete="off" name="q" value="{{ request.GET.q }}" id="searchInput" placeholder="Search saman or pasal">
+                        </form>
+                        <img src="/static/assets/serchicon.svg" alt="Search Icon" class="search-icon">
+                    </div>
+                    <ul id="search_suggestions">
+                    
+                    </ul>
+                </div>
                 <a href="/login">
                     <div class="buttons">
-                        {% if user == 'AnonymousUser' %} <p>log in</p> {% else %} <p>Profile</p>{% endif %}
+                        {% if user == 'AnonymousUser' %} <p>Log in</p> {% else %} <p><img src="/static/assets/account.svg" alt="Search Icon" class="account-icon"></p>{% endif %}
                     </div>
                 </a>
                 
@@ -92,8 +94,13 @@
         </div>
         
     </nav>
-    
-    <h4 class="HeadingTag">Preview</h4>
+    <a class="store_page" href="/store?id={{product.user.id}}">
+        <div class="store_name_city">
+            <img src="/static/assets/icon-store.svg" alt="Store Icon">
+            <h2>{{product.user.store_name}} </h2>
+            <p> | {{product.user.city}} {{product.user.country}}</p>
+        </div>
+    </a>
     <section class="product_preview">
         <div class="product_img">
             {% if product.product_image %}
@@ -101,6 +108,15 @@
             {% else %}
                 <h1>Image not found</h1>
             {% endif %}
+            <div class="secondary_images">
+                {% if sec_images %}
+                    {% for sec_image in sec_images %}
+                        <div class="sec_img"><img src="{{sec_image.secondary_image.url}}" id="{{sec_image.id}}" alt="{{sec_image.product.product_name}}" onclick="updateMainImage(this)"></div>
+                    {% endfor %}
+                {% else %}
+                    <h5>Image not available</h5>
+                {% endif %}
+            </div>
         </div>
         <div class="secondary_images sec_img_hidden">
             {% if sec_images %}
@@ -112,7 +128,7 @@
             {% endif %}
         </div>
         <div class="product_info">
-            <h3>
+            <h1>
                 {{product.product_name}}
                 {% if product.status == True %}
                 <button class="status_button" type="submit">Available</button>
@@ -120,57 +136,96 @@
                 <button class="status_button" style="background:red" type="submit">Unavailable</button>
                 {% endif %}
 
-            </h3>
-            <div class="info rupees_style">
-                <span class="product_name gree_color">Price: </span>
-                <p class="product_price gree_color">Rs.{{product.price}}</p>
+            </h1>
+            
+            <div class="info rupees_style" style="border-bottom: 1px solid #E0E0E0;">
+                <span class="product_name">NPR</span>
+                <p class="product_price"> {{product.price}}</p>
+                {% if product.discount %}
+                    <span class="gree_color" style="font-size:16px">Discount {{product.discount}}%</span>
+                {% else %}
+                    
+                {% endif %}
+            </div>
+            <h2>Description</h2>
+            <p class="product_description">{{product.product_description}}</p>
+            <div class="brand_detail">
+                <div class="info">
+                    <span class="product_name">Brand: </span>
+                    <p class="product_price">{{product.brand}}</p>
+                </div>
+                <div class="info">
+                    <span class="product_name">Quantity: </span>
+                    <p class="product_price">{{product.quantity}}</p>
+                </div>
+                <div class="info">
+                    <span class="product_name">Condition: </span>
+                    <p class="product_price">{{product.condtion}}</p>
+                </div>
+                <div class="info">
+                    <span class="product_name">Color: </span>
+                    <p class="product_price">{{product.color}}</p>
+                </div>
             </div>
             <div class="info">
-                <span class="product_name">Brand: </span>
-                <p class="product_price">{{product.brand}}</p>
-            </div>
-            <div class="info">
-                <span class="product_name">Quantity: </span>
-                <p class="product_price">{{product.quantity}}</p>
-            </div>
-            <div class="info">
-                <span class="product_name">Condition: </span>
-                <p class="product_price">{{product.condtion}}</p>
-            </div>
-            <div class="info">
-                <span class="product_name">Color: </span>
-                <p class="product_price">{{product.color}}</p>
-            </div>
-            <div class="info">
-                <span class="product_name">Location: </span>
+                <span class="product_name">Visit Sote (Click): </span>
                 <a href="https://www.google.com/maps/search/?api=1&query={{ product.user.address|urlencode }}" target="_blank">
                     <p class="product_price gree_color">
                     {{product.user.address}}
                     </p>
                 </a> 
             </div>
-            <a href="/store?id={{product.user.id}}">
-                <div class="info">
-                    <span class="product_name">Store: </span>
-                    <p class="product_price gree_color">{{product.user.store_name}}</p>
-                </div>
-            </a>
             <div class="info">
                 <span class="product_name">Contact Number: </span>
                 <p class="product_price gree_color">{{product.user.phone_number}}</p>
             </div>
+            <a href="tel:{{product.user.phone_number}}" class="call-button">
+                <button class="chat_button" type="submit">Order <img src="/static/assets/whatsapp-icon.svg" alt="whatsapp Icon"> </button>
+            </a>
+        </div>
+        <div class="social_media">
+            <a href="{{product.user.facebook}}" target="_blank">
+                <img src="/static/assets/facebook.svg" alt="whatsapp Icon">
+            </a>
+            <a href="{{product.user.instagram}}" target="_blank">
+                <img src="/static/assets/instagram.svg" alt="whatsapp Icon">
+            </a>
+            <a href="{{product.user.morelink}}" target="_blank">
+                <img src="/static/assets/amazon.svg" alt="whatsapp Icon">
+            </a>
+            <a href="#" target="_blank">
+                <img src="/static/assets/add-icon.svg" alt="whatsapp Icon">
+            </a>
         </div>
     </section>
-    <div class="secondary_images">
-        {% if sec_images %}
-            {% for sec_image in sec_images %}
-                <div class="sec_img"><img src="{{sec_image.secondary_image.url}}" id="{{sec_image.id}}" alt="{{sec_image.product.product_name}}" onclick="updateMainImage(this)"></div>
-            {% endfor %}
-        {% else %}
-            <h5>Image not available</h5>
-        {% endif %}
+    <div class="category-items hidden-category-items" style="display:none">
+        {% for category in product_category %}
+        <a class="product_category" href="/?product_category={{category.id}}&{{category}}" >
+            <div class="category-item">
+                <p>{{ category }}</p>
+            </div>
+        </a>
+        {% endfor %}
     </div>
-    <h4 class="HeadingTag">Product</h4>
+    <div class="category">
+        <select id="HeadingTag" name="category" class="HeadingTag">
+            <option value="product" {% if category == 'stores' %} {% else %}selected{% endif %} >Products</option>
+            <option value="stores" {% if category == 'stores' %}selected{% endif %}>Stores</option>
+        </select>
+        <div class="category-items">
+            {% for category in product_category %}
+            <a class="product_category" href="/?product_category={{category.id}}&{{category}}" >
+                <div class="category-item">
+                    <p>{{ category }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <select class="HeadingTag">
+            <option value="product">From Rs. 0 - 500</option>
+            <option value="stores">Stores</option>
+        </select>
+    </div>
     <section class="main">
         <div class="product-grid">
             <!-- Card 1 -->
@@ -180,20 +235,21 @@
                 <div class="product-card">
                     <div class="store-name">
                         <div class="circle">
-                            <div class="small-circle"></div>
+                            <img src="/static/assets/icon-store.svg" alt="Store Icon">
                         </div>
                         <p>{{product.store_name}}</p>
                     </div>
                     {% if product.product_image %}
-                    <img src="{{product.product_image.url}}"
+                    <img class="prd-img" src="{{product.product_image.url}}"
                         alt="{{product.product_name}}">
                     {% else %}
                     <h1>Image not found</h1>
                     {% endif %}
-                    <div class="product-info">
-                        <h3>{{product.product_name}}</h3>
-                        <p>Rs.{{product.price}}</p>
-                    </div>
+                    
+                </div>
+                <div class="product-info">
+                    <h3>{{product.product_name}}</h3>
+                    <p>Rs.{{product.price}}</p>
                 </div>
             </a>
             {% endfor %}
@@ -214,5 +270,10 @@
     }
     
 </script>
-
+<script>
+    document.getElementById('HeadingTag').addEventListener('change', function() {
+        const selectedValue = this.value;
+        window.location.href = `/?category=${selectedValue}`;
+    });
+</script>
 </html>

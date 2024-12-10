@@ -39,6 +39,7 @@
     margin-right: 10px;
   }
   
+  .form-group select,
   .form-group input {
     padding: 15px;
     outline: none;

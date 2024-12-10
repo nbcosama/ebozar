@@ -98,35 +98,11 @@
                     <img src="/static/assets/eBazaar.svg" alt="">
                 </div>
             </a>
-            <div class="nav-buttons">
-                <a href="/become-a-seller">
-                    <button class="citybutton">add your store</button>
-                </a>
-                <a href="/login">
-                    <div class="buttons">
-                        {% if user == 'AnonymousUser' %} <p>log in</p> {% else %} <p>Profile</p>{% endif %}
-                    </div>
-                </a>
-                
-            </div>
+            
         </div>
     </nav>
      <div class="bottom_portion" id="bottom_portion">
-        <div class="hiddenoption">
-            <a href="/become-a-seller">
-                <div class="buttons">
-                    <img src="/static/assets/store.svg" alt="Search Icon" class="search-icon">
-                    <p>add your shop</p>
-                </div>
-            </a>
-            <a href="/login">
-                <div class="buttons">
-                    <img src="/static/assets/account.svg" alt="Search Icon" class="search-icon">
-                    {% if user == 'AnonymousUser' %} <p>log in</p> {% else %} <p>Profile</p>{% endif %}
-                </div>
-            </a>
-        </div>
-        <h1 id="heading">Discover top local stores & services near you</h1>
+        <h1 id="heading">Discover top local stores & services right in your area</h1>
         <span id="sub_h">Explore local favorites, browse products, and connect directly with stores near you</span>
         <div class="main_search_box" id="search_box" >
             <div class="search-bar">
@@ -138,37 +114,113 @@
             <ul id="search_suggestions">
             </ul>
         </div>
+        <div class="nav-buttons">
+            <a href="/become-a-seller">
+                <button class="citybutton">Add Your Store</button>
+            </a>
+            <a href="/login">
+                <button class="citybutton new-btn">
+                    {% if user == 'AnonymousUser' %} <p>Log In</p> {% else %} <p>Profile</p>{% endif %}
+                </button>
+            </a>
+            
+        </div>
     </div>
 
-    <h4 class="HeadingTag">Products</h4>
-    {% if products %}
-    <section class="main">
-        <div class="product-grid">
-            {% for product in products %}
-            <!-- Card 1 -->
-            <a href="/preview/{{product.slug}}">
-                <div class="product-card">
-                    <div class="store-name">
-                        <div class="circle">
-                            <div class="small-circle"></div>
+    <div class="category-items hidden-category-items" style="display:none">
+        {% for category in product_category %}
+            <a class="product_category" href="/?product_category={{category.id}}&{{category}}" >
+                <div class="category-item">
+                    <p>{{ category }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+    <div class="category">
+        <select id="HeadingTag" name="category" class="HeadingTag">
+            <option value="product" {% if category == 'stores' %} {% else %}selected{% endif %} >Products</option>
+            <option value="stores" {% if category == 'stores' %}selected{% endif %}>Stores</option>
+        </select>
+        <div class="category-items">
+            {% for category in product_category %}
+            <a class="product_category" href="/?product_category={{category.id}}&{{category}}" >
+                <div class="category-item">
+                    <p>{{ category }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <select class="HeadingTag">
+            <option value="product">From Rs. 0 - 500</option>
+            <option value="stores">Stores</option>
+        </select>
+    </div>
+    {% if category == 'stores' %}
+        {% if stores %}
+        <section class="main">
+            <div class="product-grid">
+                {% for store in stores %}
+                <!-- Card 1 -->
+                <a href="/store?id={{store.id}}">
+                    <div class="product-card">
+                        <div class="store-name">
+                            <div class="circle">
+                                <img src="/static/assets/icon-store.svg" alt="Store Icon">
+                            </div>
+                            <p>{{store.store_name}}</p>
                         </div>
-                        <p>{{product.store_name}}</p>
+                        {% if store.logo %}
+                        <img class="prd-img" src="{{store.logo.url}}" alt="Product 1">
+                        {% else %}
+                        <img class="prd-img" src="/static/assets/camera.png" alt="Product 1">
+                        {% endif %}
+                        
                     </div>
-                    {% if product.product_image %}
-                    <img src="{{product.product_image.url}}"
-                        alt="{{product.product_name}}">
-                    {% else %}
-                    <h1>Image not found</h1>
-                    {% endif %}
+                    <div class="product-info">
+                        <h3>{{store.store_name}}</h3>
+                    </div>
+                </a>
+                {% endfor %}
+                
+            </div>
+        </section>
+        {% else %}
+            <div class="page_not_found">
+                <div class="page_not_found_icon">🛍️</div>
+                <div class="page_not_found_icon_message">Store Not Found</div>
+                <div class="page_not_found_icon_sub-message">Your search did not match any Store.<br>Please try again.</div>
+            </div>
+        {% endif %}
+    {% else %}    
+    {% if products %}
+        <section class="main">
+            <div class="product-grid">
+                {% for product in products %}
+                <!-- Card 1 -->
+                <a href="/preview/{{product.slug}}">
+                    <div class="product-card">
+                        <div class="store-name">
+                            <div class="circle">
+                                <img src="/static/assets/icon-store.svg" alt="Store Icon">
+                            </div>
+                            <p>{{product.store_name}}</p>
+                        </div>
+                        {% if product.product_image %}
+                        <img class="prd-img" src="{{product.product_image.url}}" alt="{{product.product_name}}">
+                        {% else %}
+                        <h1>Image not found</h1>
+                        {% endif %}
+                        
+                    </div>
                     <div class="product-info">
                         <h3>{{product.product_name}}</h3>
                         <p>Rs.{{product.price}}</p>
                     </div>
-                </div>
-            </a>
-            {% endfor %}
-            
-        </div>
+                </a>
+                {% endfor %}
+                
+            </div>
+        </section>
         <!-- Pagination Controls -->
         <div class="pagination">
             {% if products.has_previous %}
@@ -187,51 +239,21 @@
                 {% endif %}
             {% endif %}
         </div>
-    </section>
-    {% else %}
-        <div class="page_not_found">
-            <div class="page_not_found_icon">🛍️</div>
-            <div class="page_not_found_icon_message">Product Not Found</div>
-            <div class="page_not_found_icon_sub-message">Your search did not match any products.<br>Please try again.</div>
-        </div>
-    {% endif %}
-    <h4 class="HeadingTag" style="margin:20px 40px">Stores</h4>
-    {% if stores %}
-    <section class="main">
-        <div class="product-grid">
-            {% for store in stores %}
-            <!-- Card 1 -->
-            <a href="/store?id={{store.id}}">
-                <div class="product-card">
-                    <div class="store-name">
-                        <div class="circle">
-                            <div class="small-circle"></div>
-                        </div>
-                        <p>{{store.store_name}}</p>
-                    </div>
-                    {% if store.logo %}
-                    <img src="{{store.logo.url}}"
-                        alt="Product 1">
-                    {% else %}
-                    <img src="/static/assets/camera.png" alt="Product 1">
-                    {% endif %}
-                     <div class="product-info">
-                        <h3>{{store.store_name}}</h3>
-                    </div>
-                </div>
-            </a>
-            {% endfor %}
-            
-        </div>
-    </section>
-    {% else %}
-        <div class="page_not_found">
-            <div class="page_not_found_icon">🛍️</div>
-            <div class="page_not_found_icon_message">Store Not Found</div>
-            <div class="page_not_found_icon_sub-message">Your search did not match any Store.<br>Please try again.</div>
-        </div>
-    {% endif %}
+        {% else %}
+            <div class="page_not_found">
+                <div class="page_not_found_icon">🛍️</div>
+                <div class="page_not_found_icon_message">Product Not Found</div>
+                <div class="page_not_found_icon_sub-message">Your search did not match any products.<br>Please try again.</div>
+            </div>
+        {% endif %}
+    {% endif %}    
 </body>
 <script src="/static/js/search.js"></script>
+<script>
+    document.getElementById('HeadingTag').addEventListener('change', function() {
+        const selectedValue = this.value;
+        window.location.href = `/?category=${selectedValue}`;
+    });
+</script>
 
 </html>
