@@ -21,7 +21,7 @@ function successFunction(value) {
     // Function to get city and country based on latitude and longitude
     async function getCityCountry(lat, long) {
     const apiKey = 'e87943131c884aacad1135735242112'; // Replace with your OpenWeatherMap API key
-    const url = `http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${long}&aqi=yes`;
+    const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${long}&aqi=yes`;
 
     try {
         const response = await fetch(url);
