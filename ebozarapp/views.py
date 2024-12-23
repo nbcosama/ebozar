@@ -12,7 +12,7 @@ from django.http import JsonResponse, HttpResponse
 import re
 from .ai import *
 from django.core.paginator import Paginator
-
+from django.utils.crypto import get_random_string
 
 
 def custom_404_view(request, exception):
@@ -29,12 +29,12 @@ def became_a_seller(request):
     return render(request, 'become_a_seller.html', context)
 
 
-from django.utils.crypto import get_random_string
+
 def landingpage(request):
     query = request.GET.get('q', '')
     category = request.GET.get('category')
     product_category = request.GET.get('product_category')
-
+    location = request.GET.get('location')
     resp_list = []
     if query.strip():
         # resp_list =get_search_results(query)
@@ -49,9 +49,9 @@ def landingpage(request):
         Q(sku__icontains=query)
          ).order_by("-id")
     elif product_category:
-        products = Product.objects.filter(product_category=product_category).order_by("-id")
+        products = Product.objects.filter(product_category=product_category, user__city = location).order_by("-id")
     else:
-        products = Product.objects.all().order_by("-id")
+        products = Product.objects.filter(user__city = location).order_by("-id")
     user = str(request.user)
     stores = Profile.objects.filter(verify=True)
     # products = Product.objects.filter(id__in=resp_list).order_by("-id") if query else Product.objects.all().order_by("-id")
@@ -62,6 +62,8 @@ def landingpage(request):
     product_dat = paginator.get_page(page_number)
     product_category = ProductCategories.objects.all()
     context = {'products': product_dat, 'query': query, 'stores': stores, 'category':category, 'product_category':product_category, 'user' :user}
+    if request.GET.get("format") == "json":
+        return JsonResponse(product_data, safe=False)
     return render(request, 'landingpage.html', context)
 
 
@@ -431,7 +433,6 @@ def profile(request):
 def preview(request, slug):
     user = str(request.user)
     slug = Slug.objects.filter(product_slug=slug)
-    
     if not slug:
         return render(request, '404_error.html')
     id = slug[0].prooduct_id
