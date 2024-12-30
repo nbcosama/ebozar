@@ -18,9 +18,15 @@
             <h2 class="logo">Ebazaar</h2>
         </a>
         <ul>
-            <li><a href="/dashboard" >Dashboard</a></li>
+            {% if user_profile.user_type == 'seller' %}
+            <li><a href="#" class="active">Dashboard</a></li>
             <li><a href="/add_product">Add Products</a></li>
-            <li><a href="/profile" class="active">Edit Profile</a></li>
+            <li><a href="/profile">Edit Profile</a></li>
+            <li><a href="/customerOrders">Customer Orders</a></li>
+            {% else %}
+                <li><a href="/customerOrders">My Orders</a></li>
+                <li><a href="/myCart">My Cart</a></li>
+            {% endif %}
         </ul>
         <form method="POST" action="{% url 'logout' %}">
             {% csrf_token %}

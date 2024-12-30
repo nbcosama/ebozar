@@ -29,6 +29,19 @@ def became_a_seller(request):
     return render(request, 'become_a_seller.html', context)
 
 
+def getDirection(request):
+    user = request.user
+    if not user.is_authenticated:
+        messages.error(request, 'Please login to add or buy product')
+        return redirect('login')
+    longitude = request.GET.get('longitude')
+    latitude = request.GET.get('latitude')
+    buyerID = request.GET.get('buyerID')
+    buyer = Profile.objects.get(id=buyerID)
+    deliveryBoy = Profile.objects.get(user=user)
+    context = {'longitude': longitude, 'latitude': latitude, 'buyer': buyer, 'deliveryBoy': deliveryBoy}
+    return render(request, 'direction.html', context)
+
 
 def landingpage(request):
     query = request.GET.get('q', '')
@@ -72,8 +85,13 @@ def landingpage(request):
 
 
 def login(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
+    user = request.user
+    if user.is_authenticated:
+        user_profile = Profile.objects.get(user=user)
+        if user_profile.user_type == 'seller':
+            return redirect('dashboard')
+        return redirect('customerOrders')
+
     try:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -86,7 +104,9 @@ def login(request):
                 verified_user = Profile.objects.get(user=user)
                 auth_login(request, user)
                 messages.success(request, 'Logged In successfully')
-                return redirect('dashboard')
+                if verified_user.user_type == 'seller':
+                    return redirect('dashboard')
+                return redirect('customerOrders')
             else:
                 messages.error(request, 'Invalid username or password')
                 return redirect('login')
@@ -126,6 +146,8 @@ def signup(request):
         address = request.POST.get('address')
         country = request.POST.get('country')
         city = request.POST.get('city')
+        longitude = request.POST.get('longitude')
+        latitude = request.POST.get('latitude')
         user_type = request.POST.get('user_type')
         if user_type == 'seller' or user_type == 'buyer':
             pass
@@ -144,7 +166,9 @@ def signup(request):
             "address": address,
             "country": country,
             "city": city,
-            "user_type": user_type
+            "user_type": user_type,
+            "latitude": latitude,
+            "longitude": longitude
         }
         user_data_json = json.dumps(user_data)
         username = store_name.replace(" ", "_").lower()
@@ -192,6 +216,8 @@ def verify_otp(request):
                 address = data['address']
                 country = data['country']
                 city = data['city']
+                longitude = data['longitude']
+                latitude = data['latitude']
                 user_type = data['user_type']
                 username = store_name.replace(" ", "").lower()
                 user = User(username=username, email=emails)
@@ -207,7 +233,9 @@ def verify_otp(request):
                         country=country, 
                         city=city, 
                         user_type=user_type,
-                        email = emails
+                        email = emails,
+                        longitude = longitude,
+                        latitude = latitude
                     )
                 profile.save()
                 # Automatically log in the user after signing up
@@ -432,6 +460,10 @@ def profile(request):
 
 def preview(request, slug):
     user = str(request.user)
+    profile = 'buyer'
+    if not user == 'AnonymousUser':
+        profile = Profile.objects.get(user=request.user)
+        print(profile.user_type)
     slug = Slug.objects.filter(product_slug=slug)
     if not slug:
         return render(request, '404_error.html')
@@ -444,7 +476,7 @@ def preview(request, slug):
         all_products = Product.objects.all().order_by('-id')
         all_products = prepareProduct(all_products)
     product_category = ProductCategories.objects.all()
-    context = {'product': product, 'sec_images': sec_images, 'product_category':product_category, 'all_products':all_products, 'user':user, 'slug':slug[0].product_slug}
+    context = {'product': product, 'sec_images': sec_images, 'profile':profile, 'product_category':product_category, 'all_products':all_products, 'user':user, 'slug':slug[0].product_slug}
     return render(request, 'preview.html', context)
 
 
@@ -479,3 +511,145 @@ def ai_image(request):
     if process["status"] == "success":
         return JsonResponse(process["data"])
     return render(request, 'ai_image.html')
+
+
+
+
+
+def my_Cart(request):
+    user = request.user
+    if not user.is_authenticated:
+        messages.error(request, 'Please login to add or buy product')
+        return redirect('login')
+    if request.GET.get('productId'):
+        try:
+            user_profile = Profile.objects.get(user=user)
+            productId = request.GET.get('productId')
+            slug = request.GET.get('slug')
+            product = Product.objects.get(id=productId)
+            if product.user == user_profile:
+                messages.error(request, 'You can not add your own product to cart')
+                return redirect('dashboard')    
+            order = buyerCart(
+                user=user_profile,
+                product=product,
+            )
+            order.save()
+            
+            if request.GET.get('action') == 'buy':
+                return redirect('myCart')
+            messages.success(request, 'Product added to cart successfully')
+            return redirect(f'/preview/{slug}')
+        except Exception as e:
+            messages.error(request, str(e))
+            return redirect('dashboard')
+    elif request.GET.get('action') == 'delete':
+        cart_id = request.GET.get('cart_id')
+        cart = buyerCart.objects.get(id=cart_id)
+        cart.delete()
+        messages.success(request, 'Product removed from cart successfully')
+        return redirect('myCart')
+   
+    user_profile = Profile.objects.get(user=user)
+    cart = buyerCart.objects.filter(user=user_profile)
+    context = {'cart':cart}
+    return render(request, 'placeorder.html', context)
+    
+
+
+
+
+def buyer_Order(request):
+    if not request.user.is_authenticated:
+        messages.error(request, 'Please login to place order')
+        return redirect('login')
+    if request.method == 'POST':
+        if request.GET.get('action') == 'place_order':
+            data = json.loads(request.body)
+            user = request.user
+            user_profile = Profile.objects.get(user=user)
+            order_details = data.get('order_details', [])
+            order = buyerOrder(
+            user=user_profile,
+            )
+            order.save()
+            for item in order_details:
+                product_id = item.get('product_id')
+                product = Product.objects.get(id=product_id)
+                product_id = item.get('product_id')
+                productss = Product.objects.get(id=product_id)
+                quantity = item.get('quantity')
+                totalAmt = int(product.price) * int(quantity)
+                buyer_product = buyerProducts(
+                    order=order,
+                    product=productss,
+                    quantity=quantity,
+                    totalAmount=totalAmt
+                )
+                buyer_product.save()
+                # remove productsfrom cart
+                cartProduct = buyerCart.objects.filter(product=productss)
+                for cartProduct in cartProduct:
+                    cartProduct.delete()
+            return JsonResponse('Order placed successfully', safe=False)
+        elif request.GET.get('action') == 'update_order':
+            order_id = request.GET.get('order_id')
+            orderStatus = request.POST.get('orderStatus')
+            order = buyerOrder.objects.get(id=order_id)
+            order.orderStatus = orderStatus
+            order.save()
+            return redirect('customerOrders')
+    return JsonResponse('Invalid request', safe=False)
+            
+
+
+        
+
+
+
+
+
+
+
+
+def customerOrders(request):
+    user = request.user
+    if not user.is_authenticated:
+        messages.error(request, 'Please login to view orders')
+        return redirect('login')
+    
+    user_profile = Profile.objects.get(user=request.user)
+
+    if request.GET.get('action') == 'getproduct':
+        order_id = request.GET.get('order_id')
+        seller = Profile.objects.get(user=user)
+        buyerorder = buyerOrder.objects.get(id=order_id)
+        products = buyerProducts.objects.filter(order=buyerorder)
+        allproducts = []
+        for product in products:
+            if product.product.user == seller:
+                allproducts.append(product)
+        grand_total = sum(int(product.totalAmount) for product in allproducts)
+        
+        context = {'products': allproducts, 'user_profile': user_profile, 'buyer':buyerorder, 'grand_total': grand_total}
+        return render(request, 'customerOrder.html', context)
+    elif request.GET.get('action') == 'delete':
+        productid = request.GET.get('productId')
+        product = buyerProducts.objects.get(id=productid)
+        product.delete()
+        messages.success(request, 'Product removed from order')
+        return redirect(f'/customerOrders/?action=getproduct&order_id={product.order.id}')
+    user_profile = Profile.objects.get(user=user)
+    products = buyerProducts.objects.filter(product__user=user_profile).order_by('-id')
+    orders = []
+    if user_profile.user_type == 'seller':
+        for product in products:
+            orders.extend(buyerOrder.objects.filter(id=product.order.id).order_by('-id'))
+    elif user_profile.user_type == 'buyer':
+        products = buyerProducts.objects.filter(order__user=user_profile).order_by('-id')
+        myOrders = buyerOrder.objects.filter(user=user_profile)
+        
+        context = {'bproducts': products, 'myOrders':myOrders, 'user_profile': user_profile}
+        return render(request, 'customerOrder.html', context)
+    context = {'orders': list(set(orders)), 'user_profile': user_profile}
+    return render(request, 'customerOrder.html', context)

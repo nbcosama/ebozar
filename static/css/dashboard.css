@@ -10,6 +10,11 @@ body {
     display: flex;
 }
 
+.hfdf{
+    display: flex;
+    width: 100%;
+}
+
 .success{
     display: flex;
     align-items: center;
@@ -219,11 +224,19 @@ body {
 }
 
 .product-item p {
+    display: flex;
     font-size: 14px;
     color: #555;
     margin-right: 20px;
     width: 30%;
     overflow: hidden;
+    align-items: center;
+}
+
+
+.buyerPic{
+    height: 50px;
+    border-radius: 100%;
 }
 
 .product-item:last-child {

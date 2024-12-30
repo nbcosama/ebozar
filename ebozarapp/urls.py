@@ -27,5 +27,9 @@ urlpatterns = [
     path('ebazaar_support/', views.ebazaar_support, name='ebazaar_support'),
     path('become-a-seller/', views.became_a_seller, name='become-a-seller'),
     path('ai_image/', views.ai_image, name='ai_image'),
+    path('myCart/', views.my_Cart, name='myCart'),
+    path('buyerOrder/', views.buyer_Order, name='buyerOrder'),
+    path('getDirection/', views.getDirection, name='getDirection'),
+    path('customerOrders/', views.customerOrders, name='customerOrders'),
     
     ]

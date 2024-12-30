@@ -91,7 +91,8 @@
     font-size: 14px;
     color: white;
     background: #00897b;
-    width: 100%;
+    width: 173px;
+    cursor: pointer;
 }
 
 
@@ -203,12 +204,27 @@
     margin: 10px 0;
 }
 
+
+
+.orderOptions{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+
+
 @media (max-width: 768px) {
    .product_preview{
         display: flex;
         flex-direction: column;
         margin: 0px 15px 20px 15px;
    } 
+
+
+   .chat_button{
+        width: 98px;
+   }
 
    .social_media img{
         height: 25px;

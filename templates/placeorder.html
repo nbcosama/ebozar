@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/placeorder.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap" rel="stylesheet">
+    <title>Place Order</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+    <div class="container">
+        {% if cart %}
+        {% for product in cart %}
+        <div class="product-details">
+            <div class="product-card">
+                <div class="productCard">
+                    <img src="{{product.product.product_image.url}}" alt="Product Image">
+                    <div class="product-info">
+                        <h2>{{product.product.product_name}}</h2>
+                        <p>Price:{{product.product.price}}</p>
+                        <p>Color:{{product.product.color}}</p>
+                        <p>Quantity:{{product.product.quantity}}</p>
+                    </div>
+                    <input type="hidden" name="product_id" value="{{product.product.id}}">
+                </div>
+                <div class="quantity-control">
+                    <button onclick="decreaseQuantity()">-</button>
+                    <span id="quantity">1</span>
+                    <button >+</button>
+                </div>
+                <div class="removeProduct">
+                    <a href="/buyerCart/?action=delete&cart_id={{product.id}}"><p>&#10006;</p></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        
+        <div class="order-summary">
+            <p class="summary"><span>Subtotal:</span> <span id="subtotal">Rs.{{product.price}}</span></p>
+            <p class="summary"><span>Shipping and Handling:</span> <span id="shipping">Rs.{{product.price}}</span></p>
+            <p class="summary"><span>Total:</span> <span id="total">Rs.{{product.price}}</span></p>
+            <p class="summary paymentMethod"><span>Payment Method:</span> <span>Cash on Delivery</span></p>
+        </div>
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+        <button class="place-order" id="placeOrderButton">Place Order</button>
+        {% endif %}
+    </div>
+</div>
+<script src="/static/js/placeorder.js"></script>
+</body>
+</html>
+
+
+

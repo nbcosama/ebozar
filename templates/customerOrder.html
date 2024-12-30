@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/dashboard.css">
+    <link rel="stylesheet" href="/static/css/customerOrder.css">
+
+    <title>eBazaar Dashboard</title>
+    <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T4NTT1Q7Q9"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-T4NTT1Q7Q9');
+    </script>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="/">
+            <h2 class="logo">Ebazaar</h2>
+        </a>
+        <ul>
+            {% if user_profile.user_type == 'seller' %}
+            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a href="/add_product">Add Products</a></li>
+            <li><a href="/profile">Edit Profile</a></li>
+            <li><a href="/customerOrders">Customer Orders</a></li>
+            {% else %}
+                <li><a href="/customerOrders">My Orders</a></li>
+                <li><a href="/myCart">My Cart</a></li>
+            {% endif %}
+        </ul>
+        <form method="POST" action="{% url 'logout' %}">
+            {% csrf_token %}
+  
+            <button class="logout-btn">Log Out</button>
+        </form>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="topbar">
+            <a class="log_out_btn" href="/logout"><img src="/static/assets/logout.svg" alt="Profile Picture"></a>
+            <a href="/profile">
+                {% if user_profile.user_type == 'seller' %}
+                    <div class="user-info">
+                        {% if user_profile.logo %}
+                            <img src="{{user_profile.logo.url}}" alt="Profile Picture">
+                            <span class="user-name">{{user_profile.store_name}}</span>
+                        {% else %}
+                            <img src="/static/assets/camera.png" alt="Profile Picture">
+                            <span class="user-name">{{user_profile.store_name}}</span>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="user-info">
+                        {% if user_profile.profilePic %}
+                            <img src="{{user_profile.profilePic.url}}" alt="Profile Picture">
+                            <span class="user-name">{{user_profile.store_name}}</span>
+                        {% else %}
+                            <img src="/static/assets/camera.png" alt="Profile Picture">
+                            <span class="user-name">{{user_profile.store_name}}</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </a>
+            <div class="addprt">
+                {% if user_profile.user_type == 'seller' %}
+                <a class="add_product_button" href="/add_product"><button>Add product</button></a>
+                {% endif %}
+                <a class="add_product_button" href="/logout"><button>Log Out</button></a>
+            </div>
+            <a class="edit_btn" href="/profile">Edit</a>
+        </div>
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}" {% endif %}><img src="/static/assets/info.svg" alt="Profile Picture">{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+        {% if user_profile.verify == False %}
+        <div class="alert">
+            <p>Your account is not verified. Please verify your account to add products, or contact the support team for more details.</p>
+        </div>
+        {% endif %}
+        <div class="dashboard">
+            <div class="addprt">
+                <h2>Orders</h2>
+                {% if user_profile.user_type == 'seller' %}
+                <a class="hidden_button" href="/add_product"><button>Add product</button></a>
+                <a class="hidden_button" href="/customerOrders"><button>Customer Orders</button></a>
+                {% else %}
+                <a class="hidden_button" href="/customerOrders"><button>My Order</button></a>
+                {% endif %}
+            </div>
+            <div class="product-list">
+                <h3>Orders</h3>
+                {% if user_profile.user_type == 'seller' %}
+                {% for order in orders %}
+                <div class="product-item">
+                    <a class="hfdf" href="/customerOrders/?action=getproduct&order_id={{order.id}}">
+                        <p>
+                            {% if order.user.profilePic %}
+                                <img class="buyerPic" src="{{order.user.profilePic.url}}" alt="Profile Picture">
+                            {% else %}
+                                <img class="buyerPic" src="/static/assets/camera.png" alt="Profile Picture">
+                            {% endif %}
+                        </p>
+                        <p>User:{{ order.user }}</p>
+                        <p>Status:{{ order.orderStatus }}</p>
+                        <p class="display_none">Date: {{order.date}}</p>
+                    </a>
+                    <form method="POST" action="/buyerOrder/?action=update_order&order_id={{order.id}}">
+                        {% csrf_token %}
+                        <select class="status_button" {% if order.orderStatus == 'Delivered' %} {% else %}style="background:red"{% endif %} name="orderStatus" id="orderStatus">
+                            <option value="Pending" {% if order.orderStatus == 'Pending' %}selected{% else %}{% endif %}>Pending</option>
+                            <option value="Delivered" {% if order.orderStatus == 'Delivered' %}selected{% else %}{% endif %}>Delivered</option>
+                            <option value="Cancelled" {% if order.orderStatus == 'Cancelled' %}selected{% else %}{% endif %}>Cancelled</option>
+                        </select>
+                    </form>
+                </div>
+                {% endfor %}
+                {% if products %}
+                <div class="orderCard">
+                    <div class="orderInfo">
+                            {% if product.product.product_image %}
+                                <img class="buyerPic" src="{{buyer.user.profilePic.url}}" alt="Profile Picture">
+                                <p><strong>{{buyer.user}}</strong></p>
+                            {% else %}
+                                <img class="buyerPic" src="/static/assets/camera.png" alt="Profile Picture">
+                                <p><strong>{{buyer.user}}</strong></p>
+                            {% endif %}  
+                    </div>
+                    {% for product in products %}
+                        <div class="product-item">
+                            <div class="product-image">
+                                {% if product.product.product_image %}
+                                    <img class="buyerPic" src="{{product.product.product_image.url}}" alt="Profile Picture">
+                                {% else %}
+                                    <img class="buyerPic" src="/static/assets/camera.png" alt="Profile Picture">
+                                {% endif %}  
+                            </div>
+                            <p>{{ product.product.product_name }}</p>
+                            <p class="price">Price:{{ product.totalAmount }}</p>
+                            <p class="display_none">Quantity: {{ product.quantity }}</p>
+                            <p class="display_none">{{ product.product.product_name }}</p>
+                            <div class="removeProduct">
+                                <a href="/customerOrders/?action=delete&productId={{product.id}}"><p style="margin-right: 26px;">&#10006;</p></a>
+                            </div>
+                        </div>
+                        
+                    {% endfor %}
+                    <div class="order-details">
+                        <div class="orderInfo">
+                            <p class="wd">Address:</p>
+                            <p>{{buyer.user.address}}</p>
+                        </div>
+                        <div class="orderInfo">
+                            <p class="wd">Cotact No:</p>
+                            <p>{{buyer.user.phone_number}}</p>
+                        </div>
+                        <div class="orderInfo">
+                            <p class="wd">Grand Total:</p>
+                            <p>{{grand_total}}</p>
+                        </div>
+                        <div class="orderInfo">
+                            <p class="wd">Dorection</p>
+                            <a href="/getDirection/?buyerID={{buyer.user.id}}">View Direction</a>
+                        
+                        </div>
+                    </div>
+                
+                </div>
+                {% endif %}
+                {% else %}
+                {% for myOrder in myOrders %}
+                    <div class="product-item">
+                        <p>
+                            {% if myOrder.user.profilePic %}
+                                <img class="buyerPic" src="{{myOrder.user.profilePic.url}}" alt="Profile Picture">
+                            {% else %}
+                                <img class="buyerPic" src="/static/assets/camera.png" alt="Profile Picture">
+                            {% endif %}
+                        </p>
+                        <p>Status:{{ myOrder.orderStatus }}</p>
+                        <p class="display_none">Date: {{myOrder.date}}</p>
+                        <div class="status_button" {% if myOrder.orderStatus == 'Delivered' %} {% else %}style="background:red"{% endif %}>{{myOrder.orderStatus}}</div>
+                     
+                    </div>
+                {% endfor %}
+                <h2>Products</h2>
+                {% for bproduct in bproducts %}
+                    <div class="orderCard">
+                        <div class="orderInfo">
+                                {% if bproduct.product.user.logo %}
+                                    <img class="buyerPic" src="{{bproduct.product.user.logo.url}}" alt="Profile Picture">
+                                    <p><strong>{{bproduct.product.user}}</strong></p>
+                                {% else %}
+                                    <img class="buyerPic" src="/static/assets/camera.png" alt="Profile Picture">
+                                    <p><strong>{{bproduct.product.user}}</strong></p>
+                                {% endif %}  
+                        </div>
+                            <div class="product-item">
+                                <div class="product-image">
+                                    {% if bproduct.product.product_image %}
+                                        <img class="buyerPic" src="{{bproduct.product.product_image.url}}" alt="Profile Picture">
+                                    {% else %}
+                                        <img class="buyerPic" src="/static/assets/camera.png" alt="Profile Picture">
+                                    {% endif %}  
+                                </div>
+                                <p>{{ bproduct.product.product_name }}</p>
+                                <p class="price">Price:{{ bproduct.product.price }}</p>
+                                <p class="display_none">Quantity: {{ bproduct.quantity }}</p>
+                                <p class="display_none">{{ bproduct.product.product_name }}</p>
+                            </div>
+                            
+                        <div class="order-details">
+                            <div class="orderInfo">
+                                <p class="wd">Address:</p>
+                                <p>{{bproduct.order.user.address}}</p>
+                            </div>
+                            <div class="orderInfo">
+                                <p class="wd">Cotact No:</p>
+                                <p>{{bproduct.order.user.phone_number}}</p>
+                            </div>
+                            <div class="orderInfo">
+                                <p class="wd">Grand Total:</p>
+                                <p>{{bproduct.totalAmount}}</p>
+                            </div>
+                            <div class="orderInfo" style="border-top: 1px solid #e0e0e0;">
+                                <p class="wd">Date</p>
+                                <p>{{bproduct.dateTime}}</p>
+                            </div>
+                            <div class="orderInfo">
+                                <p class="wd">Contact Us</p>
+                                <p>{{bproduct.product.user.phone_number}}</p>
+                            </div>
+                        </div>
+                    
+                    </div>
+                {% endfor %}
+              
+                {% endif %}
+            </div>
+        </div>
+        
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('select[name="orderStatus"]').forEach(function(selectElement) {
+                selectElement.addEventListener('change', function() {
+                    this.form.submit();
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
+

@@ -59,6 +59,14 @@
 </head>
 
 
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
 <body>
     <nav class="navbar" id="navbar">
         <div class="nav_portion">
@@ -84,12 +92,16 @@
                     
                     </ul>
                 </div>
+                <a href="/myCart/">
+                    <div class="buttons">
+                        <p><img src="/static/assets/cart.svg" alt="Search Icon" class="account-icon"></p>
+                    </div>
+                </a>
                 <a href="/login">
                     <div class="buttons">
                         {% if user == 'AnonymousUser' %} <p>Log in</p> {% else %} <p><img src="/static/assets/account.svg" alt="Search Icon" class="account-icon"></p>{% endif %}
                     </div>
                 </a>
-                
             </div>
         </div>
         
@@ -179,9 +191,21 @@
                 <span class="product_name">Contact Number: </span>
                 <p class="product_price gree_color">{{product.user.phone_number}}</p>
             </div>
-            <a href="tel:{{product.user.phone_number}}" class="call-button">
-                <button class="chat_button" type="submit">Order <img src="/static/assets/whatsapp-icon.svg" alt="whatsapp Icon"> </button>
-            </a>
+            <div class="orderOptions">
+                <a href="tel:{{product.user.phone_number}}" >
+                    <button class="chat_button" type="submit">Call <img src="/static/assets/whatsapp-icon.svg" alt="whatsapp Icon"> </button>
+                </a>
+            {% if profile.user_type == 'seller' or profile == buyer %}
+                
+            {% else %}
+                <a href="/myCart/?productId={{product.id}}&action=buy" >
+                    <button class="chat_button" type="submit">Buy</button>
+                </a>
+                <a href="/myCart/?productId={{product.id}}&slug={{slug}}" >
+                    <button class="chat_button" type="submit">Add to Cart</button>
+                </a>
+            {% endif %}
+            </div>
         </div>
         <div class="social_media">
             <a href="{{product.user.facebook}}" target="_blank">
@@ -256,6 +280,9 @@
             <!-- Add more cards as needed -->
         </div>
     </section>
+
+
+
 </body>
 <script src="/static/js/search.js"></script>
 <script>

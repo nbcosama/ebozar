@@ -180,6 +180,32 @@ body {
 }
 
 
+.city-option{
+    cursor: pointer;
+}
+
+#cityList{
+    display: none;
+    position: absolute;
+    flex-direction: column;
+    height: 250px;
+    overflow: scroll;
+    z-index: 1000;
+    background: white;
+    border-radius: 21px;
+    box-shadow: 1px 1px 5px #e1dada;
+    margin-top: 85px;
+    right: 100px;
+    padding: 20px;
+}
+
+
+#cityList::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+
 /* Responsive Styles */
 @media (max-width: 768px) {
     .main{

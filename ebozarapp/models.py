@@ -21,10 +21,13 @@ class Profile(models.Model):
     morelink = models.CharField(max_length=200, null=True, default="")
     store_timing = models.CharField(max_length=255, null=True, blank=True, default="Not Set")
     logo = models.ImageField(upload_to='media/', null=True, blank=True)
+    profilePic = models.ImageField(upload_to='media/', null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
     city = models.CharField(max_length=100, null=True, blank=True)
     verify  = models.BooleanField(default=True)
+    latitude = models.CharField(max_length=100, default="")
+    longitude = models.CharField(max_length=100, default="")
     date = models.DateField(auto_now_add=True)
     date_time = models.DateTimeField(auto_now_add=True)
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
@@ -105,3 +108,38 @@ class Searched_Query(models.Model):
     date_time = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.query
+    
+
+
+
+
+
+class buyerCart(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    dateTime = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.product.product_name
+
+
+
+
+class buyerOrder(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="buyer")
+    seller = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="seller", null=True, blank=True)
+    orderStatus = models.CharField(max_length=100, default="Pending")
+    date = models.DateField(auto_now_add=True)
+    dateTime = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.user.user.username
+    
+
+
+class buyerProducts(models.Model):
+    order = models.ForeignKey(buyerOrder, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.CharField(max_length=10)
+    totalAmount = models.CharField(max_length=10, default=0)
+    dateTime = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.product.product_name

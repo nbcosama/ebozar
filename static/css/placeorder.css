@@ -1,0 +1,162 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+}
+
+body {
+    background-color: #f1f3f6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+
+.container {
+    width: 100%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 20px;
+}
+
+.order-summary{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+
+.product-details, .order-summary {
+    margin-bottom: 20px;
+}
+
+.myOrders,
+.product-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    box-shadow: 0px 0px 3px #dfdfdf;
+    border-radius: 22px;
+    padding:8px 20px;
+}
+
+.productCard{
+    display: flex;
+    flex-direction: row;
+    width: 84%;
+    align-items: center;
+}
+
+
+.summaryHead{
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+
+.product-info h2 {
+    font-size: 18px;
+    color: #333;
+}
+
+.product-info p {
+    color: #555;
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.productCard img{
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+}
+
+
+.product-image img {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-control button {
+    background-color: #00897b;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.quantity-control button:hover {
+    background-color: #00897b;
+}
+
+.quantity-control span {
+    margin: 0 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.summary {
+    display: flex;
+    font-size: 16px;
+    font-weight: normal;
+    color: #333;
+    width: 30%;
+    justify-content: space-between;
+}
+
+.place-order {
+    width: 100%;
+    padding: 12px;
+    background-color: #00897b;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.place-order:hover {
+    background-color: #40c4b6;
+}
+
+
+
+.paymentMethod{
+    background-color: #00897b;
+    color: white;
+    padding: 8px;
+    border-radius: 10px;
+}
+
+
+.removeProduct{
+    position: relative;
+    cursor: pointer;
+    right: 0;
+    
+}
+
+
+.removeProduct a{
+    text-decoration: none;
+    list-style: none;
+    color: red;
+}

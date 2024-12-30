@@ -83,13 +83,13 @@
                     <div class="region">
                         <div class="input-group" style="width: 100%;">
                             <label for="country">Country</label>
-                            <input class="input-box" type="text" id="country" name="country" placeholder="Country" required>
+                            <input class="input-box" type="text" id="country" value="Nepal" name="country" placeholder="Country" required>
                         </div>
                         <div class="input-group">
                             <label for="city">City</label>
                             <input class="input-box" type="text" id="city" name="city" placeholder="City" required>
                         </div>
-
+                        <div id="cityList"></div>
                     </div>
                     <label for="address">Store Name With Location</label>
                     <input class="input-box" type="text" id="address" name="address" placeholder="abc store, Biratnagar 06, Jharna chowk" required>
@@ -108,7 +108,11 @@
                             <option value="seller" selected>Seller</option>
                         </select>
                     </div>
-
+                    <div> 
+                        <div id="error"></div>
+                        <input type="text" id="latitude" name="latitude" placeholder="Latitude">
+                        <input type="text" id="longitude" name="longitude" placeholder="Longitude">
+                    </div>
                     <div class="remember">
                         <input type="checkbox" id="policy"><label for="policy">I agree to the Terms of Service and Privacy Policy.</label>
                     </div>
@@ -118,6 +122,37 @@
             </div>
         </div>
     </div>
-</body>
+<script src="/static/js/getlocation.js"></script>
+<script>
+    var country = document.getElementById('country');
+    var city = document.getElementById('city');
+    
 
+    // make city dropdown when user click on city field show city dropdown with city name of Nepal
+    city.addEventListener('click', function() {
+        city.disabled = false;
+        var cityList = document.getElementById('cityList');
+        cityList.innerHTML = '';
+        var cities = ['Kathmandu', 'Pokhara', 'Biratnagar', 'Birgunj', 'Butwal', 'Dharan', 'Hetauda', 'Itahari', 'Janakpur', 'Nepalgunj', 'Bharatpur', 'Dhangadhi', 'Bhimduttanagar', 'Birtamod', 'Damak', 'Dhankuta', 'Dhangadhi', 'Dipayal', 'Gaur', 'Gorkha', 'Ilam', 'Inaruwa', 'Jaleshwar', 'Jumla', 'Khandbari', 'Lahan', 'Lalbandi', 'Lamahi', 'Lamjung', 'Lekhnath', 'Liwang', 'Madhyapur Thimi', 'Mahendranagar', 'Malangwa', 'Narayangarh', 'Nuwakot', 'Panauti', 'Parasi', 'Phiding', 'Phidim', 'Rajbiraj', 'Ramechhap', 'Rangeli', 'Rapti', 'Rukumkot', 'Salyan', 'Sankhu', 'Siddharthanagar', 'Siddhartha Highway', 'Simara', 'Siraha', 'Sisne', 'Solu', 'Sunsari', 'Surkhet', 'Tansen', 'Tatopani', 'Tikapur'];
+        cities.forEach(function(cityName) {
+            var option = document.createElement('div');
+            option.className = 'city-option';
+            option.textContent = cityName;
+            option.addEventListener('click', function() {
+                city.value = cityName;
+                cityList.innerHTML = '';
+            });
+            cityList.appendChild(option);
+        });
+        cityList.style.display = 'block';
+    });
+
+    document.addEventListener('click', function(event) {
+        if (!city.contains(event.target) && !cityList.contains(event.target)) {
+            cityList.style.display = 'none';
+        }
+    });
+    
+</script>
+</body>
 </html>

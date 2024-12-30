@@ -250,14 +250,15 @@
             </div>
         {% endif %}
     {% endif %}  
-    <div> 
-        <div id="latitude"></div>
-        <div id="longitude"></div>
-        <div id="city"></div>
-        <div id="country"></div>
+    {% comment %} <div> 
         <div id="error"></div>
-        <button onclick="getLocation()">Get Location</button>
-    </div> 
+        <input type="text" id="city" placeholder="Enter your location">
+        <input type="text" id="country" placeholder="Country">
+        <input type="text" id="latitude" placeholder="Latitude">
+        <input type="text" id="longitude" placeholder="Longitude">
+
+
+    </div>  {% endcomment %}
     
     
 <div class="popup" id="popup" style="display:none">
@@ -311,7 +312,7 @@
                 <option value="Tikapur">Tikapur</option>
             </select>
             <a href="/" >
-                <button id="location-btn">Submit</button>
+                <button onclick="getLocation()" id="location-btn">Submit</button>
             </a>
         </div>
         <img src="/static/assets/notfound.png" alt="">

@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
+}
+
+
+.orderCard{
+    margin: 10px;
+    padding: 23px;
+    border-radius: 30px;
+    background-color: rgb(255 251 158);
+}
+
+
+
+.product-image{
+    width:30%;
+}
+
+
+.order-details{
+    display: flex;
+    vertical-align: top;
+    background: white;
+    padding: 10px;
+    border-radius: 12px;
+    margin: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 122px;
+    justify-content: space-evenly;
+}
+
+
+.orderInfo{
+    display: flex;
+    justify-content: start;
+    width: 60%;
+    align-items: center;
+}
+
+.wd{
+    width: 20%;
+}
+
+.orderInfo p{
+    margin: 0 10px;
+    padding: 0;
+    font-size: 14px;
+}
+
+
+
+/* responsive */
+
+@media screen and (max-width: 768px) {
+    .order-details{
+        min-height: 200px;
+        align-items: flex-start;
+    }
+
+    .orderInfo{
+        width: 100%;
+        justify-content: start;
+        align-items: flex-start;
+    }
+
+    .wd{
+        width: unset !important;
+    }
+
+    .product-image{
+        width: 50%;
+    }
+}
