@@ -164,6 +164,7 @@
             <div class="product-grid">
                 {% for store in stores %}
                 <!-- Card 1 -->
+                 {% if store.user_type == 'seller' %}
                 <a href="/store?id={{store.id}}">
                     <div class="product-card">
                         <div class="store-name">
@@ -183,6 +184,7 @@
                         <h3>{{store.store_name}}</h3>
                     </div>
                 </a>
+                {% endif %}
                 {% endfor %}
                 
             </div>

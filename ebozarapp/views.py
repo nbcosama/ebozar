@@ -241,6 +241,8 @@ def verify_otp(request):
                 # Automatically log in the user after signing up
                 auth_login(request, user)  
                 messages.success(request, 'Account created successfully! Please update your profile')
+                if user_type == 'buyer':
+                    return redirect('customerOrders')
                 return redirect('dashboard')
             
             else:
