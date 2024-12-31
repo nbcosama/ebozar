@@ -40,18 +40,32 @@
         <div class="topbar">
             <a class="log_out_btn" href="/logout"><img src="/static/assets/logout.svg" alt="Profile Picture"></a>
             <a href="/profile">
-                <div class="user-info">
-                    {% if user_profile.logo %}
-                        <img src="{{user_profile.logo.url}}" alt="Profile Picture">
-                        <span class="user-name">{{user_profile.store_name}}</span>
-                    {% else %}
-                        <img src="/static/assets/camera.png" alt="Profile Picture">
-                        <span class="user-name">{{user_profile.store_name}}</span>
-                    {% endif %}
-                </div>
+                {% if user_profile.user_type == 'seller' %}
+                    <div class="user-info">
+                        {% if user_profile.logo %}
+                            <img src="{{user_profile.logo.url}}" alt="Profile Picture">
+                            <span class="user-name">{{user_profile.store_name}}</span>
+                        {% else %}
+                            <img src="/static/assets/camera.png" alt="Profile Picture">
+                            <span class="user-name">{{user_profile.store_name}}</span>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div class="user-info">
+                        {% if user_profile.profilePic %}
+                            <img src="{{user_profile.profilePic.url}}" alt="Profile Picture">
+                            <span class="user-name">{{user_profile.store_name}}</span>
+                        {% else %}
+                            <img src="/static/assets/camera.png" alt="Profile Picture">
+                            <span class="user-name">{{user_profile.store_name}}</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </a>
             <div class="addprt">
-                <a class="add_product_button" href="/add_product"><button>Add product</button></a>
+                {% if user_profile.user_type == 'seller' %}
+                    <a class="add_product_button" href="/add_product"><button>Add product</button></a>
+                {% endif %}
                 <a class="add_product_button" href="/logout"><button>Log Out</button></a>
             </div>
             <a class="edit_btn" href="/profile">Edit</a>
@@ -70,6 +84,7 @@
             </div>
             <div class="form-container">
                 <h2>Edit Profile</h2>
+                {% if user_profile.user_type == 'seller' %}
                 <form method="POST" action="/profile/?action=update_logo" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="form-group">
@@ -87,6 +102,7 @@
                     </div>
                     <button type="submit" class="btn-primary">Update Logo</button>
                 </form>
+                {% endif %}
                 <form method="POST" action="/profile/?action=update_profile">
                     {% csrf_token %}
                     <div class="form-group">
@@ -97,6 +113,7 @@
                         <label for="email">Email Address</label>
                         <input type="email" name="email" value="{{user_profile.email}}" disabled>
                     </div>
+                    {% if user_profile.user_type == 'seller' %}
                     <div class="form-group">
                         <label for="bio">Bio</label>
                         <input type="text" name="bio" value="{{user_profile.bio}}" >
@@ -117,6 +134,7 @@
                         <label for="bio">Store Timing</label>
                         <input type="text" name="store_timing" value="{{user_profile.store_timing}}" >
                     </div>
+                    {% endif %}
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
                         <input type="tel" name="phone_number" value="{{user_profile.phone_number}}" placeholder="Enter your phone number" required>
