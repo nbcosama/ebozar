@@ -48,6 +48,7 @@ def landingpage(request):
     category = request.GET.get('category')
     product_category = request.GET.get('product_category')
     location = request.GET.get('location')
+    print(location)
     resp_list = []
     if query.strip():
         # resp_list =get_search_results(query)
@@ -62,9 +63,17 @@ def landingpage(request):
         Q(sku__icontains=query)
          ).order_by("-id")
     elif product_category:
-        products = Product.objects.filter(product_category=product_category, user__city = location).order_by("-id")
+        if location:
+            print(location, 'b')
+            products = Product.objects.filter(product_category=product_category, user__city = location).order_by("-id")
+
+        products = Product.objects.filter(product_category=product_category).order_by("-id")
     else:
-        products = Product.objects.filter(user__city = location).order_by("-id")
+        if location:
+            
+            products = Product.objects.filter(user__city = location).order_by("-id")
+        else:
+            products = Product.objects.all().order_by("-id")
     user = str(request.user)
     stores = Profile.objects.filter(verify=True)
     # products = Product.objects.filter(id__in=resp_list).order_by("-id") if query else Product.objects.all().order_by("-id")
@@ -136,6 +145,8 @@ def logout(request):
 def signup(request):
     if request.user.is_authenticated:
         messages.error(request, 'You are already logged in. please logout to create a new account')
+        if request.user.profile.user_type == 'buyer':
+            return redirect('customerOrders')
         return redirect('dashboard')
     if request.method == 'POST':
         email = request.POST.get('email')
