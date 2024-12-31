@@ -48,7 +48,6 @@ def landingpage(request):
     category = request.GET.get('category')
     product_category = request.GET.get('product_category')
     location = request.GET.get('location')
-    print(location)
     resp_list = []
     if query.strip():
         # resp_list =get_search_results(query)
@@ -64,7 +63,6 @@ def landingpage(request):
          ).order_by("-id")
     elif product_category:
         if location:
-            print(location, 'b')
             products = Product.objects.filter(product_category=product_category, user__city = location).order_by("-id")
 
         products = Product.objects.filter(product_category=product_category).order_by("-id")

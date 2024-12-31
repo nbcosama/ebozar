@@ -37,16 +37,13 @@ document.getElementById('location-btn').addEventListener('click', function() {
     const location = document.querySelector('.location-select').value;
     const previousLocation = localStorage.getItem('location');
     if (location && location !== previousLocation) {
-        console.log(location);
         localStorage.setItem('location', location);
         popup.style.display = 'none';
         // write code to add location to the existing url at the end of the url
         const currentUrl = new URL(window.location.href);
         if (!currentUrl.searchParams.has('location')) {
-            console.log(`${window.location.href}?location=${location}`)
             window.location.href = `${window.location.href}?location=${location}`;
         }else {
-            console.log(`${window.location.href.split('?')[0] + '?location=' + location}`)
             window.location.href = `${window.location.href.split('?')[0] + '?location=' + location}`;
         }
     } else if (!location) {
