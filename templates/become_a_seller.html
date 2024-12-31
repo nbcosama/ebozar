@@ -245,7 +245,14 @@
             <h2>Register Your Shop</h2>
             <form method="POST" action="{% url 'signup' %}">
                 {% csrf_token %}
-                <label for="storename">Store Name</label>
+                <label for="password">Account Type</label>
+                <div class="account-type">
+                    <select class="select_type" id="user_type" name="user_type" required>
+                        <option value="seller" selected>Seller</option>
+                        <option value="buyer">Buyer</option>
+                    </select>
+                </div>
+                <label for="storename" id="UserName">Store Name</label>
                 <input class="input-box" type="text" id="storename" name="store_name" placeholder="Store Name" required>
 
                 <label for="password">Gmail</label>
@@ -262,7 +269,7 @@
                     </div>
                     <div id="cityList"></div>
                 </div>
-                <label for="address">Store Name With Location</label>
+                <label for="address" id="storeaddress">Store Name With Location</label>
                 <input class="input-box" type="text" id="address" name="address" placeholder="abc store, Biratnagar 06, Jharna chowk" required>
 
                 <label for="phone">Phone</label>
@@ -270,15 +277,7 @@
 
                 <label for="password">Password</label>
                 <input class="input-box" type="password" id="password" name="password" placeholder="Password" required>
-                <label for="password">Account Type</label>
-                <div class="account-type">
-                    {% comment %} <input type="radio" id="buyer" value="buyer" checked><label for="buyer">Buyer</label>
-                    <input type="radio" id="seller" value="seller" ><label for="seller">Seller</label> {% endcomment %}
-                    <select class="select_type" id="user_type" name="user_type" required>
-                        {% comment %} <option value="buyer">Buyer</option> {% endcomment %}
-                        <option value="seller" selected>Seller</option>
-                    </select>
-                </div>
+                
                 <div> 
                     <div id="error"></div>
                     <input type="hidden" id="latitude" name="latitude" placeholder="Latitude">
@@ -345,7 +344,40 @@
 <script>
     var country = document.getElementById('country');
     var city = document.getElementById('city');
-    
+    // store all fields in variable
+    var storename = document.getElementById('storename');
+    var gmail = document.getElementById('gmail');
+    var address = document.getElementById('address');
+    var phone = document.getElementById('phone');
+    var password = document.getElementById('password');
+    var user_type = document.getElementById('user_type');
+    var userName = document.getElementById('UserName');  
+    var storeaddress = document.getElementById('storeaddress');  
+    // if selected user type is buyer then hide the store name field
+    user_type.addEventListener('change', function() {
+        if (user_type.value == 'buyer') {
+            userName.innerHTML = 'Full Name';
+            storename.placeholder = 'John Doe';
+            address.placeholder = 'Biratnagar 06, Jharna chowk';
+            storeaddress.innerHTML = 'Address';
+            
+        } else {
+            userName.innerHTML = 'Store Name';
+            storename.placeholder = 'New Store';
+            storename.style.display = 'block';
+            address.placeholder = 'abc store, Biratnagar 06, Jharna chowk';
+            storeaddress.innerHTML = 'Store Name With Location';
+
+        }
+    });
+
+
+
+
+
+
+
+
 
     // make city dropdown when user click on city field show city dropdown with city name of Nepal
     city.addEventListener('click', function() {
