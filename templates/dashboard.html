@@ -30,7 +30,7 @@
             <li><a href="#" class="active">Dashboard</a></li>
             <li><a href="/add_product">Add Products</a></li>
             <li><a href="/profile">Edit Profile</a></li>
-            <li><a href="/customerOrders">Customer Orders</a></li>
+            <li><a href="/customerOrders">Orders</a></li>
             {% else %}
                 <li><a href="/customerOrders">My Orders</a></li>
                 <li><a href="/myCart">My Cart</a></li>
@@ -82,7 +82,7 @@
                 <h2>Dashboard</h2>
                 {% if user_profile.user_type == 'seller' %}
                 <a class="hidden_button" href="/add_product"><button>Add product</button></a>
-                <a class="hidden_button" href="/customerOrders"><button>Customer Orders</button></a>
+                <a class="hidden_button" href="/customerOrders"><button>Orders</button></a>
                 {% else %}
                 <a class="hidden_button" href="/customerOrders"><button>My Order</button></a>
                 {% endif %}

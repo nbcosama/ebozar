@@ -32,7 +32,7 @@
             <li><a href="/dashboard" class="active">Dashboard</a></li>
             <li><a href="/add_product">Add Products</a></li>
             <li><a href="/profile">Edit Profile</a></li>
-            <li><a href="/customerOrders">Customer Orders</a></li>
+            <li><a href="/customerOrders">Orders</a></li>
             {% else %}
                 <li><a href="/customerOrders">My Orders</a></li>
                 <li><a href="/myCart">My Cart</a></li>
@@ -97,7 +97,7 @@
                 <h2>Orders</h2>
                 {% if user_profile.user_type == 'seller' %}
                 <a class="hidden_button" href="/add_product"><button>Add product</button></a>
-                <a class="hidden_button" href="/customerOrders"><button>Customer Orders</button></a>
+                <a class="hidden_button" href="/customerOrders"><button>Orders</button></a>
                 {% else %}
                 <a class="hidden_button" href="/customerOrders"><button>My Order</button></a>
                 {% endif %}
@@ -116,7 +116,6 @@
                             {% endif %}
                         </p>
                         <p>User:{{ order.user }}</p>
-                        <p>Status:{{ order.orderStatus }}</p>
                         <p class="display_none">Date: {{order.date}}</p>
                     </a>
                     <form method="POST" action="/buyerOrder/?action=update_order&order_id={{order.id}}">
@@ -141,23 +140,34 @@
                             {% endif %}  
                     </div>
                     {% for product in products %}
-                        <div class="product-item">
-                            <div class="product-image">
-                                {% if product.product.product_image %}
-                                    <img class="buyerPic" src="{{product.product.product_image.url}}" alt="Profile Picture">
-                                {% else %}
-                                    <img class="buyerPic" src="/static/assets/camera.png" alt="Profile Picture">
-                                {% endif %}  
+                         <div class="productcard">
+                            <div class="productInnerCard">
+                                <p>Remove This Product:</p>
+                                <a href="/customerOrders/?action=delete&productId={{product.id}}"><p style="padding: 10px;">&#10006;</p></a>
                             </div>
-                            <p>{{ product.product.product_name }}</p>
-                            <p class="price">Price:{{ product.totalAmount }}</p>
-                            <p class="display_none">Quantity: {{ product.quantity }}</p>
-                            <p class="display_none">{{ product.product.product_name }}</p>
-                            <div class="removeProduct">
-                                <a href="/customerOrders/?action=delete&productId={{product.id}}"><p style="margin-right: 26px;">&#10006;</p></a>
+                            <div class="productInnerCard">
+                                <p>Image:</p>
+                                <div class="product-image">
+                                    {% if product.product.product_image %}
+                                        <img class="buyerPic" src="{{product.product.product_image.url}}" alt="Profile Picture">
+                                    {% else %}
+                                        <img class="buyerPic" src="/static/assets/camera.png" alt="Profile Picture">
+                                    {% endif %}  
+                                </div>
                             </div>
-                        </div>
-                        
+                            <div class="productInnerCard">
+                                <p >Product Name:</p>
+                                <p style="width:90px; overflow:hidden">{{ product.product.product_name }}</p>
+                            </div>
+                            <div class="productInnerCard">
+                                <p>Price:</p>
+                                <p>{{ product.product.price }}</p>
+                            </div>
+                            <div class="productInnerCard">
+                                <p>Quantity:</p>
+                                <p>{{ product.quantity }}</p>
+                            </div>
+                         </div>
                     {% endfor %}
                     <div class="order-details">
                         <div class="orderInfo">

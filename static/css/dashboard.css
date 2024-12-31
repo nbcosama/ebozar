@@ -350,6 +350,10 @@ body {
         
     }
 
+    .product-list{
+        padding: 11px;
+    }
+
     .log_out_btn img{
         height: 30px;
     }
@@ -368,7 +372,7 @@ body {
         display: none;
     }
     .display_none{
-        display: none;
+        display: none !important;
     }
 
 
@@ -389,7 +393,7 @@ body {
 
 
     .product-item p {
-        width: 30%;
+        width: 40%;
         margin-right: 0;
         overflow: hidden;
     }
