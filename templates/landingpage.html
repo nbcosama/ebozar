@@ -133,7 +133,7 @@
         {% for category in product_category %}
             <a class="product_category" href="/?product_category={{category.id}}&{{category}}" >
                 <div class="category-item">
-                    <p>{{ category }}</p>
+                    {{ category }}
                 </div>
             </a>
         {% endfor %}
@@ -147,7 +147,7 @@
             {% for category in product_category %}
             <a class="product_category" href="/?product_category={{category.id}}&{{category}}" >
                 <div class="category-item">
-                    <p>{{ category }}</p>
+                    {{ category }}
                 </div>
             </a>
             {% endfor %}

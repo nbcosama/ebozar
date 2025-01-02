@@ -350,7 +350,12 @@ body {
     font-size: 14px;
     font-weight: 600;
     color: #808080;
+    white-space: nowrap; 
+    word-wrap: normal;
+    overflow: hidden; 
+    text-overflow: ellipsis; 
 }
+
 
 
 
