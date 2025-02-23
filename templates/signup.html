@@ -59,12 +59,24 @@
             </div>
         {% endif %}
     <div class="main">
-
+        
         <div class="firstbox">
-            <h1>Welcome to sign Up</h1>
+             <h1>Welcome to sign Up</h1>
             <p>Already have a account ?</p>
-            <a href="/login">Sign In</a>
+            <a href="/login">Sign In</a> 
         </div>
+        
+        {% comment %} <div class="leftbox">
+            <h1>Get your store online with <span class="gcolr"> 0% commission</span></h1>
+            <p>connect with local customers near you</p>
+            <img src="/static/assets/product1.svg" alt="product">
+            <div class="hdsf">
+                <img src="/static/assets/product2.svg" alt="product">
+            </div>
+            <div class="fkfgk">
+                <img src="/static/assets/backg.svg" alt="product">
+            </div>
+        </div> {% endcomment %}
         <div class="secondbox">
             <div class="social-icons">
                 <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -122,7 +134,7 @@
             </div>
         </div>
     </div>
-<script src="/static/js/getlocation.js"></script>
+{% comment %} <script src="/static/js/getlocation.js"></script> {% endcomment %}
 <script>
     var country = document.getElementById('country');
     var city = document.getElementById('city');

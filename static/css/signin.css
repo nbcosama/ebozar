@@ -206,8 +206,83 @@ body {
 }
 
 
+
+.leftbox{
+    display: flex;
+    flex-direction: column;
+    background-color: #C7CCCF;
+    width: 100%;
+    margin: 15px;
+    margin-right: 0;
+    border-radius: 22px;
+}
+
+
+.leftbox h1{
+    font-family: "Open Sans", sans-serif;
+    font-size: 50px;
+    color: black;
+    margin: 24px;
+    text-align: center;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.gcolr{
+    color: #00796B;
+}
+
+
+.leftbox p{
+    font-size: 26px;
+    color: black;
+    text-align: center;
+    margin: 0;
+}
+
+
+.leftbox img{
+    width: 230px;
+    z-index: 1000;  
+}
+
+
+.hdsf{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+
+.fkfgk{
+    display: flex;
+    background: red;
+    justify-content: center;
+}
+
+
+.fkfgk img{
+    width: 47%;
+    position: absolute;
+    bottom: -210px;
+    z-index: 1;
+}
+
+
+
 /* Responsive Styles */
 @media (max-width: 768px) {
+
+    .leftbox{
+        margin: 0;
+    }
+
+
+    .fkfgk img{
+        display: none;
+    }
+
+
     .main{
         display: flex;
         flex-direction: column;
