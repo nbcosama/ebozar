@@ -538,7 +538,6 @@ def preview(request, slug):
         discounted_amt = int(float(product.price)) - int((int(float(product.price)) * int(float(product.discount)) / 100))
         sec_images = Secondary_images.objects.filter(product_id=product.id)
         similar_products = Product.objects.filter(
-            Q(product_name__icontains=product.product_name) |
             Q(product_category=product.product_category)
            
         ).exclude(id=product.id).order_by('-id')[:100]
