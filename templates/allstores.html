@@ -108,16 +108,16 @@
             <!-- Store Card 1 -->
              {% for store in storelist %}
             <div class="store-card">
-                {% if profile.logo %}
-                    <img src="{{profile.logo.url}}" alt="{{profile.store_name}}">
+                {% if store.logo %}
+                    <img src="{{store.logo.url}}" alt="{{store.store_name}}">
                 {% else %}
-                    <img src="/static/assets/camera.png" alt="{{profile.store_name}}">
+                    <img src="/static/assets/camera.png" alt="{{store.store_name}}">
                 {% endif %}
                 <div class="store-content">
                     <h1>{{store.store_name}}</h1>
                     <p>
-                        {% if profile.bio %}
-                            {{profile.bio}}
+                        {% if store.bio %}
+                            {{store.bio}}
                         {% else %}
                             No bio available
                         {% endif %}
