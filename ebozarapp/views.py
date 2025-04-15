@@ -19,8 +19,53 @@ def custom_404_view(request, exception):
     return render(request, '404_error.html', status=404)
 
 
-def ebazaar_support(request):
-    return render(request, 'support.html')
+def ekhoji_support(request):
+    return render(request, 'legal/support.html')
+
+
+def termscondition(request):
+    return render(request, 'legal/terms&condition.html')
+
+
+def privacy_policy(request):
+    return render(request, 'legal/privacy.html')
+
+
+def faqs(request):
+    return render(request, 'legal/faqs.html')
+
+
+def ourstory(request):
+    return render(request, 'legal/ourstory.html')
+
+
+def career(request):
+    return render(request, 'legal/career.html')
+
+
+def allstores(request):
+    storelist = Profile.objects.filter(verify=True)
+    context = {'storelist': storelist}
+    return render(request, 'allstores.html', context)
+
+
+def subscribeus(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        if not email:
+            messages.error(request, 'Email is required')
+            return redirect('landingpage')
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            messages.error(request, 'Invalid email address')
+            return redirect('landingpage')
+        if SubscribeUs.objects.filter(email=email).exists():
+            messages.error(request, 'Email already subscribed')
+            return redirect('landingpage')
+        subscribe = SubscribeUs(email=email)
+        subscribe.save()
+        messages.success(request, 'Thank you for subscribing us')
+        return redirect('landingpage')
+    return render(request, 'legal/support.html')
 
 
 def became_a_seller(request):
@@ -494,9 +539,8 @@ def preview(request, slug):
         sec_images = Secondary_images.objects.filter(product_id=product.id)
         similar_products = Product.objects.filter(
             Q(product_name__icontains=product.product_name) |
-            Q(product_category=product.product_category) |
-            Q(brand__icontains=product.brand) |
-            Q(color__icontains=product.color)
+            Q(product_category=product.product_category)
+           
         ).exclude(id=product.id).order_by('-id')[:100]
         simi_products = prepareProduct(similar_products)
        

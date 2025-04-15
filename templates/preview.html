@@ -276,67 +276,52 @@
 
 
 
-{% comment %} <footer class="footer">
-    <div class="footer-container">
-        <div class="footer-top">
-            <div class="footer-column">
-                <h3>Shop</h3>
-                <ul>
-                    <li><a href="#">New Arrivals</a></li>
-                    <li><a href="#">Best Sellers</a></li>
-                    <li><a href="#">Deals & Promotions</a></li>
-                    <li><a href="#">Gift Cards</a></li>
-                    <li><a href="#">Clearance</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Help & Support</h3>
-                <ul>
-                    <li><a href="#">FAQs</a></li>
-                    <li><a href="#">Shipping Policy</a></li>
-                    <li><a href="#">Returns & Exchanges</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Track Your Order</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>About Us</h3>
-                <ul>
-                    <li><a href="#">Our Story</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press</a></li>
-                    <li><a href="#">Corporate Responsibility</a></li>
-                    <li><a href="become-a-seller/">Become a Seller</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Stay Connected</h3>
-                <p style="color: #ccc; margin-bottom: 15px; font-size: 14px;">Subscribe to receive updates, access to exclusive deals, and more.</p>
-                <div class="subscribe-form">
-                    <input type="email" placeholder="Enter your email">
-                    <button class="subscribe-btn">Subscribe</button>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                
+                <div class="footer-column">
+                    <h3>About Us</h3>
+                    <ul>
+                        <li><a href="/ourstory">Our Story</a></li>
+                        <li><a href="/career">Careers</a></li>
+                        <li><a href="/become-a-seller/">Become a Seller</a></li>
+                    </ul>
                 </div>
-                <div class="social-links">
-                    <a href="#" aria-label="Facebook">f</a>
-                    <a href="#" aria-label="Instagram">i</a>
-                    <a href="#" aria-label="Twitter">t</a>
-                    <a href="#" aria-label="Pinterest">p</a>
-                    <a href="#" aria-label="YouTube">y</a>
+                <div class="footer-column">
+                    <h3>Help & Support</h3>
+                    <ul>
+                        <li><a href="/faqs">FAQs</a></li>
+                        <li><a href="/ekhoji_support/">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Stay Connected</h3>
+                    <p style="color: #ccc; margin-bottom: 15px; font-size: 14px;">Subscribe to receive updates, access to exclusive deals, and more.</p>
+                    <form action="/subscribeus" method="POST" id="subscribeForm">
+                        {% csrf_token %}
+                        <div class="subscribe-form">
+                            <input type="email" name="email" placeholder="Enter your email">
+                            <button class="subscribe-btn">Subscribe</button>
+                        </div>
+                    </form>
+                    {% comment %} <div class="social-links">
+                        <a href="#" aria-label="Facebook">f</a>
+                        <a href="#" aria-label="Instagram">i</a>
+                        <a href="#" aria-label="Twitter">t</a>
+                        <a href="#" aria-label="Pinterest">p</a>
+                        <a href="#" aria-label="YouTube">y</a>
+                    </div> {% endcomment %}
                 </div>
             </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2025 ekhoji. All rights reserved.</p>
-            <p style="margin: 10px 0;">Terms of Service | Privacy Policy | Accessibility</p>
             
+            <div class="footer-bottom">
+                <p>&copy; 2025 ekhoji. All rights reserved.</p>
+                <p style="margin: 10px 0;"><a class="terms" href="terms-condition" aria-label="terms-condition">Terms of Service</a> | <a class="terms" href="privacy" aria-label="privacy">Privacy Policy</a></p>
+               
+            </div>
         </div>
-    </div>
-</footer> {% endcomment %}
-
+    </footer>
 </body>
 <script src="/static/js/search.js"></script>
 <script>

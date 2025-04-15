@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | eKhoji Nepal</title>
+    <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
+    <link rel="stylesheet" href="/static/css/footer.css">
+    <style>
+        :root {
+            --primary: #00897B;
+            --text: #000000;
+            --text-light: #555555;
+            --background: #f8f9fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* padding: 2rem; */
+            flex-direction: column;
+        }
+        
+        main {
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .page-title {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+            color: var(--text);
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+        
+        .contact-info {
+            flex: 0 1 500px;
+        }
+        
+        .info-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .info-card h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        
+        .info-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .info-item {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        
+        .info-icon {
+            color: var(--primary);
+            font-size: 1.5rem;
+            min-width: 1.5rem;
+        }
+        
+        .info-content strong {
+            display: block;
+            margin-bottom: 0.25rem;
+            color: var(--text);
+        }
+        
+        .info-content p {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        
+        .social-icon {
+            width: 32px;
+            height: 32px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: transform 0.2s;
+        }
+        
+        .social-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        .separator {
+            height: 1px;
+            background-color: #eee;
+            margin: 2rem 0;
+        }
+        
+        @media (max-width: 600px) {
+            .info-item {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .info-icon {
+                margin-bottom: 0.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1 class="page-title">Contact Us</h1>
+        <p>We'd love to hear from you. Feel free to reach out through any of the contact methods below.</p>
+        
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="info-card">
+                    <h3>Contact Information</h3>
+                    
+                    <div class="info-item">
+                        <span class="info-icon">📞</span>
+                        <div class="info-content">
+                            <strong>Phone</strong>
+                            <p>+9779704505815</p>
+                            <p class="text-light">Available Monday-Friday, 9AM-6PM EST</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <span class="info-icon">✉️</span>
+                        <div class="info-content">
+                            <strong>Email</strong>
+                            <p>ekhoji@outlook.com</p>
+                            <p class="text-light">We'll respond as quickly as possible</p>
+                        </div>
+                    </div>
+                    
+                    <div class="separator"></div>
+                    
+                    <div class="info-item">
+                        <span class="info-icon">🏢</span>
+                        <div class="info-content">
+                            <strong>Main Office</strong>
+                            <p>Biratnagar 60, Rampur jharna chowk, Moranag Nepal</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <span class="info-icon">🕒</span>
+                        <div class="info-content">
+                            <strong>Business Hours</strong>
+                            <p><strong>Monday-Friday:</strong> 9:00 AM - 6:00 PM</p>
+                            <p><strong>Sunday:</strong> 10:00 AM - 4:00 PM</p>
+                            <p><strong>Saturday:</strong> Closed</p>
+                        </div>
+                    </div>
+                    
+                    <div class="separator"></div>
+                    
+                    {% comment %} <div class="info-item">
+                        <span class="info-icon">🌐</span>
+                        <div class="info-content">
+                            <strong>Connect With Us</strong>
+                            <p>Follow us on social media for updates and promotions</p>
+                            <div class="social-links">
+                                <a href="#" class="social-icon" aria-label="Facebook">f</a>
+                                <a href="#" class="social-icon" aria-label="Twitter">t</a>
+                                <a href="#" class="social-icon" aria-label="Instagram">i</a>
+                                <a href="#" class="social-icon" aria-label="LinkedIn">in</a>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                
+                <div class="footer-column">
+                    <h3>About Us</h3>
+                    <ul>
+                        <li><a href="/ourstory">Our Story</a></li>
+                        <li><a href="/career">Careers</a></li>
+                        <li><a href="/become-a-seller/">Become a Seller</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Help & Support</h3>
+                    <ul>
+                        <li><a href="/faqs">FAQs</a></li>
+                        <li><a href="/ekhoji_support/">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Stay Connected</h3>
+                    <p style="color: #ccc; margin-bottom: 15px; font-size: 14px;">Subscribe to receive updates, access to exclusive deals, and more.</p>
+                    <form action="/subscribeus" method="POST" id="subscribeForm">
+                        {% csrf_token %}
+                        <div class="subscribe-form">
+                            <input type="email" name="email" placeholder="Enter your email">
+                            <button class="subscribe-btn">Subscribe</button>
+                        </div>
+                    </form>
+                    {% comment %} <div class="social-links">
+                        <a href="#" aria-label="Facebook">f</a>
+                        <a href="#" aria-label="Instagram">i</a>
+                        <a href="#" aria-label="Twitter">t</a>
+                        <a href="#" aria-label="Pinterest">p</a>
+                        <a href="#" aria-label="YouTube">y</a>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 ekhoji. All rights reserved.</p>
+                <p style="margin: 10px 0;"><a class="terms" href="terms-condition" aria-label="terms-condition">Terms of Service</a> | <a class="terms" href="privacy" aria-label="privacy">Privacy Policy</a></p>
+               
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

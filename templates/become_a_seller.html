@@ -17,6 +17,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-T4NTT1Q7Q9"></script>
     <script>
@@ -346,68 +347,77 @@
         </div>
         
     </section>
-
-{% comment %} <footer class="footer">
-    <div class="footer-container">
-        <div class="footer-top">
-            <div class="footer-column">
-                <h3>Shop</h3>
-                <ul>
-                    <li><a href="#">New Arrivals</a></li>
-                    <li><a href="#">Best Sellers</a></li>
-                    <li><a href="#">Deals & Promotions</a></li>
-                    <li><a href="#">Gift Cards</a></li>
-                    <li><a href="#">Clearance</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Help & Support</h3>
-                <ul>
-                    <li><a href="#">FAQs</a></li>
-                    <li><a href="#">Shipping Policy</a></li>
-                    <li><a href="#">Returns & Exchanges</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Track Your Order</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>About Us</h3>
-                <ul>
-                    <li><a href="#">Our Story</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Press</a></li>
-                    <li><a href="#">Corporate Responsibility</a></li>
-                    <li><a href="become-a-seller/">Become a Seller</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Stay Connected</h3>
-                <p style="color: #ccc; margin-bottom: 15px; font-size: 14px;">Subscribe to receive updates, access to exclusive deals, and more.</p>
-                <div class="subscribe-form">
-                    <input type="email" placeholder="Enter your email">
-                    <button class="subscribe-btn">Subscribe</button>
+    <section class="bg-gray-100 py-12">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-semibold text-green-600 mb-6">Why Choose eKhoji Nepal?</h2>
+            <p class="text-lg leading-relaxed mb-4">
+                eKhoji Nepal is the best platform for discovering products effortlessly in your local area and other city markets. 
+                With our easy-to-use interface, you can search for products by selecting your preferred area or location, ensuring a seamless shopping experience.
+            </p>
+            <p class="text-lg leading-relaxed">
+                Whether you're looking for daily essentials or unique local goods, eKhoji Nepal connects you with trusted sellers nearby, making your shopping journey simple and efficient.
+            </p>
+        </div>
+    </section>
+    <!-- Best Platform Section -->
+    <section class="bg-gray-100 py-12">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-semibold text-green-600 mb-6">Are you looking for a specific product and not finding it? Don't worry! Meet eKhoji</h2>
+            <p class="text-lg leading-relaxed mb-4">
+                eKhoji Nepal is the best platform for discovering products effortlessly in your local area and other city markets. 
+                With our easy-to-use interface, you can search for products by selecting your preferred area or location, ensuring a seamless shopping experience.
+            </p>
+            <p class="text-lg leading-relaxed">
+                Whether you're looking for daily essentials or unique local goods, eKhoji Nepal connects you with trusted sellers nearby, making your shopping journey simple and efficient.
+            </p>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                
+                <div class="footer-column">
+                    <h3>About Us</h3>
+                    <ul>
+                        <li><a href="/ourstory">Our Story</a></li>
+                        <li><a href="/career">Careers</a></li>
+                        <li><a href="/become-a-seller/">Become a Seller</a></li>
+                    </ul>
                 </div>
-                <div class="social-links">
-                    <a href="#" aria-label="Facebook">f</a>
-                    <a href="#" aria-label="Instagram">i</a>
-                    <a href="#" aria-label="Twitter">t</a>
-                    <a href="#" aria-label="Pinterest">p</a>
-                    <a href="#" aria-label="YouTube">y</a>
+                <div class="footer-column">
+                    <h3>Help & Support</h3>
+                    <ul>
+                        <li><a href="/faqs">FAQs</a></li>
+                        <li><a href="/ekhoji_support/">Contact Us</a></li>
+                    </ul>
                 </div>
+                <div class="footer-column">
+                    <h3>Stay Connected</h3>
+                    <p style="color: #ccc; margin-bottom: 15px; font-size: 14px;">Subscribe to receive updates, access to exclusive deals, and more.</p>
+                    <form action="/subscribeus" method="POST" id="subscribeForm">
+                        {% csrf_token %}
+                        <div class="subscribe-form">
+                            <input type="email" name="email" placeholder="Enter your email">
+                            <button class="subscribe-btn">Subscribe</button>
+                        </div>
+                    </form>
+                    {% comment %} <div class="social-links">
+                        <a href="#" aria-label="Facebook">f</a>
+                        <a href="#" aria-label="Instagram">i</a>
+                        <a href="#" aria-label="Twitter">t</a>
+                        <a href="#" aria-label="Pinterest">p</a>
+                        <a href="#" aria-label="YouTube">y</a>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 ekhoji. All rights reserved.</p>
+                <p style="margin: 10px 0;"><a class="terms" href="terms-condition" aria-label="terms-condition">Terms of Service</a> | <a class="terms" href="privacy" aria-label="privacy">Privacy Policy</a></p>
+               
             </div>
         </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2025 ekhoji. All rights reserved.</p>
-            <p style="margin: 10px 0;">Terms of Service | Privacy Policy | Accessibility</p>
-            
-        </div>
-    </div>
-</footer> {% endcomment %}
-
+    </footer>
 
 </body>
 <script src="/static/js/search.js"></script>

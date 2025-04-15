@@ -1,6 +1,6 @@
 
 .footer {
-    background-color: #232f3e;
+    background-color: #00897B;
     color: #fff;
     padding: 40px 0 20px;
     width: 100%;
@@ -120,21 +120,13 @@
     margin-top: 30px;
 }
 
-.payment-methods {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
+.terms{
+    list-style: none;
+    color: #ccc;
+    text-decoration: none;
 }
 
-.payment-methods span {
-    background-color: #fff;
-    padding: 5px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: bold;
-    color: #232f3e;
-}
+
 
 @media screen and (max-width: 768px) {
     .footer-top {

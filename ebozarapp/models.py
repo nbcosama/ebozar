@@ -143,3 +143,12 @@ class buyerProducts(models.Model):
     dateTime = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.product.product_name
+    
+
+
+class SubscribeUs(models.Model):
+    email = models.EmailField(max_length=254)
+    date = models.DateField(auto_now_add=True)
+    date_time = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.email

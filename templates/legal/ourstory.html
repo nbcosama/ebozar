@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Story - eKhoji Nepal</title>
+    <meta name="description" content="Discover the story behind eKhoji Nepal, a platform connecting local businesses with customers. Learn about our mission, vision, and what sets us apart.">
+    <meta name="keywords" content="eKhoji, Nepal, local businesses, online marketplace, community, mission, vision">
+    <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
+    <link rel="stylesheet" href="/static/css/footer.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans text-gray-800">
+    <!-- Header -->
+    <header class="text-white py-6" style="background-color: #00897B;">
+        <div class="container mx-auto px-4">
+            <h1 class="text-3xl font-bold">eKhoji Nepal</h1>
+            <p class="mt-2 text-lg">Connecting local stores and businesses with customers.</p>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        <!-- Our Story Section -->
+        <section class="mb-16">
+            <h2 class="text-4xl font-semibold text-black-600 mb-6">Our Story</h2>
+            <p class="text-lg leading-relaxed mb-4">
+                At eKhoji Nepal, we believe in the power of local commerce. Our journey began with a simple vision: to create a platform where Nepali businesses and customers could connect effortlessly within their own communities.
+            </p>
+        </section>
+
+        <!-- How It Started Section -->
+        <section class="mb-16">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">How It All Started</h3>
+            <p class="text-lg leading-relaxed">
+                In a rapidly digitalizing world, we noticed a gap in the market. While global e-commerce giants were expanding their reach, local businesses in Nepal were struggling to establish their digital presence. Many small business owners with exceptional products and services lacked the resources and technical knowledge to bring their offerings online.
+            </p>
+            <p class="text-lg leading-relaxed mt-4">
+                That's when the idea of eKhoji was born—a platform specifically designed to empower local sellers and provide customers with easy access to products and services in their vicinity.
+            </p>
+        </section>
+
+        <!-- Mission Section -->
+        <section class="mb-16">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Our Mission</h3>
+            <p class="text-lg leading-relaxed italic mb-4">
+                To strengthen local economies across Nepal by bridging the gap between neighborhood businesses and their communities through technology.
+            </p>
+            <p class="text-lg leading-relaxed">We're committed to:</p>
+            <ul class="list-disc list-inside text-lg leading-relaxed mt-2">
+                <li>Creating opportunities for local businesses to thrive in the digital marketplace</li>
+                <li>Providing Nepali consumers with convenient access to products and services near them</li>
+                <li>Building sustainable communities through local commerce</li>
+                <li>Supporting the growth of small and medium enterprises throughout Nepal</li>
+            </ul>
+        </section>
+
+        <!-- Vision Section -->
+        <section class="mb-16">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Our Vision</h3>
+            <p class="text-lg leading-relaxed">We envision a Nepal where:</p>
+            <ul class="list-disc list-inside text-lg leading-relaxed mt-2">
+                <li>Every business, regardless of size, has the opportunity to establish a strong online presence</li>
+                <li>Consumers can easily discover and purchase from businesses in their local area</li>
+                <li>Communities are strengthened through sustainable local commerce</li>
+                <li>The unique products and services of each region are celebrated and accessible</li>
+            </ul>
+        </section>
+
+        <!-- What Sets Us Apart Section -->
+        <section class="mb-16">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">What Sets Us Apart</h3>
+            <p class="text-lg leading-relaxed mb-4">
+                Unlike other e-commerce platforms, eKhoji Nepal focuses exclusively on local connections. We're not just another marketplace—we're a community-building tool that:
+            </p>
+            <ul class="list-disc list-inside text-lg leading-relaxed">
+                <li>Prioritizes proximity, connecting buyers with sellers in their own neighborhoods</li>
+                <li>Simplifies the digital transition for traditional businesses</li>
+                <li>Promotes local entrepreneurship and economic resilience</li>
+                <li>Reduces delivery times and environmental impact through shorter supply chains</li>
+                <li>Preserves the unique character of Nepal's diverse communities</li>
+            </ul>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="text-center bg-blue-50 py-12 rounded-lg">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4">Join the Local Movement</h3>
+            <p class="text-lg leading-relaxed mb-6 max-w-2xl mx-auto">
+                Whether you're a business owner looking to expand your reach or a consumer seeking quality products and services near you, eKhoji Nepal invites you to be part of our story. Together, we can create thriving local economies across Nepal, one neighborhood at a time.
+            </p>
+            <a href="/become-a-seller" class="inline-block bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-700 transition duration-300">
+                Sign Up Free
+            </a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                
+                <div class="footer-column">
+                    <h3>About Us</h3>
+                    <ul>
+                        <li><a href="ourstory">Our Story</a></li>
+                        <li><a href="career">Careers</a></li>
+                        <li><a href="become-a-seller/">Become a Seller</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Help & Support</h3>
+                    <ul>
+                        <li><a href="faqs">FAQs</a></li>
+                        <li><a href="ekhoji_support/">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Stay Connected</h3>
+                    <p style="color: #ccc; margin-bottom: 15px; font-size: 14px;">Subscribe to receive updates, access to exclusive deals, and more.</p>
+                    <form action="/subscribeus" method="POST" id="subscribeForm">
+                        {% csrf_token %}
+                        <div class="subscribe-form">
+                            <input type="email" name="email" placeholder="Enter your email">
+                            <button class="subscribe-btn">Subscribe</button>
+                        </div>
+                    </form>
+                    {% comment %} <div class="social-links">
+                        <a href="#" aria-label="Facebook">f</a>
+                        <a href="#" aria-label="Instagram">i</a>
+                        <a href="#" aria-label="Twitter">t</a>
+                        <a href="#" aria-label="Pinterest">p</a>
+                        <a href="#" aria-label="YouTube">y</a>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 ekhoji. All rights reserved.</p>
+                <p style="margin: 10px 0;"><a class="terms" href="terms-condition" aria-label="terms-condition">Terms of Service</a> | <a class="terms" href="privacy" aria-label="privacy">Privacy Policy</a></p>
+               
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

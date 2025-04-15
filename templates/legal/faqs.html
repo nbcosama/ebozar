@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequently Asked Questions | eKhoji Nepal</title>
+    <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
+    <link rel="stylesheet" href="/static/css/footer.css">
+    <style>
+        :root {
+            --primary: #00897B;
+            --text: #000000;
+            --text-light: #555555;
+            --background: #f8f9fa;
+            --border: #eeeeee;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding-top: 2rem;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .page-title {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+            color: var(--text);
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .faq-intro {
+            margin-bottom: 2rem;
+        }
+        
+        .faq-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+        
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-light);
+            position: relative;
+        }
+        
+        .tab-button.active {
+            color: var(--primary);
+        }
+        
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .tab-button:hover {
+            color: var(--primary);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .faq-section {
+            margin-bottom: 2rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+        }
+        
+        .faq-item {
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            padding: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .faq-question:hover {
+            background-color: rgba(0, 137, 123, 0.03);
+        }
+        
+        .faq-toggle {
+            width: 20px;
+            height: 20px;
+            position: relative;
+        }
+        
+        .faq-toggle::before,
+        .faq-toggle::after {
+            content: '';
+            position: absolute;
+            background-color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-toggle::before {
+            width: 2px;
+            height: 20px;
+            left: 9px;
+            top: 0;
+        }
+        
+        .faq-toggle::after {
+            width: 20px;
+            height: 2px;
+            left: 0;
+            top: 9px;
+        }
+        
+        .faq-item.active .faq-toggle::before {
+            transform: rotate(90deg);
+        }
+        
+        .faq-answer {
+            padding: 0 1.25rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 1.25rem 1.25rem;
+        }
+        
+        .search-box {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 1rem;
+            background-color: white;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 137, 123, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+        
+        .still-have-questions {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 3rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .contact-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .faq-tabs {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 5px;
+            }
+            
+            .tab-button {
+                padding: 0.75rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-title">Frequently Asked Questions</h1>
+        <p class="faq-intro">Find answers to the most common questions about our platform, products, and services.</p>
+        
+        <div class="search-box">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="faqSearch" placeholder="Search for questions...">
+        </div>
+        
+        <div class="faq-tabs">
+            <button class="tab-button active" data-tab="all">All FAQs</button>
+            {% comment %} <button class="tab-button" data-tab="customers">For Customers</button> {% endcomment %}
+            <button class="tab-button" data-tab="sellers">For Sellers</button>
+            <button class="tab-button" data-tab="accounts">Accounts</button>
+        </div>
+        
+        <div id="allTab" class="tab-content active">
+            <!-- Customers Section -->
+            {% comment %} <div class="faq-section">
+                <h2 class="section-title">For Customers</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I track my order?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can track your order by logging into your account and navigating to the "Orders" section. Click on the specific order you want to track, and you'll see its current status and tracking information. Alternatively, if you received a shipping confirmation email, you can click the tracking link provided in that email.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What is your return policy?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We offer a 30-day return policy for most items. Products must be in their original condition with all tags and packaging intact. Some restrictions apply to certain products such as personal care items or customized products. To initiate a return, log into your account, go to your orders, and select "Return Item" for the specific product you wish to return.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How long does shipping take?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Standard shipping typically takes 3-7 business days, depending on your location. Express shipping options are available at checkout for faster delivery (1-3 business days). International shipping times vary by destination, generally taking 7-21 business days. You'll receive an estimated delivery date at checkout based on your location and selected shipping method.</p>
+                    </div>
+                </div>
+            </div>
+             {% endcomment %}
+            <!-- Sellers Section -->
+            <div class="faq-section">
+                <h2 class="section-title">For Sellers</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I become a seller on your platform?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To become a seller, click on the "Sell on YourStore" link at the bottom of our homepage. You'll need to create a seller account, provide business information, set up payment methods, and agree to our seller terms. Once your application is approved (typically within 1-2 business days), you can start listing products and managing your store through the seller dashboard.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What are the fees for selling on your platform?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our fee structure includes:</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Monthly subscription: $29.99 for the standard plan</li>
+                            <li>Transaction fees: 5% of each sale</li>
+                            <li>Payment processing fees: 2.9% + $0.30 per transaction</li>
+                        </ul>
+                        <p style="margin-top: 10px;">Volume discounts are available for high-volume sellers. There are no listing fees or setup costs. For more detailed information, please visit our Seller Fees page.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I manage my inventory?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can manage your inventory through the Seller Dashboard. Navigate to the "Products" section to add new products, update existing listings, or adjust inventory levels. Our platform provides tools for bulk inventory management, allowing you to upload multiple products at once using CSV files. You can also enable inventory sync if you sell across multiple platforms.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Accounts Section -->
+            <div class="faq-section">
+                <h2 class="section-title">Accounts</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I create an account?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Creating an account is simple. Click on the "Sign Up" or "Create Account" button in the top right corner of our website. You can register using your email address, or through your Google or Facebook accounts. Fill in the required information, create a password, and verify your email address to complete the registration process.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        I forgot my password. How do I reset it?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Click on "Login" in the top navigation bar, then select "Forgot Password?" on the login page. Enter the email address associated with your account, and we'll send you an email with instructions to reset your password. The reset link in the email is valid for 24 hours. If you don't receive the email, check your spam folder or contact customer support.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I update my account information?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To update your account information, log in and click on your name in the top right corner to access the account dropdown menu. Select "Account Settings" or "Profile." From there, you can update your personal information, shipping addresses, payment methods, and notification preferences. Remember to click "Save Changes" after making any updates.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="customersTab" class="tab-content">
+            <div class="faq-section">
+                <h2 class="section-title">For Customers</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I track my order?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can track your order by logging into your account and navigating to the "Orders" section. Click on the specific order you want to track, and you'll see its current status and tracking information. Alternatively, if you received a shipping confirmation email, you can click the tracking link provided in that email.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What is your return policy?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We offer a 30-day return policy for most items. Products must be in their original condition with all tags and packaging intact. Some restrictions apply to certain products such as personal care items or customized products. To initiate a return, log into your account, go to your orders, and select "Return Item" for the specific product you wish to return.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How long does shipping take?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Standard shipping typically takes 3-7 business days, depending on your location. Express shipping options are available at checkout for faster delivery (1-3 business days). International shipping times vary by destination, generally taking 7-21 business days. You'll receive an estimated delivery date at checkout based on your location and selected shipping method.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How can I cancel my order?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can cancel an order if it hasn't been shipped yet. To do this, log into your account, go to the "Orders" section, find the order you want to cancel, and click "Cancel Order." If the order has already been shipped, you'll need to wait for it to arrive and then initiate a return. For urgent cancellations, please contact customer support immediately.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Do you offer international shipping?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, we ship to over 100 countries worldwide. International shipping costs and delivery times vary by location. Import duties, taxes, and customs fees may apply and are the responsibility of the customer. These fees are not included in the product price or shipping cost. You can see shipping options and estimated delivery times for your location at checkout.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sellersTab" class="tab-content">
+            <div class="faq-section">
+                <h2 class="section-title">For Sellers</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I become a seller on your platform?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To become a seller, click on the "Sell on YourStore" link at the bottom of our homepage. You'll need to create a seller account, provide business information, set up payment methods, and agree to our seller terms. Once your application is approved (typically within 1-2 business days), you can start listing products and managing your store through the seller dashboard.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        What are the fees for selling on your platform?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Our fee structure includes:</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li>Monthly subscription: $29.99 for the standard plan</li>
+                            <li>Transaction fees: 5% of each sale</li>
+                            <li>Payment processing fees: 2.9% + $0.30 per transaction</li>
+                        </ul>
+                        <p style="margin-top: 10px;">Volume discounts are available for high-volume sellers. There are no listing fees or setup costs. For more detailed information, please visit our Seller Fees page.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I manage my inventory?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>You can manage your inventory through the Seller Dashboard. Navigate to the "Products" section to add new products, update existing listings, or adjust inventory levels. Our platform provides tools for bulk inventory management, allowing you to upload multiple products at once using CSV files. You can also enable inventory sync if you sell across multiple platforms.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How and when do I get paid?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>We process payments to sellers on a bi-weekly basis. Funds are disbursed through your selected payment method (direct deposit, PayPal, etc.) after a 3-day holding period following delivery confirmation. You can track your earnings and payouts in the "Finance" section of your Seller Dashboard. Minimum payout thresholds may apply depending on your region and payment method.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I handle returns and refunds?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>When a customer initiates a return, you'll receive a notification in your Seller Dashboard. You can review the return reason and approve or deny the request based on our return policy guidelines. Once a return is approved, the customer will receive a return shipping label. After you receive and inspect the returned item, you can process the refund through your dashboard. Our system automatically refunds the customer once you mark the return as processed.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="accountsTab" class="tab-content">
+            <div class="faq-section">
+                <h2 class="section-title">Accounts</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I create an account?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Creating an account is simple. Click on the "Sign Up" or "Create Account" button in the top right corner of our website. You can register using your email address, or through your Google or Facebook accounts. Fill in the required information, create a password, and verify your email address to complete the registration process.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        I forgot my password. How do I reset it?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Click on "Login" in the top navigation bar, then select "Forgot Password?" on the login page. Enter the email address associated with your account, and we'll send you an email with instructions to reset your password. The reset link in the email is valid for 24 hours. If you don't receive the email, check your spam folder or contact customer support.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I update my account information?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To update your account information, log in and click on your name in the top right corner to access the account dropdown menu. Select "Account Settings" or "Profile." From there, you can update your personal information, shipping addresses, payment methods, and notification preferences. Remember to click "Save Changes" after making any updates.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        Can I have multiple shipping addresses?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, you can save multiple shipping addresses in your account. To add a new address, go to "Account Settings" and select "Addresses." Click "Add New Address" and fill in the details. You can designate one address as your default, which will be automatically selected during checkout. You can also add or select different shipping addresses during the checkout process.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question">
+                        How do I delete my account?
+                        <div class="faq-toggle"></div>
+                    </div>
+                    <div class="faq-answer">
+                        <p>To delete your account, go to "Account Settings" and scroll to the bottom where you'll find "Delete Account" or "Close Account" option. Click on it and follow the verification steps. Please note that account deletion is permanent and will remove all your data, including order history, saved addresses, and payment methods. If you have any pending orders or unresolved issues, please resolve them before deleting your account.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="still-have-questions">
+            <h3>Still have questions?</h3>
+            <p>If you couldn't find the answer you were looking for, please reach out to our customer support team.</p>
+            <p><a href="contact.html" class="contact-link">Contact Us</a></p>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-top">
+                
+                <div class="footer-column">
+                    <h3>About Us</h3>
+                    <ul>
+                        <li><a href="ourstory">Our Story</a></li>
+                        <li><a href="career">Careers</a></li>
+                        <li><a href="become-a-seller/">Become a Seller</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Help & Support</h3>
+                    <ul>
+                        <li><a href="faqs">FAQs</a></li>
+                        <li><a href="ekhoji_support/">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Stay Connected</h3>
+                    <p style="color: #ccc; margin-bottom: 15px; font-size: 14px;">Subscribe to receive updates, access to exclusive deals, and more.</p>
+                    <form action="/subscribeus" method="POST" id="subscribeForm">
+                        {% csrf_token %}
+                        <div class="subscribe-form">
+                            <input type="email" name="email" placeholder="Enter your email">
+                            <button class="subscribe-btn">Subscribe</button>
+                        </div>
+                    </form>
+                    {% comment %} <div class="social-links">
+                        <a href="#" aria-label="Facebook">f</a>
+                        <a href="#" aria-label="Instagram">i</a>
+                        <a href="#" aria-label="Twitter">t</a>
+                        <a href="#" aria-label="Pinterest">p</a>
+                        <a href="#" aria-label="YouTube">y</a>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 ekhoji. All rights reserved.</p>
+                <p style="margin: 10px 0;"><a class="terms" href="terms-condition" aria-label="terms-condition">Terms of Service</a> | <a class="terms" href="privacy" aria-label="privacy">Privacy Policy</a></p>
+               
+            </div>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // FAQ toggle functionality
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                
+                question.addEventListener('click', () => {
+                    faqItems.forEach(faq => {
+                        if (faq !== item) {
+                            faq.classList.remove('active');
+                        }
+                    });
+                    
+                    item.classList.toggle('active');
+                });
+            });
+            
+            // Tab functionality
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    button.classList.add('active');
+                    
+                    // Show corresponding content
+                    const tabId = button.getAttribute('data-tab');
+                    let contentId;
+                    
+                    if (tabId === 'all') {
+                        contentId = 'allTab';
+                    } else if (tabId === 'customers') {
+                        contentId = 'customersTab';
+                    } else if (tabId === 'sellers') {
+                        contentId = 'sellersTab';
+                    } else if (tabId === 'accounts') {
+                        contentId = 'accountsTab';
+                    }
+                    
+                    document.getElementById(contentId).classList.add('active');
+                });
+            });
+            
+            // Search functionality - FIXED VERSION
+            const searchInput = document.getElementById('faqSearch');
+            
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                let hasResults = false;
+                
+                // Reset visibility of all items first
+                faqItems.forEach(item => {
+                    item.style.display = '';
+                });
+                
+                if (searchTerm.trim() !== '') {
+                    faqItems.forEach(item => {
+                        const question = item.querySelector('.faq-question').textContent.toLowerCase();
+                        const answer = item.querySelector('.faq-answer').textContent.toLowerCase();
+                        
+                        if (question.includes(searchTerm) || answer.includes(searchTerm)) {
+                            item.style.display = '';
+                            hasResults = true;
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    // Show/hide sections based on whether they have visible items
+                    const sections = document.querySelectorAll('.faq-section');
+                    
+                    sections.forEach(section => {
+                        const sectionItems = Array.from(section.querySelectorAll('.faq-item'));
+                        const hasVisibleItems = sectionItems.some(item => item.style.display !== 'none');
+                        
+                        if (hasVisibleItems) {
+                            section.style.display = '';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                } else {
+                    // If search is empty, show everything
+                    const sections = document.querySelectorAll('.faq-section');
+                    sections.forEach(section => {
+                        section.style.display = '';
+                    });
+                }
+                
+                // Show active tab content even if empty search
+                const activeTab = document.querySelector('.tab-content.active');
+                if (activeTab) {
+                    activeTab.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

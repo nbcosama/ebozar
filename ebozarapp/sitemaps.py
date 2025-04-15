@@ -20,8 +20,15 @@ class ProductSitemap(Sitemap):
             "/",
             "/login/",
             "/signup/",
-            "/ebazaar_support/",
+            "/ekhoji_support/",
             "/become-a-seller/",
+            "/terms-condition",
+            "/privacy",
+            "/faqs",
+            "/ourstory",
+            "/career",
+            "/allstores/",
+
         ]
         return data
 
