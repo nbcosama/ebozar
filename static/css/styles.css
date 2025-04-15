@@ -337,12 +337,14 @@ body {
     flex-direction: row;
     width: 60%;
     overflow: scroll;
+    
 }
 
 
 .category-items::-webkit-scrollbar {
     width: 0;
     background: transparent;
+    display: none;  /* Safari and Chrome */
 }
 
 .category-item{
@@ -449,8 +451,12 @@ body {
 
     .hidden-category-items{
         display: flex !important;
-        width: 95%;
+        width: 94%;
         overflow: scroll;
+        margin: 0 3%;
+        box-shadow: 1px 1px 4px #c1c1c1;
+        padding: 5px;
+        border-radius: 7px;
     }
 
     .hidden-category-items::-webkit-scrollbar {

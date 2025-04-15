@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <link rel="stylesheet" href="/static/css/profile.css">
-    <title>eBazaar Profile</title>
+    <title>eKhoji Profile</title>
     <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
 </head>
 
@@ -15,14 +15,14 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <a href="/">
-            <h2 class="logo">Ebazaar</h2>
+            <h2 class="logo">eKhoji</h2>
         </a>
         <ul>
             {% if user_profile.user_type == 'seller' %}
             <li><a href="/dashboard" class="active">Dashboard</a></li>
             <li><a href="/add_product">Add Products</a></li>
             <li><a href="/profile">Edit Profile</a></li>
-            <li><a href="/customerOrders">Customer Orders</a></li>
+            <li><a href="/customerOrders">Orders</a></li>
             {% else %}
                 <li><a href="/customerOrders">My Orders</a></li>
                 <li><a href="/myCart">My Cart</a></li>

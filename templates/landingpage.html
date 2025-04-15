@@ -5,16 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% if query %}
-        <title>{{ query }}- Explore Local Markets: Buy, Browse & Discover Deals Near You | eBazaar</title>
+        <title>{{ query }}- Explore Local Markets: Buy, Browse & Discover Deals Near You | eKhoji</title>
     {% else %}
-        <title>eBazaar - Your Local Marketplace in Nepal: Search, Shop, & Discover Nearby | Shop Mobiles, Books, Watches, Shoes and More - eBazaar.live</title>
+        <title>eKhoji - Your Local Marketplace in Nepal: Search, Shop, & Discover Nearby | Shop Mobiles, Books, Watches, Shoes and More - ekhoji.com</title>
     {% endif %}
-    <meta name="description" content="Discover your local market from home and buy best products at resonable price through eBazaar, Nepal's premier local marketplace. Shop products near you today!">
-    <meta name="keywords" content="eBazaar, online shopping Nepal, local products Nepal, buy mobiles Nepal, fashion deals Nepal, marketplace Nepal">
+    <meta name="description" content="Discover your local market from home and buy best products at resonable price through eKhoji, Nepal's premier local marketplace. Shop products near you today!">
+    <meta name="keywords" content="eKhoji, online shopping Nepal, local products Nepal, buy mobiles Nepal, fashion deals Nepal, marketplace Nepal">
     <!-- Canonical Link: To avoid duplicate content issues -->
-    <link rel="canonical" href="https://ebazaar.live/">
+    <link rel="canonical" href="https://ekhoji.com/">
     <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
     <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/footer.css">
     <link rel="stylesheet" href="/static/css/popup.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -35,11 +36,11 @@
         {
           "@context": "https://schema.org",
           "@type": "WebPage",
-          "name": "Become a Seller - eBazaar",
-          "url": "https://ebazaar.live/become-a-seller/",
+          "name": "Become a Seller - eKhoji",
+          "url": "https://ekhoji.com/become-a-seller/",
           "mainEntityOfPage": {
             "@type": "WebSite",
-            "@id": "https://ebazaar.live/"
+            "@id": "https://ekhoji.com/"
           },
           "breadcrumb": {
             "@type": "BreadcrumbList",
@@ -47,23 +48,23 @@
               {
                 "@type": "ListItem",
                 "position": 1,
-                "name": "eBazaar",
-                "item": "https://ebazaar.live/"
+                "name": "eKhoji",
+                "item": "https://ekhoji.com/"
               },
               {
                 "@type": "ListItem",
                 "position": 2,
                 "name": "Become a Seller",
-                "item": "https://ebazaar.live/become-a-seller/"
+                "item": "https://ekhoji.com/become-a-seller/"
               }
             ]
           },
-          "description": "Join eBazaar as a seller and reach a wider audience in Nepal's premier local marketplace. Sign up today to start selling your products locally!",
+          "description": "Join eKhoji as a seller and reach a wider audience in Nepal's premier local marketplace. Sign up today to start selling your products locally!",
           "inLanguage": "en",
           "isPartOf": {
             "@type": "WebSite",
-            "name": "eBazaar",
-            "url": "https://ebazaar.live/"
+            "name": "eKhoji",
+            "url": "https://ekhoji.com/"
           }
         }
         </script>
@@ -143,6 +144,7 @@
             <option value="product" {% if category == 'stores' %} {% else %}selected{% endif %} >Products</option>
             <option value="stores" {% if category == 'stores' %}selected{% endif %}>Stores</option>
         </select>
+        
         <div class="category-items">
             {% for category in product_category %}
             <a class="product_category" href="/?product_category={{category.id}}&{{category}}" >
@@ -265,7 +267,7 @@
 <div class="popup" id="popup" style="display:none">
     <div class="popup-content">
         <div class="popup-header">
-            <h2>Welcome to eBazaar</h2>
+            <h2>Welcome to eKhoji</h2>
             <span class="close" id="closeButton">&times;</span>
         </div>
         <p>Please select your loction to see nearby stores and products</p>
@@ -293,7 +295,66 @@
 
     </div>
 </div>
-
+{% comment %} <footer class="footer">
+    <div class="footer-container">
+        <div class="footer-top">
+            <div class="footer-column">
+                <h3>Shop</h3>
+                <ul>
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Best Sellers</a></li>
+                    <li><a href="#">Deals & Promotions</a></li>
+                    <li><a href="#">Gift Cards</a></li>
+                    <li><a href="#">Clearance</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Help & Support</h3>
+                <ul>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Returns & Exchanges</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Track Your Order</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>About Us</h3>
+                <ul>
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Corporate Responsibility</a></li>
+                    <li><a href="become-a-seller/">Become a Seller</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Stay Connected</h3>
+                <p style="color: #ccc; margin-bottom: 15px; font-size: 14px;">Subscribe to receive updates, access to exclusive deals, and more.</p>
+                <div class="subscribe-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button class="subscribe-btn">Subscribe</button>
+                </div>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">f</a>
+                    <a href="#" aria-label="Instagram">i</a>
+                    <a href="#" aria-label="Twitter">t</a>
+                    <a href="#" aria-label="Pinterest">p</a>
+                    <a href="#" aria-label="YouTube">y</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 ekhoji. All rights reserved.</p>
+            <p style="margin: 10px 0;">Terms of Service | Privacy Policy | Accessibility</p>
+           
+        </div>
+    </div>
+</footer> {% endcomment %}
 </body>
 <script src="/static/js/search.js"></script>
 <script src="/static/js/popup.js"></script>

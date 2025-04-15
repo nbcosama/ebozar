@@ -299,6 +299,10 @@
         width: 80px;
    }
 
+   .pp{
+        width: unset!important;
+   }
+
    .info p {
         width: 160px;
         overflow: hidden;

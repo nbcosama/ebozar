@@ -15,6 +15,7 @@
     
     <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
     <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="/static/css/footer.css">
     <link rel="stylesheet" href="/static/css/product_preview.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,18 +37,18 @@
       "@type": "Product",
       "name": "{{ product.product_name }}",
       "description": "{{ product.product_description }}",
-      "image": "https://ebazaar.live{{ product.product_image.url }}",
+      "image": "https://ekhoji.com{{ product.product_image.url }}",
       "sku": "{{ product.sku }}",
       "offers": {
         "@type": "Offer",
-        "url": "https://ebazaar.live/preview/{{slug}}",
+        "url": "https://ekhoji.com/preview/{{slug}}",
         "priceCurrency": "NPR",
         "price": "{{ product.price }}",
         "availability": "{% if product.status == True %} https://schema.org/InStock {% else %} https://schema.org/OutOfStock {% endif %}",
         "itemCondition": "https://schema.org/NewCondition",
         "seller": {
           "@type": "Organization",
-          "name": "eBazaar"
+          "name": "eKhoji"
         }
         "areaServed": {
             "@type": "Place",
@@ -78,7 +79,7 @@
             <div class="nav-buttons2">
                 <a href="/">
                     <div class="logo">
-                        <img src="/static/assets/eBazaar.svg" alt="">
+                        <img src="/static/assets/eBazaar.svg" alt="eKhoji Logo">
                     </div>
                 </a>
                 <div class="main_search_box" id="search_box" style="margin:0px; width:60%">
@@ -152,12 +153,15 @@
             
             <div class="info rupees_style" style="border-bottom: 1px solid #E0E0E0;">
                 <span class="product_name">NPR</span>
-                <p class="product_price"> {{product.price}}</p>
-                {% if product.discount %}
-                    <span class="gree_color" style="font-size:16px">Discount {{product.discount}}%</span>
+                {% if product.discount == '0' %}
+                    <p class="product_price"> {{product.price}}</p>
                 {% else %}
-                    
+                    <p class="product_price pp">{{discounted_amt}}</p>
+                    <p class="product_price pp" style="text-decoration: line-through; opacity:50%;"> {{product.price}}</p>
+                    <span class="gree_color" style="font-size:16px">{{product.discount}}% off</span>
                 {% endif %}
+                
+               
             </div>
             <h2>Description</h2>
             <p class="product_description">{{product.product_description}}</p>
@@ -195,6 +199,7 @@
                 <a href="tel:{{product.user.phone_number}}" >
                     <button class="chat_button" type="submit">Call <img src="/static/assets/whatsapp-icon.svg" alt="whatsapp Icon"> </button>
                 </a>
+            {% comment %}             
             {% if profile.user_type == 'seller' or profile == buyer %}
                 
             {% else %}
@@ -205,6 +210,7 @@
                     <button class="chat_button" type="submit">Add to Cart</button>
                 </a>
             {% endif %}
+             {% endcomment %}
             </div>
         </div>
         <div class="social_media">
@@ -231,29 +237,15 @@
         </a>
         {% endfor %}
     </div>
-    <div class="category">
-        <select id="HeadingTag" name="category" class="HeadingTag">
-            <option value="product" {% if category == 'stores' %} {% else %}selected{% endif %} >Products</option>
-            <option value="stores" {% if category == 'stores' %}selected{% endif %}>Stores</option>
-        </select>
-        <div class="category-items">
-            {% for category in product_category %}
-            <a class="product_category" href="/?product_category={{category.id}}&{{category}}" >
-                <div class="category-item">
-                    <p>{{ category }}</p>
-                </div>
-            </a>
-            {% endfor %}
-        </div>
-        <select class="HeadingTag">
-            <option value="product">From Rs. 0 - 500</option>
-            <option value="stores">Stores</option>
-        </select>
-    </div>
+
+
+
+    <div class="category"> <h3> Similar Products </h3> </div>
+    {% comment %} Similar products {% endcomment %}
     <section class="main">
         <div class="product-grid">
             <!-- Card 1 -->
-            {% for product in all_products %}
+            {% for product in similar_products %}
             <!-- Card 1 -->
             <a href="/preview/{{product.slug}}">
                 <div class="product-card">
@@ -280,8 +272,70 @@
             <!-- Add more cards as needed -->
         </div>
     </section>
+    <div class="category"></div>
 
 
+
+{% comment %} <footer class="footer">
+    <div class="footer-container">
+        <div class="footer-top">
+            <div class="footer-column">
+                <h3>Shop</h3>
+                <ul>
+                    <li><a href="#">New Arrivals</a></li>
+                    <li><a href="#">Best Sellers</a></li>
+                    <li><a href="#">Deals & Promotions</a></li>
+                    <li><a href="#">Gift Cards</a></li>
+                    <li><a href="#">Clearance</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Help & Support</h3>
+                <ul>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Returns & Exchanges</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Track Your Order</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>About Us</h3>
+                <ul>
+                    <li><a href="#">Our Story</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Corporate Responsibility</a></li>
+                    <li><a href="become-a-seller/">Become a Seller</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Stay Connected</h3>
+                <p style="color: #ccc; margin-bottom: 15px; font-size: 14px;">Subscribe to receive updates, access to exclusive deals, and more.</p>
+                <div class="subscribe-form">
+                    <input type="email" placeholder="Enter your email">
+                    <button class="subscribe-btn">Subscribe</button>
+                </div>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">f</a>
+                    <a href="#" aria-label="Instagram">i</a>
+                    <a href="#" aria-label="Twitter">t</a>
+                    <a href="#" aria-label="Pinterest">p</a>
+                    <a href="#" aria-label="YouTube">y</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 ekhoji. All rights reserved.</p>
+            <p style="margin: 10px 0;">Terms of Service | Privacy Policy | Accessibility</p>
+            
+        </div>
+    </div>
+</footer> {% endcomment %}
 
 </body>
 <script src="/static/js/search.js"></script>

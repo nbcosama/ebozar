@@ -8,21 +8,21 @@
     <link rel="stylesheet" href="/static/css/dashboard.css">
     <link rel="stylesheet" href="/static/css/add_product.css">
     <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
-    <title>eBazaarb Add Product</title>
+    <title>eKhoji Add Product</title>
 </head>
 
 <body>     
     <!-- Sidebar -->
     <div class="sidebar">
         <a href="/">
-            <h2 class="logo">Ebazaar</h2>
+            <h2 class="logo">eKhoji</h2>
         </a>
         <ul>
             {% if user_profile.user_type == 'seller' %}
             <li><a href="/dashboard" class="active">Dashboard</a></li>
             <li><a href="/add_product">Add Products</a></li>
             <li><a href="/profile">Edit Profile</a></li>
-            <li><a href="/customerOrders">Customer Orders</a></li>
+            <li><a href="/customerOrders">Orders</a></li>
             {% else %}
                 <li><a href="/customerOrders">My Orders</a></li>
                 <li><a href="/myCart">My Cart</a></li>
@@ -104,11 +104,11 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label><i class="fas fa-sort-amount-up-alt"></i>Discount</label required>
+                        <label><i class="fas fa-sort-amount-up-alt"></i>Discount%</label required>
                         <input type="text" name="discount" placeholder="Discount">
                     </div>
                     <div class="form-group">
-                        <label><i class="fas fa-sort-amount-up-alt"></i> Quantity</label required>
+                        <label><i class="fas fa-sort-amount-up-alt"></i>Stock</label required>
                         <input type="number" name="quantity" placeholder="Quantity">
                     </div>
                     <div class="form-group">

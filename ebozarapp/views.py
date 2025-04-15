@@ -51,16 +51,24 @@ def landingpage(request):
     resp_list = []
     if query.strip():
         # resp_list =get_search_results(query)
-        if not Searched_Query.objects.filter(query=query).exists():
-            searched_query = Searched_Query(query=query)
-            searched_query.save() 
-        products = Product.objects.filter(
-        Q(product_name__icontains=query) |
-        Q(product_description__icontains=query) |
-        Q(brand__icontains=query) |
-        Q(color__icontains=query) |
-        Q(sku__icontains=query)
-         ).order_by("-id")
+        # if not Searched_Query.objects.filter(query=query).exists():
+        searched_query = Searched_Query(query=query)
+        searched_query.save() 
+        products = []
+        # remove same word from the list just to avoid duplicate search from query
+        query = " ".join(dict.fromkeys(query.split()))
+        for word in query.split():
+            filtered_products = Product.objects.filter(
+            Q(product_name__icontains=word) |
+            Q(product_category__category_name__icontains=word) |
+            Q(product_description__icontains=word) |
+            Q(brand__icontains=word) |
+            Q(color__icontains=word) |
+            Q(sku__icontains=word)
+            ).order_by("-id")
+            # Remove already added products
+            filtered_products = filtered_products.exclude(id__in=[p.id for p in products])
+            products.extend(filtered_products)
     elif product_category:
         if location:
             products = Product.objects.filter(product_category=product_category, user__city = location).order_by("-id")
@@ -341,7 +349,7 @@ def add_product(request):
             product_category_id = category,
             product_description = description,
             sku = sku,
-            discount = discount,
+            discount = discount if discount else 0,
             quantity=quantity
             )
         product.save()
@@ -400,7 +408,7 @@ def update_product(request):
         product.condtion = condtion
         product.brand = brand
         product.color = color
-        product.discount = discount
+        product.discount = int(discount) if discount else 0
         product.product_category_id = category
         product.product_description = key_words
         product.quantity = quantity
@@ -474,7 +482,6 @@ def preview(request, slug):
     profile = 'buyer'
     if not user == 'AnonymousUser':
         profile = Profile.objects.get(user=request.user)
-        print(profile.user_type)
     slug = Slug.objects.filter(product_slug=slug)
     if not slug:
         return render(request, '404_error.html')
@@ -483,11 +490,18 @@ def preview(request, slug):
         return redirect('landingpage')
     else:
         product = Product.objects.get(id=id)
+        discounted_amt = int(float(product.price)) - int((int(float(product.price)) * int(float(product.discount)) / 100))
         sec_images = Secondary_images.objects.filter(product_id=product.id)
-        all_products = Product.objects.all().order_by('-id')
-        all_products = prepareProduct(all_products)
+        similar_products = Product.objects.filter(
+            Q(product_name__icontains=product.product_name) |
+            Q(product_category=product.product_category) |
+            Q(brand__icontains=product.brand) |
+            Q(color__icontains=product.color)
+        ).exclude(id=product.id).order_by('-id')[:100]
+        simi_products = prepareProduct(similar_products)
+       
     product_category = ProductCategories.objects.all()
-    context = {'product': product, 'sec_images': sec_images, 'profile':profile, 'product_category':product_category, 'all_products':all_products, 'user':user, 'slug':slug[0].product_slug}
+    context = {'product': product, 'similar_products':simi_products, 'discounted_amt':discounted_amt, 'sec_images': sec_images, 'profile':profile, 'product_category':product_category,  'user':user, 'slug':slug[0].product_slug}
     return render(request, 'preview.html', context)
 
 
