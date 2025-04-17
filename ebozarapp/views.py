@@ -44,7 +44,7 @@ def career(request):
 
 
 def allstores(request):
-    storelist = Profile.objects.filter(verify=True)
+    storelist = Profile.objects.filter(verify=True, user_type="seller").order_by('-id')
     context = {'storelist': storelist}
     return render(request, 'allstores.html', context)
 
