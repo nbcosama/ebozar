@@ -116,15 +116,15 @@ def landingpage(request):
             products.extend(filtered_products)
     elif product_category:
         if location:
-            products = Product.objects.filter(product_category=product_category, user__city = location).order_by("-id")
+            products = Product.objects.filter(product_category=product_category, user__city = location).order_by("?")
 
-        products = Product.objects.filter(product_category=product_category).order_by("-id")
+        products = Product.objects.filter(product_category=product_category).order_by("?")
     else:
         if location:
             
-            products = Product.objects.filter(user__city = location).order_by("-id")
+            products = Product.objects.filter(user__city = location).order_by("?")
         else:
-            products = Product.objects.all().order_by("-id")
+            products = Product.objects.all().order_by("?")
     user = str(request.user)
     stores = Profile.objects.filter(verify=True)
     # products = Product.objects.filter(id__in=resp_list).order_by("-id") if query else Product.objects.all().order_by("-id")
@@ -531,16 +531,18 @@ def preview(request, slug):
     if not slug:
         return render(request, '404_error.html')
     id = slug[0].prooduct_id
+    
     if not id:
         return redirect('landingpage')
     else:
         product = Product.objects.get(id=id)
         discounted_amt = int(float(product.price)) - int((int(float(product.price)) * int(float(product.discount)) / 100))
         sec_images = Secondary_images.objects.filter(product_id=product.id)
+        
         similar_products = Product.objects.filter(
             Q(product_category=product.product_category)
-           
-        ).exclude(id=product.id).order_by('-id')[:100]
+        ).exclude(id=product.id).order_by('?')[:100]
+        
         simi_products = prepareProduct(similar_products)
        
     product_category = ProductCategories.objects.all()
@@ -721,3 +723,6 @@ def customerOrders(request):
         return render(request, 'customerOrder.html', context)
     context = {'orders': list(set(orders)), 'user_profile': user_profile}
     return render(request, 'customerOrder.html', context)
+
+
+
