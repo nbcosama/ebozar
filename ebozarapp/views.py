@@ -43,6 +43,10 @@ def career(request):
     return render(request, 'legal/career.html')
 
 
+def blog(request):
+    return render(request, 'blog.html')
+
+
 def allstores(request):
     storelist = Profile.objects.filter(verify=True, user_type="seller").order_by('-id')
     context = {'storelist': storelist}

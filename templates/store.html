@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{profile.store_name}} {{profile.city}} - Explore Local Markets: Buy, Browse & Discover Deals Near You | eKhoji</title>
-    <meta property="og:image" content=" {% if profile.logo %}{{ profile.logo.url }}{% else %}Not Found{% endif %} ">
+    <meta property="og:image" content=" {% if profile.logo %}https://ekhoji.com/{{ profile.logo.url }}{% else %}Not Found{% endif %} ">
     <meta property="og:title" content="{{profile.store_name}}">
     <meta property="og:description" content="{{profile.bio|truncatewords:25 }}">
     <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
@@ -146,6 +146,7 @@
                     <h3>About Us</h3>
                     <ul>
                         <li><a href="/ourstory">Our Story</a></li>
+                        <li><a href="/blog">Blog</a></li>
                         <li><a href="/career">Careers</a></li>
                         <li><a href="/become-a-seller/">Become a Seller</a></li>
                     </ul>
@@ -179,7 +180,7 @@
             
             <div class="footer-bottom">
                 <p>&copy; 2025 ekhoji. All rights reserved.</p>
-                <p style="margin: 10px 0;"><a class="terms" href="terms-condition" aria-label="terms-condition">Terms of Service</a> | <a class="terms" href="privacy" aria-label="privacy">Privacy Policy</a></p>
+                <p style="margin: 10px 0;"><a class="terms" href="/terms-condition" aria-label="terms-condition">Terms of Service</a> | <a class="terms" href="/privacy" aria-label="privacy">Privacy Policy</a></p>
                
             </div>
         </div>

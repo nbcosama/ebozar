@@ -8,7 +8,9 @@
     <meta name="description" content="{{ product.product_description|truncatewords:25 }}">
     <meta property="og:title" content="{{ product.product_name }}">
     <meta property="og:description" content="{{ product.product_description|truncatewords:25 }}">
-    <meta property="og:image" content="{{ product.product_image.url }}">
+    <meta property="og:image" content="https://ekhoji.com/{{ product.product_image.url }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="product:price:amount" content="{{ product.price }}">
     <meta property="product:availability" content="{% if product.status == True %}Available{% else %}Not Available{% endif %}">
     <meta property="og:type" content="product">
@@ -284,6 +286,7 @@
                     <h3>About Us</h3>
                     <ul>
                         <li><a href="/ourstory">Our Story</a></li>
+                        <li><a href="/blog">Blog</a></li>
                         <li><a href="/career">Careers</a></li>
                         <li><a href="/become-a-seller/">Become a Seller</a></li>
                     </ul>
