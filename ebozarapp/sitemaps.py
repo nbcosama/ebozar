@@ -28,6 +28,7 @@ class ProductSitemap(Sitemap):
             "/ourstory",
             "/career",
             "/allstores/",
+            "/blog/",
 
         ]
         return data
