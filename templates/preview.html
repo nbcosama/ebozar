@@ -119,14 +119,20 @@
     <section class="product_preview">
         <div class="product_img">
             {% if product.product_image %}
-                <img src="{{product.product_image.url}}" alt="{{product.product_name}}" id="mainImage">
+                <img src="{{product.product_image.url}}" alt="{{product.product_name}}" id="mainImage" >
             {% else %}
                 <h1>Image not found</h1>
             {% endif %}
             <div class="secondary_images">
                 {% if sec_images %}
                     {% for sec_image in sec_images %}
-                        <div class="sec_img"><img src="{{sec_image.secondary_image.url}}" id="{{sec_image.id}}" alt="{{sec_image.product.product_name}}" onclick="updateMainImage(this)"></div>
+                        <div class="sec_img">
+                            {% if sec_image.url %}
+                                <img src="{{ sec_image.url }}" id="{{ sec_image.id }}" alt="{{ sec_image.product.product_name }}" onclick="updateMainImage(this)">
+                            {% else %}
+                                <img src="{{ sec_image.secondary_image.url }}" id="{{ sec_image.id }}" alt="{{ sec_image.product.product_name }}" onclick="updateMainImage(this)">
+                            {% endif %}
+                        </div>
                     {% endfor %}
                 {% else %}
                     <h5>Image not available</h5>
@@ -136,7 +142,13 @@
         <div class="secondary_images sec_img_hidden">
             {% if sec_images %}
                 {% for sec_image in sec_images %}
-                    <div class="sec_img"><img src="{{sec_image.secondary_image.url}}" id="{{sec_image.id}}" alt="{{sec_image.product.product_name}}" onclick="updateMainImage(this)"></div>
+                    <div class="sec_img">
+                        {% if sec_image.url %}
+                            <img src="{{ sec_image.url }}" id="{{ sec_image.id }}" alt="{{ sec_image.product.product_name }}" onclick="updateMainImage(this)">
+                        {% else %}
+                            <img src="{{ sec_image.secondary_image.url }}" id="{{ sec_image.id }}" alt="{{ sec_image.product.product_name }}" onclick="updateMainImage(this)">
+                        {% endif %}
+                    </div>
                 {% endfor %}
             {% else %}
                 <h5>Image not available</h5>
@@ -156,9 +168,9 @@
             <div class="info rupees_style" style="border-bottom: 1px solid #E0E0E0;">
                 <span class="product_name">NPR</span>
                 {% if product.discount == '0' %}
-                    <p class="product_price"> {{product.price}}</p>
+                    <p class="product_price" id="product_amt"> {{product.price}}</p>
                 {% else %}
-                    <p class="product_price pp">{{discounted_amt}}</p>
+                    <p class="product_price pp" id="discounted_amt" >{{discounted_amt}}</p>
                     <p class="product_price pp" style="text-decoration: line-through; opacity:50%;"> {{product.price}}</p>
                     <span class="gree_color" style="font-size:16px">{{product.discount}}% off</span>
                 {% endif %}
@@ -167,13 +179,14 @@
             </div>
             <h2>Description</h2>
             <p class="product_description">{{product.product_description}}</p>
+           
             <div class="brand_detail">
                 <div class="info">
                     <span class="product_name">Brand: </span>
                     <p class="product_price">{{product.brand}}</p>
                 </div>
                 <div class="info">
-                    <span class="product_name">Quantity: </span>
+                    <span class="product_name">Stock: </span>
                     <p class="product_price">{{product.quantity}}</p>
                 </div>
                 <div class="info">
@@ -184,6 +197,14 @@
                     <span class="product_name">Color: </span>
                     <p class="product_price">{{product.color}}</p>
                 </div>
+                <div class="info">
+                    <span class="product_name">Category: </span>
+                    <p class="product_price">{{product.product_category}}</p>
+                </div>
+            </div>
+            <div class="info">
+                <span class="product_name">SKU: </span>
+                <p class="product_price">{{product.sku}}</p>
             </div>
             <div class="info">
                 <span class="product_name">Visit Sote (Click): </span>
@@ -217,16 +238,19 @@
         </div>
         <div class="social_media">
             <a href="{{product.user.facebook}}" target="_blank">
-                <img src="/static/assets/facebook.svg" alt="whatsapp Icon">
+                <img src="/static/assets/facebook.svg" alt="facebook Icon">
             </a>
             <a href="{{product.user.instagram}}" target="_blank">
-                <img src="/static/assets/instagram.svg" alt="whatsapp Icon">
+                <img src="/static/assets/instagram.svg" alt="instagram Icon">
             </a>
             <a href="{{product.user.morelink}}" target="_blank">
-                <img src="/static/assets/amazon.svg" alt="whatsapp Icon">
+                <img src="/static/assets/amazon.svg" alt="amazon Icon">
+            </a>
+            <a target="_blank" id="copylink">
+                <img src="/static/assets/copyicon.svg" alt="copylink Icon">
             </a>
             <a href="#" target="_blank">
-                <img src="/static/assets/add-icon.svg" alt="whatsapp Icon">
+                <img src="/static/assets/add-icon.svg" alt="add Icon">
             </a>
         </div>
     </section>
@@ -267,7 +291,7 @@
                 </div>
                 <div class="product-info">
                     <h3>{{product.product_name}}</h3>
-                    <p>Rs.{{product.price}}</p>
+                    <p id="priceamount">{{product.price}}</p>
                 </div>
             </a>
             {% endfor %}
@@ -327,16 +351,75 @@
     </footer>
 </body>
 <script src="/static/js/search.js"></script>
+
+
+
 <script>
     function updateMainImage(secImage) {
         // Select the main image element in the preview
         const mainImage = document.getElementById('mainImage');
-        
         // Update the main image's src attribute with the src of the clicked secondary image
         if (mainImage && secImage) {
             mainImage.src = secImage.src;
         }
     }
+
+    const discounted_amt = document.getElementById('discounted_amt');
+    const product_amt = document.getElementById('product_amt');
+    const copylink = document.getElementById('copylink');
+    copylink.style.cursor = 'pointer';
+    function copyToClipboard(text) {
+        const tempInput = document.createElement('input');
+        tempInput.value = window.location.href;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        // Create a small alert element
+        const alertBox = document.createElement('div');
+        alertBox.textContent = 'Copied';
+        alertBox.style.position = 'fixed';
+        alertBox.style.bottom = '20px';
+        alertBox.style.right = '20px';
+        alertBox.style.backgroundColor = '#333';
+        alertBox.style.color = '#fff';
+        alertBox.style.padding = '10px 20px';
+        alertBox.style.borderRadius = '5px';
+        alertBox.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.2)';
+        alertBox.style.zIndex = '1000';
+        document.body.appendChild(alertBox);
+
+        // Remove the alert after 3 seconds
+        setTimeout(() => {
+            document.body.removeChild(alertBox);
+        }, 2000);
+    }
+
+    if (copylink) {
+        copylink.addEventListener('click', function() {
+            copyToClipboard(window.location.href);
+        });
+    }
+    if (discounted_amt) {
+        const formattedDiscountedAmt = parseInt(discounted_amt.textContent).toLocaleString('en-US');
+        discounted_amt.textContent = formattedDiscountedAmt;
+    }
+    if (product_amt) {
+        // Format the product amount with commas
+        const formattedProductAmt = parseInt(product_amt.textContent).toLocaleString('en-US');
+        product_amt.textContent = formattedProductAmt;
+        
+    }
+
+
+    const priceElements = document.querySelectorAll('#priceamount');
+    priceElements.forEach(priceElement => {
+        if (priceElement) {
+            const formattedAmount = 'Rs. ' + parseInt(priceElement.textContent).toLocaleString('en-US');
+            priceElement.textContent = formattedAmount;
+        }
+    });
     
 </script>
 <script>

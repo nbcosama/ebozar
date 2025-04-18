@@ -220,7 +220,7 @@
                     </div>
                     <div class="product-info">
                         <h3>{{product.product_name}}</h3>
-                        <p>Rs.{{product.price}}</p>
+                        <p id="priceamount">{{product.price}}</p>
                     </div>
                 </a>
                 {% endfor %}
@@ -348,7 +348,19 @@
 <script>
     document.getElementById('HeadingTag').addEventListener('change', function() {
         const selectedValue = this.value;
-        window.location.href = `/?category=${selectedValue}`;
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('category', selectedValue);
+        window.location.href = currentUrl.toString();
     });
+
+   
+    const priceElements = document.querySelectorAll('#priceamount');
+    priceElements.forEach(priceElement => {
+        if (priceElement) {
+            const formattedAmount = 'Rs. ' + parseInt(priceElement.textContent).toLocaleString('en-US');
+            priceElement.textContent = formattedAmount;
+        }
+    });
+    
 </script>
 </html>

@@ -131,7 +131,7 @@
                     </div>
                     <div class="product-info">
                         <h3>{{store_product.product_name}}</h3>
-                        <p>Rs.{{store_product.price}}</p>
+                        <p id="priceamount">{{store_product.price}}</p>
                     </div>
                 </a>
                 {% endfor %}
@@ -187,4 +187,15 @@
     </footer>
 </body>
 <script src="/static/js/search.js"></script>
+<script >
+    
+    const priceElements = document.querySelectorAll('#priceamount');
+    priceElements.forEach(priceElement => {
+        if (priceElement) {
+            const formattedAmount = 'Rs. ' + parseInt(priceElement.textContent).toLocaleString('en-US');
+            priceElement.textContent = formattedAmount;
+        }
+    });
+    
+</script>
 </html>

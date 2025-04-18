@@ -263,13 +263,66 @@
                 <div class="region">
                     <div class="input-group" style="width: 100%;">
                         <label for="country">Country</label>
-                        <input class="input-box" type="text" id="country" value="Nepal" name="country" placeholder="Country" required>
+                        <select class="select_type"  name="country" required>
+                            <option value="Nepal" selected>Nepal</option>
+                        </select>
                     </div>
                     <div class="input-group">
                         <label for="city">City</label>
-                        <input class="input-box" type="text" id="city" name="city" placeholder="City" required>
+                        <select class="select_type"  name="city" required>
+                            <option value="Kathmandu">Kathmandu</option>
+                            <option value="Pokhara">Pokhara</option>
+                            <option value="Biratnagar">Biratnagar</option>
+                            <option value="Birgunj">Birgunj</option>
+                            <option value="Butwal">Butwal</option>
+                            <option value="Dharan">Dharan</option>
+                            <option value="Hetauda">Hetauda</option>
+                            <option value="Itahari">Itahari</option>
+                            <option value="Janakpur">Janakpur</option>
+                            <option value="Nepalgunj">Nepalgunj</option>
+                            <option value="Bharatpur">Bharatpur</option>
+                            <option value="Dhangadhi">Dhangadhi</option>
+                            <option value="Bhimduttanagar">Bhimduttanagar</option>
+                            <option value="Birtamod">Birtamod</option>
+                            <option value="Damak">Damak</option>
+                            <option value="Dhankuta">Dhankuta</option>
+                            <option value="Dipayal">Dipayal</option>
+                            <option value="Gaur">Gaur</option>
+                            <option value="Gorkha">Gorkha</option>
+                            <option value="Ilam">Ilam</option>
+                            <option value="Inaruwa">Inaruwa</option>
+                            <option value="Jaleshwar">Jaleshwar</option>
+                            <option value="Jumla">Jumla</option>
+                            <option value="Khandbari">Khandbari</option>
+                            <option value="Lahan">Lahan</option>
+                            <option value="Lalbandi">Lalbandi</option>
+                            <option value="Lamahi">Lamahi</option>
+                            <option value="Lamjung">Lamjung</option>
+                            <option value="Lekhnath">Lekhnath</option>
+                            <option value="Liwang">Liwang</option>
+                            <option value="Madhyapur Thimi">Madhyapur Thimi</option>
+                            <option value="Mahendranagar">Mahendranagar</option>
+                            <option value="Malangwa">Malangwa</option>
+                            <option value="Narayangarh">Narayangarh</option>
+                            <option value="Nuwakot">Nuwakot</option>
+                            <option value="Panauti">Panauti</option>
+                            <option value="Parasi">Parasi</option>
+                            <option value="Phidim">Phidim</option>
+                            <option value="Rajbiraj">Rajbiraj</option>
+                            <option value="Ramechhap">Ramechhap</option>
+                            <option value="Rangeli">Rangeli</option>
+                            <option value="Rapti">Rapti</option>
+                            <option value="Rukumkot">Rukumkot</option>
+                            <option value="Salyan">Salyan</option>
+                            <option value="Sankhu">Sankhu</option>
+                            <option value="Siddharthanagar">Siddharthanagar</option>
+                            <option value="Simara">Simara</option>
+                            <option value="Siraha">Siraha</option>
+                            <option value="Surkhet">Surkhet</option>
+                            <option value="Tansen">Tansen</option>
+                            <option value="Tikapur">Tikapur</option>
+                        </select>
                     </div>
-                    <div id="cityList"></div>
                 </div>
                 <label for="address" id="storeaddress">Store Name With Location</label>
                 <input class="input-box" type="text" id="address" name="address" placeholder="abc store, Biratnagar 06, Jharna chowk" required>
@@ -454,38 +507,5 @@
         }
     });
 
-
-
-
-
-
-
-
-
-    // make city dropdown when user click on city field show city dropdown with city name of Nepal
-    city.addEventListener('click', function() {
-        city.disabled = false;
-        var cityList = document.getElementById('cityList');
-        cityList.innerHTML = '';
-        var cities = ['Kathmandu', 'Pokhara', 'Biratnagar', 'Birgunj', 'Butwal', 'Dharan', 'Hetauda', 'Itahari', 'Janakpur', 'Nepalgunj', 'Bharatpur', 'Dhangadhi', 'Bhimduttanagar', 'Birtamod', 'Damak', 'Dhankuta', 'Dhangadhi', 'Dipayal', 'Gaur', 'Gorkha', 'Ilam', 'Inaruwa', 'Jaleshwar', 'Jumla', 'Khandbari', 'Lahan', 'Lalbandi', 'Lamahi', 'Lamjung', 'Lekhnath', 'Liwang', 'Madhyapur Thimi', 'Mahendranagar', 'Malangwa', 'Narayangarh', 'Nuwakot', 'Panauti', 'Parasi', 'Phiding', 'Phidim', 'Rajbiraj', 'Ramechhap', 'Rangeli', 'Rapti', 'Rukumkot', 'Salyan', 'Sankhu', 'Siddharthanagar', 'Siddhartha Highway', 'Simara', 'Siraha', 'Sisne', 'Solu', 'Sunsari', 'Surkhet', 'Tansen', 'Tatopani', 'Tikapur'];
-        cities.forEach(function(cityName) {
-            var option = document.createElement('div');
-            option.className = 'city-option';
-            option.textContent = cityName;
-            option.addEventListener('click', function() {
-                city.value = cityName;
-                cityList.innerHTML = '';
-            });
-            cityList.appendChild(option);
-        });
-        cityList.style.display = 'block';
-    });
-
-    document.addEventListener('click', function(event) {
-        if (!city.contains(event.target) && !cityList.contains(event.target)) {
-            cityList.style.display = 'none';
-        }
-    });
-    
 </script>
 </html>

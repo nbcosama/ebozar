@@ -98,12 +98,13 @@ def landingpage(request):
     product_category = request.GET.get('product_category')
     location = request.GET.get('location')
     resp_list = []
+    products = []
     if query.strip():
         # resp_list =get_search_results(query)
         # if not Searched_Query.objects.filter(query=query).exists():
         searched_query = Searched_Query(query=query)
         searched_query.save() 
-        products = []
+        # products = []
         # remove same word from the list just to avoid duplicate search from query
         query = " ".join(dict.fromkeys(query.split()))
         for word in query.split():
@@ -116,21 +117,46 @@ def landingpage(request):
             Q(sku__icontains=word)
             ).order_by("-id")
             # Remove already added products
-            filtered_products = filtered_products.exclude(id__in=[p.id for p in products])
-            products.extend(filtered_products)
+            # calculate discount
+            for filtered_product in filtered_products:
+                discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
+                if filtered_product.id not in [p.id for p in products]:
+                    filtered_product.price = discounted_price  # Update the price for display purposes
+                    products.append(filtered_product)
     elif product_category:
         if location:
-            products = Product.objects.filter(product_category=product_category, user__city = location).order_by("?")
-
-        products = Product.objects.filter(product_category=product_category).order_by("?")
+            Alproduct = Product.objects.filter(product_category=product_category, user__city = location).order_by("?")
+            for filtered_product in Alproduct:
+                discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
+                filtered_product.price = discounted_price  # Update the price for display purposes
+                products.append(filtered_product)
+        else:
+            Alproduct = Product.objects.filter(product_category=product_category).order_by("?")
+            for filtered_product in Alproduct:
+                discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
+                filtered_product.price = discounted_price  # Update the price for display purposes
+                products.append(filtered_product)
     else:
         if location:
             
-            products = Product.objects.filter(user__city = location).order_by("?")
+            Alproduct = Product.objects.filter(user__city = location).order_by("?")
+            for filtered_product in Alproduct:
+                discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
+                filtered_product.price = discounted_price  # Update the price for display purposes
+                products.append(filtered_product)
         else:
-            products = Product.objects.all().order_by("?")
+            Alproduct = Product.objects.all().order_by("?")
+            for filtered_product in Alproduct:
+                discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
+                filtered_product.price = discounted_price  # Update the price for display purposes
+                products.append(filtered_product)
     user = str(request.user)
-    stores = Profile.objects.filter(verify=True)
+    if location:
+        stores = Profile.objects.filter(verify=True, city= location, user_type="seller").order_by('-id')
+        print(stores)
+    else:
+        stores = Profile.objects.filter(verify=True, user_type="seller").order_by('-id')
+
     # products = Product.objects.filter(id__in=resp_list).order_by("-id") if query else Product.objects.all().order_by("-id")
     product_data = prepareProduct(products)
     # pegination
@@ -535,20 +561,25 @@ def preview(request, slug):
     if not slug:
         return render(request, '404_error.html')
     id = slug[0].prooduct_id
-    
+    products =[]
+    sec_images = []
     if not id:
         return redirect('landingpage')
     else:
         product = Product.objects.get(id=id)
         discounted_amt = int(float(product.price)) - int((int(float(product.price)) * int(float(product.discount)) / 100))
-        sec_images = Secondary_images.objects.filter(product_id=product.id)
-        
+        Alsec_images = Secondary_images.objects.filter(product_id=product.id)
+        sec_images.extend(Alsec_images)  # Extend with the queryset of images
+        sec_images.append(product.product_image)  # Append the single product image
         similar_products = Product.objects.filter(
             Q(product_category=product.product_category)
         ).exclude(id=product.id).order_by('?')[:100]
-        
-        simi_products = prepareProduct(similar_products)
-       
+        for filtered_product in similar_products:
+                discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
+                filtered_product.price = discounted_price  # Update the price for display purposes
+                products.append(filtered_product)
+        simi_products = prepareProduct(products)
+    
     product_category = ProductCategories.objects.all()
     context = {'product': product, 'similar_products':simi_products, 'discounted_amt':discounted_amt, 'sec_images': sec_images, 'profile':profile, 'product_category':product_category,  'user':user, 'slug':slug[0].product_slug}
     return render(request, 'preview.html', context)
@@ -559,12 +590,17 @@ def preview(request, slug):
 def store(request):
     id = request.GET.get('id')
     user = str(request.user)
-    profile = Profile.objects.filter(id=id)
+    profile = Profile.objects.get(id=id)
     if not profile:
         return render(request, '404_error.html', {})
-    products = Product.objects.filter(user=profile[0])   
+    products = []
+    Alproduct = Product.objects.filter(user=profile).order_by('-id')
+    for filtered_product in Alproduct:
+                discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
+                filtered_product.price = discounted_price  # Update the price for display purposes
+                products.append(filtered_product)
     product_data = prepareProduct(products) 
-    context = {'profile': profile[0], 'store_products': product_data, 'user':user}
+    context = {'profile': profile, 'store_products': product_data, 'user':user}
     return render(request, 'store.html', context)
 
 
