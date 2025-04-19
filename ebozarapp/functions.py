@@ -72,6 +72,7 @@ def prepareProduct(products):
     for product in products:
         slug =  slugs.filter(prooduct_id=product.id)
         sec_images = secondary_image.filter(product_id=product.id)
+        profileverified = VerifiedProfile.objects.filter(profile=product.user).first()
         if not slug:
             product_name = product.product_name
             # Replace spaces with underscores and remove special characters
@@ -90,7 +91,8 @@ def prepareProduct(products):
             'quantity' : product.quantity,
             'color' : product.color,
             'slug': slug[0],
-            'sec_images': [x.secondary_image.url for x in sec_images]
+            'sec_images': [x.secondary_image.url for x in sec_images],
+            'profileverified': profileverified.is_verified if profileverified else False
         }
         product_data.append(data)
     return product_data
@@ -110,4 +112,6 @@ def generate_sku(product_name, brand, color, description):
     unique_id = ''.join(random.choices(string.digits, k=4))
     # Combine all parts to form the SKU
     sku = f"{product_name_part}-{brand_part}-{color_part}-{description_part}-{unique_id}"
+    # remove any spaces
+    sku = sku.replace(" ", "")
     return sku

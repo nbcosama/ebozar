@@ -37,6 +37,21 @@ class Profile(models.Model):
         return self.user.username
 
 
+
+
+class VerifiedProfile(models.Model):
+    profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+    is_verified = models.BooleanField(default=False)
+    description = models.TextField(null=True, blank=True)
+    date_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.profile.store_name
+
+
+
+
+
 class ProductCategories(models.Model):
     category_name = models.CharField( max_length=100)
     created_at = models.DateField(auto_now_add=True)

@@ -329,4 +329,13 @@
     padding: 13px 50px 0px 50px;
     margin-top: 11px;
 }
+.rupees_style{
+    flex-wrap: wrap;
+
+}
+.rupees_style img{
+    position: unset !important;
+    margin-left: 4px !important;
+    margin-top: 5px !important;
+}
 }

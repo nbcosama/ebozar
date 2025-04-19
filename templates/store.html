@@ -88,6 +88,9 @@
                         <img src="/static/assets/camera.png" alt="{{profile.store_name}}">
                     {% endif %}
                 </div>
+                {% if profileverified == True %}
+                    <img class="verifedbanner bigtag" style="left:0" src="/static/assets/tag.svg" alt="Store Icon">
+                {% endif %}
                 <div class="store_meta_data">
                     <p>Available: {% if profile.store_timing == None %} Not Set {%else%} {{profile.store_timing}} {% endif %}</p>
                     <p><div class="ovreflostack"><a href="https://www.google.com/maps/search/?api=1&query={{ profile.address|urlencode }}" target="_blank">{{profile.address}}</a></div></p>
@@ -120,6 +123,9 @@
                                 <img src="/static/assets/icon-store.svg" alt="Store Icon">
                             </div>
                             <p>{{store_product.store_name}}</p>
+                            {% if store_product.profileverified == True %}
+                                <img class="verifedbanner" src="/static/assets/tag.svg" alt="Store Icon">
+                            {% endif %}
                         </div>
                         {% if store_product.product_image %}
                         <img class="prd-img" src="{{store_product.product_image.url}}"

@@ -370,6 +370,16 @@ body {
     padding: 15px;
 }
 
+.verifedbanner{
+    position: relative;
+    left: 50px;
+    height: 20px;
+}
+
+.bigtag{
+    height: 30px;
+}
+
 
 /* Responsive Styles */
 @media (max-width: 768px) {
@@ -388,6 +398,10 @@ body {
     }
     .nav-buttons2 p {
         display: none;
+    }
+
+    .verifedbanner{
+        left: 20px;
     }
 
     .bottom_portion{
@@ -505,5 +519,7 @@ body {
         font-size: 14px; 
         text-align: start;
     }
+
+   
 }
 

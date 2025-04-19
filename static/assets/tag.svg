@@ -1,0 +1,24 @@
+<svg viewBox="0 0 70 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Minimal shield shape -->
+  <defs>
+    <linearGradient id="minimalBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00897b" />
+      <stop offset="100%" stop-color="#00897b" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Clean badge background -->
+  <rect x="0" y="0" width="70" height="24" rx="12" fill="#f8f9fa" stroke="#e9ecef" stroke-width="1"/>
+  
+  <!-- Minimal shield -->
+  <path d="M14,5 L18,5 C18,5 20,9 20,10 C20,14 16,16 16,16 C16,16 12,14 12,10 C12,9 14,5 14,5 Z" fill="url(#minimalBlue)" />
+  
+  <!-- Simplified checkmark -->
+  <path d="M14,10 L15.5,11.5 L18,9" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+  
+  <!-- Brand text -->
+  <text x="24" y="15" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#00897b">eKhoji</text>
+  
+  <!-- Small gold accent -->
+  <circle cx="54" cy="12" r="2" fill="#ffd700" opacity="0.9" />
+</svg>

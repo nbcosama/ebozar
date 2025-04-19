@@ -567,6 +567,8 @@ def preview(request, slug):
         return redirect('landingpage')
     else:
         product = Product.objects.get(id=id)
+        profileverified = VerifiedProfile.objects.filter(profile=product.user).first()
+        vpd = profileverified.is_verified if profileverified else False
         discounted_amt = int(float(product.price)) - int((int(float(product.price)) * int(float(product.discount)) / 100))
         Alsec_images = Secondary_images.objects.filter(product_id=product.id)
         sec_images.extend(Alsec_images)  # Extend with the queryset of images
@@ -581,7 +583,7 @@ def preview(request, slug):
         simi_products = prepareProduct(products)
     
     product_category = ProductCategories.objects.all()
-    context = {'product': product, 'similar_products':simi_products, 'discounted_amt':discounted_amt, 'sec_images': sec_images, 'profile':profile, 'product_category':product_category,  'user':user, 'slug':slug[0].product_slug}
+    context = {'product': product, 'profileverified':vpd, 'similar_products':simi_products, 'discounted_amt':discounted_amt, 'sec_images': sec_images, 'profile':profile, 'product_category':product_category,  'user':user, 'slug':slug[0].product_slug}
     return render(request, 'preview.html', context)
 
 
@@ -595,12 +597,14 @@ def store(request):
         return render(request, '404_error.html', {})
     products = []
     Alproduct = Product.objects.filter(user=profile).order_by('-id')
+    profileverified = VerifiedProfile.objects.filter(profile=profile).first()
+    vpd = profileverified.is_verified if profileverified else False
     for filtered_product in Alproduct:
                 discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
                 filtered_product.price = discounted_price  # Update the price for display purposes
                 products.append(filtered_product)
     product_data = prepareProduct(products) 
-    context = {'profile': profile, 'store_products': product_data, 'user':user}
+    context = {'profile': profile, 'profileverified': vpd, 'store_products': product_data, 'user':user}
     return render(request, 'store.html', context)
 
 

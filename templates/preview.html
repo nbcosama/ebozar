@@ -169,10 +169,16 @@
                 <span class="product_name">NPR</span>
                 {% if product.discount == '0' %}
                     <p class="product_price" id="product_amt"> {{product.price}}</p>
+                    {% if profileverified == True %}
+                        <img class="verifedbanner bigtag" src="/static/assets/tag.svg" alt="Store Icon">
+                    {% endif %}
                 {% else %}
                     <p class="product_price pp" id="discounted_amt" >{{discounted_amt}}</p>
                     <p class="product_price pp" style="text-decoration: line-through; opacity:50%;"> {{product.price}}</p>
                     <span class="gree_color" style="font-size:16px">{{product.discount}}% off</span>
+                    {% if profileverified == True %}
+                        <img class="verifedbanner bigtag" src="/static/assets/tag.svg" alt="Store Icon">
+                    {% endif %}
                 {% endif %}
                 
                
@@ -201,6 +207,7 @@
                     <span class="product_name">Category: </span>
                     <p class="product_price">{{product.product_category}}</p>
                 </div>
+
             </div>
             <div class="info">
                 <span class="product_name">SKU: </span>
@@ -280,6 +287,9 @@
                             <img src="/static/assets/icon-store.svg" alt="Store Icon">
                         </div>
                         <p>{{product.store_name}}</p>
+                        {% if product.profileverified == True %}
+                            <img class="verifedbanner" src="/static/assets/tag.svg" alt="Store Icon">
+                        {% endif %}
                     </div>
                     {% if product.product_image %}
                     <img class="prd-img" src="{{product.product_image.url}}"
