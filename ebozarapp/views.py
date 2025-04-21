@@ -154,7 +154,7 @@ def landingpage(request):
         else:
             Alproduct = Product.objects.all().order_by("?")
             for filtered_product in Alproduct:
-                discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
+                discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100)) if filtered_product.discount else int(float(filtered_product.price))
                 filtered_product.price = discounted_price  # Update the price for display purposes
                 if filtered_product.id not in [p.id for p in personalizedPrduct]:
                     products.append(filtered_product)
