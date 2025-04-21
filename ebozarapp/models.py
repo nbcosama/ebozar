@@ -167,3 +167,24 @@ class SubscribeUs(models.Model):
     date_time = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.email
+    
+
+
+class UserCookies(models.Model):
+    user = models.CharField(max_length=255)
+    location = models.CharField(max_length=255)
+    cookies = models.CharField(max_length=255)
+    date_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.location
+    
+
+
+class UserActivity(models.Model):
+    device_id = models.CharField(max_length=255)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    action = models.CharField(max_length=50, default="viewed")  # could be 'viewed', 'added_to_cart'
+    viewed_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.product.product_name

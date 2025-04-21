@@ -30,3 +30,5 @@ admin.site.register(SubscribeUs)
 class VerifiedProfileAdmin(admin.ModelAdmin):
     list_display = ('profile__store_name', 'is_verified')
     search_fields = ('profile__store_name', 'is_verified')
+admin.site.register(UserCookies)
+admin.site.register(UserActivity)

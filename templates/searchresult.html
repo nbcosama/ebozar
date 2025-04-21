@@ -4,30 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{profile.store_name}} {{profile.city}} - Explore Local Markets: Buy, Browse & Discover Deals Near You | eKhoji</title>
-    <meta property="og:image" content=" {% if profile.logo %}https://ekhoji.com/{{ profile.logo.url }}{% else %}Not Found{% endif %} ">
-    <meta property="og:title" content="{{profile.store_name}}">
-    <meta property="og:description" content="{{profile.bio|truncatewords:25 }}">
+    <title>{{query}} - Your Local Marketplace in Nepal: Search, Shop, & Discover Nearby | Shop Mobiles, Books, Watches, Shoes and More on eKhoji</title>
+    <meta name="description" content="Search results for {{query}} - Find quality products on eKhoji">
+    <meta name="robots" content="noindex, follow">
+    
+    <!-- Open Graph tags for social sharing -->
+    <meta property="og:title" content="Search Results for '{{query}}' - eKhoji">
+    <meta property="og:description" content="Browse search results for '{{query}}' on eKhoji - Your trusted online marketplace in Nepal">
+    <meta property="og:image" content="https://ekhoji.com/static/assets/og-image.jpg">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ekhoji.com/search?q={{query}}">
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/png" href="/static/assets/favicon.png" sizes="100x100">
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="/static/css/styles.css">
     <link rel="stylesheet" href="/static/css/footer.css">
-    <link rel="stylesheet" href="/static/css/store_ifo.css">
+
+    
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
-    <!-- Google tag (gtag.js) -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap" rel="stylesheet">
+    
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-T4NTT1Q7Q9"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-T4NTT1Q7Q9');
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-T4NTT1Q7Q9', {
+            'anonymize_ip': true,
+            'page_title': 'Search Results',
+            'page_path': '/search',
+            'search_term': '{{query}}'
+        });
     </script>
-
+    
+   
 </head>
+
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 
 <body>
     <nav class="navbar" id="navbar">
@@ -40,7 +65,7 @@
             <div class="nav-buttons2">
                 <a href="/">
                     <div class="logo">
-                        <img src="/static/assets/eBazaar.svg" alt="">
+                        <img src="/static/assets/eBazaar.svg" alt="eKhoji Logo">
                     </div>
                 </a>
                 <div class="main_search_box" id="search_box" style="margin:0px; width:60%">
@@ -64,86 +89,54 @@
                         {% if user == 'AnonymousUser' %} <p>Log in</p> {% else %} <p><img src="/static/assets/account.svg" alt="Search Icon" class="account-icon"></p>{% endif %}
                     </div>
                 </a>
-                
             </div>
         </div>
         
     </nav>
-    <h4 class=""></h4>
-    <div class="store_section">
-        <section class="store_info">
-            <h1>{{profile.store_name}}</h1>
-            <p>
-                {% if profile.bio %}
-                    {{profile.bio}}
-                {% else %}
-                    No bio available
-                {% endif %}
-            </p>
-            <div class="store_heading">
-                <div class="store_logo">
-                    {% if profile.logo %}
-                        <img src="{{profile.logo.url}}" alt="{{profile.store_name}}">
-                    {% else %}
-                        <img src="/static/assets/camera.png" alt="{{profile.store_name}}">
-                    {% endif %}
-                </div>
-                {% if profileverified == True %}
-                    <img class="verifedbanner bigtag" style="left:0" src="/static/assets/tag.svg" alt="Store Icon">
-                {% endif %}
-                <div class="store_meta_data">
-                    <p>Available: {% if profile.store_timing == None %} Not Set {%else%} {{profile.store_timing}} {% endif %}</p>
-                    <p><div class="ovreflostack"><a href="https://www.google.com/maps/search/?api=1&query={{ profile.address|urlencode }}" target="_blank">{{profile.address}}</a></div></p>
-                    <span>{{profile.phone_number}}</span>
-                </div>
-            </div>
-            <div class="social_media">
-                <a href="{{profile.facebook}}" target="_blank" rel="noopener noreferrer">
-                    <img src="/static/assets/facebook.svg" alt="whatsapp Icon">
-                </a>
-                <a href="{{profile.instagram}}" target="_blank" rel="noopener noreferrer">
-                    <img src="/static/assets/instagram.svg" alt="whatsapp Icon">
-                </a>
-                <a href="{{profile.morelink}}" target="_blank" rel="noopener noreferrer">
-                    <img src="/static/assets/amazon.svg" alt="whatsapp Icon">
-                </a>
-                <a href="#" target="_blank">
-                    <img src="/static/assets/add-icon.svg" alt="whatsapp Icon">
-                </a>
-            </div>
-        </section>
-        <section class="main">
-            <div class="product-grid">
-                <!-- Card 1 -->
-                {% for store_product in store_products %}
-                <a href="/preview/{{store_product.slug}}">
-                    <div class="product-card">
-                        <div class="store-name">
-                            <div class="circle">
-                                <img src="/static/assets/icon-store.svg" alt="Store Icon">
-                            </div>
-                            <p>{{store_product.store_name}}</p>
-                            {% if store_product.profileverified == True %}
-                                <img class="verifedbanner" src="/static/assets/tag.svg" alt="Store Icon">
-                            {% endif %}
+   
+    <div class="category"> <h3> Search Result </h3> </div>
+    <section class="main">
+        {% if products %}
+        <div class="product-grid">
+            <!-- Card 1 -->
+            
+            {% for product in products %}
+            <!-- Card 1 -->
+            <a href="/preview/{{product.slug}}">
+                <div class="product-card">
+                    <div class="store-name">
+                        <div class="circle">
+                            <img src="/static/assets/icon-store.svg" alt="Store Icon">
                         </div>
-                        {% if store_product.product_image %}
-                        <img class="prd-img" src="{{store_product.product_image.url}}"
-                            alt="Product 1">
-                        {% else %}
-                        <h1>Image not found</h1>
+                        <p>{{product.store_name}}</p>
+                        {% if product.profileverified == True %}
+                            <img class="verifedbanner" src="/static/assets/tag.svg" alt="Store Icon">
                         {% endif %}
-                        
                     </div>
-                    <div class="product-info">
-                        <h3>{{store_product.product_name}}</h3>
-                        <p id="priceamount">{{store_product.price}}</p>
-                    </div>
-                </a>
-                {% endfor %}
-            </div>
-        </section>
-    </div>
+                    {% if product.product_image %}
+                    <img class="prd-img" src="{{product.product_image.url}}"
+                        alt="{{product.product_name}}">
+                    {% else %}
+                    <h1>Image not found</h1>
+                    {% endif %}
+                    
+                </div>
+                <div class="product-info">
+                    <h3>{{product.product_name}}</h3>
+                    <p id="priceamount">{{product.price}}</p>
+                </div>
+            </a>
+            {% endfor %}
+            
+        </div>
+        {% else %}
+            <h1>No products found for '{{query}}'</h1>
+        {% endif %}
+    </section>
+    <div class="category"></div>
+
+
+
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-top">
@@ -186,15 +179,33 @@
             
             <div class="footer-bottom">
                 <p>&copy; 2025 ekhoji. All rights reserved.</p>
-                <p style="margin: 10px 0;"><a class="terms" href="/terms-condition" aria-label="terms-condition">Terms of Service</a> | <a class="terms" href="/privacy" aria-label="privacy">Privacy Policy</a></p>
+                <p style="margin: 10px 0;"><a class="terms" href="terms-condition" aria-label="terms-condition">Terms of Service</a> | <a class="terms" href="privacy" aria-label="privacy">Privacy Policy</a></p>
                
             </div>
         </div>
     </footer>
 </body>
 <script src="/static/js/search.js"></script>
-<script >
-    
+
+
+
+<script>
+   
+    const discounted_amt = document.getElementById('discounted_amt');
+    const product_amt = document.getElementById('product_amt');
+   
+    if (discounted_amt) {
+        const formattedDiscountedAmt = parseInt(discounted_amt.textContent).toLocaleString('en-US');
+        discounted_amt.textContent = formattedDiscountedAmt;
+    }
+    if (product_amt) {
+        // Format the product amount with commas
+        const formattedProductAmt = parseInt(product_amt.textContent).toLocaleString('en-US');
+        product_amt.textContent = formattedProductAmt;
+        
+    }
+
+
     const priceElements = document.querySelectorAll('#priceamount');
     priceElements.forEach(priceElement => {
         if (priceElement) {
@@ -204,4 +215,5 @@
     });
     
 </script>
+
 </html>

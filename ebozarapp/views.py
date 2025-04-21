@@ -13,7 +13,7 @@ import re
 from .ai import *
 from django.core.paginator import Paginator
 from django.utils.crypto import get_random_string
-
+import uuid
 
 def custom_404_view(request, exception):
     return render(request, '404_error.html', status=404)
@@ -92,40 +92,47 @@ def getDirection(request):
     return render(request, 'direction.html', context)
 
 
+
+
+
 def landingpage(request):
-    query = request.GET.get('q', '')
+    location = request.GET.get('location')
+
+    if not request.session.get('device_id'):
+        request.session['device_id'] = str(uuid.uuid4())
+        request.session.set_expiry(60 * 60 * 24 * 30)  # Session lasts 30 days
+    else:
+        # Optional: refresh session expiry on each visit
+        sessionexp = request.session.set_expiry(60 * 60 * 24 * 30)
+      
+    device_id = request.session['device_id']
+    getUserlocation = UserCookies.objects.filter(user=device_id)
+    if not getUserlocation.exists():
+        if location:
+            saveCookies = UserCookies(user=device_id, location=location, cookies="cookies")
+            saveCookies.save()
+            userLocation = location
+        else:
+            userLocation = None
+    else:
+        existing_location = getUserlocation[0].location
+        if location and location != existing_location:
+            getUserlocation.update(location=location)
+            userLocation = location
+        else:
+            userLocation = existing_location
+    
+
+    personalizedPrduct = get_recommendations(device_id)
+    preparedpersonalizedPrduct = prepareProduct(personalizedPrduct)
+
+   
     category = request.GET.get('category')
     product_category = request.GET.get('product_category')
-    location = request.GET.get('location')
-    resp_list = []
     products = []
-    if query.strip():
-        # resp_list =get_search_results(query)
-        # if not Searched_Query.objects.filter(query=query).exists():
-        searched_query = Searched_Query(query=query)
-        searched_query.save() 
-        # products = []
-        # remove same word from the list just to avoid duplicate search from query
-        query = " ".join(dict.fromkeys(query.split()))
-        for word in query.split():
-            filtered_products = Product.objects.filter(
-            Q(product_name__icontains=word) |
-            Q(product_category__category_name__icontains=word) |
-            Q(product_description__icontains=word) |
-            Q(brand__icontains=word) |
-            Q(color__icontains=word) |
-            Q(sku__icontains=word)
-            ).order_by("-id")
-            # Remove already added products
-            # calculate discount
-            for filtered_product in filtered_products:
-                discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
-                if filtered_product.id not in [p.id for p in products]:
-                    filtered_product.price = discounted_price  # Update the price for display purposes
-                    products.append(filtered_product)
-    elif product_category:
-        if location:
-            Alproduct = Product.objects.filter(product_category=product_category, user__city = location).order_by("?")
+    if product_category:
+        if userLocation:
+            Alproduct = Product.objects.filter(product_category=product_category, user__city = userLocation).order_by("?")
             for filtered_product in Alproduct:
                 discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
                 filtered_product.price = discounted_price  # Update the price for display purposes
@@ -137,23 +144,23 @@ def landingpage(request):
                 filtered_product.price = discounted_price  # Update the price for display purposes
                 products.append(filtered_product)
     else:
-        if location:
-            
-            Alproduct = Product.objects.filter(user__city = location).order_by("?")
+        if userLocation:
+            Alproduct = Product.objects.filter(user__city = userLocation).order_by("?")
             for filtered_product in Alproduct:
                 discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
                 filtered_product.price = discounted_price  # Update the price for display purposes
-                products.append(filtered_product)
+                if filtered_product.id not in [p.id for p in personalizedPrduct]:
+                    products.append(filtered_product)
         else:
             Alproduct = Product.objects.all().order_by("?")
             for filtered_product in Alproduct:
                 discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
                 filtered_product.price = discounted_price  # Update the price for display purposes
-                products.append(filtered_product)
+                if filtered_product.id not in [p.id for p in personalizedPrduct]:
+                    products.append(filtered_product)
     user = str(request.user)
-    if location:
-        stores = Profile.objects.filter(verify=True, city= location, user_type="seller").order_by('-id')
-        print(stores)
+    if userLocation:
+        stores = Profile.objects.filter(verify=True, city= userLocation, user_type="seller").order_by('-id')
     else:
         stores = Profile.objects.filter(verify=True, user_type="seller").order_by('-id')
 
@@ -164,10 +171,75 @@ def landingpage(request):
     page_number = request.GET.get('page')
     product_dat = paginator.get_page(page_number)
     product_category = ProductCategories.objects.all()
-    context = {'products': product_dat, 'query': query, 'stores': stores, 'category':category, 'product_category':product_category, 'user' :user}
+    context = {'products': product_dat, 'personalizedPrduct':preparedpersonalizedPrduct, 'stores': stores, 'category':category, 'product_category':product_category, 'user' :user}
     if request.GET.get("format") == "json":
         return JsonResponse(product_data, safe=False)
     return render(request, 'landingpage.html', context)
+
+
+
+
+
+
+
+def searchresult(request):
+    location = request.GET.get('location')
+    if not request.session.get('device_id'):
+        request.session['device_id'] = str(uuid.uuid4())
+        request.session.set_expiry(60 * 60 * 24 * 30)  # Session lasts 30 days
+    else:
+        # Optional: refresh session expiry on each visit
+        sessionexp = request.session.set_expiry(60 * 60 * 24 * 30)
+    device_id = request.session['device_id']
+    getUserlocation = UserCookies.objects.filter(user=device_id).first()
+    userLocation = getUserlocation.location if getUserlocation else None
+    
+
+    query = request.GET.get('q', '')
+    category = request.GET.get('category')
+    product_category = request.GET.get('product_category')
+    resp_list = []
+    products = []
+    if query.strip():
+        # resp_list =get_search_results(query)
+        # if not Searched_Query.objects.filter(query=query).exists():
+        searched_query = Searched_Query(query=query)
+        searched_query.save() 
+        # products = []
+        # remove same word from the list just to avoid duplicate search from query
+        query = " ".join(dict.fromkeys(query.split()))
+        for word in query.split():
+            if userLocation:
+                filtered_products = Product.objects.filter(
+                Q(product_name__icontains=word) |
+                Q(product_category__category_name__icontains=word) |
+                Q(product_description__icontains=word) |
+                Q(brand__icontains=word) |
+                Q(color__icontains=word) |
+                Q(sku__icontains=word),
+                user__city=userLocation
+                ).order_by("-id")
+            else:
+                filtered_products = Product.objects.filter(
+                Q(product_name__icontains=word) |
+                Q(product_category__category_name__icontains=word) |
+                Q(product_description__icontains=word) |
+                Q(brand__icontains=word) |
+                Q(color__icontains=word) |
+                Q(sku__icontains=word)
+                ).order_by("-id")
+            # Remove already added products
+            # calculate discount
+            for filtered_product in filtered_products:
+                discounted_price = int(float(filtered_product.price)) - int((int(float(filtered_product.price)) * int(float(filtered_product.discount)) / 100))
+                if filtered_product.id not in [p.id for p in products]:
+                    filtered_product.price = discounted_price  # Update the price for display purposes
+                    products.append(filtered_product)
+    preparedproduct = prepareProduct(products)
+    context = {'products': preparedproduct, 'query': query}
+    return render(request, 'searchresult.html', context)
+
+
 
 
 
@@ -563,10 +635,13 @@ def preview(request, slug):
     id = slug[0].prooduct_id
     products =[]
     sec_images = []
+    device_id = request.session['device_id']
+    
     if not id:
         return redirect('landingpage')
     else:
         product = Product.objects.get(id=id)
+        SaveUserActivity(request, device_id,  product.id)
         profileverified = VerifiedProfile.objects.filter(profile=product.user).first()
         vpd = profileverified.is_verified if profileverified else False
         discounted_amt = int(float(product.price)) - int((int(float(product.price)) * int(float(product.discount)) / 100))

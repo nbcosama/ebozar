@@ -11,9 +11,9 @@ setval.addEventListener('click', function() {
 
 // if loacal storage has location, add location at the end of the url
 if (localStorage.getItem('location')) {
-    const currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set('location', localStorage.getItem('location'));
-    window.history.pushState({}, '', currentUrl);
+    // const currentUrl = new URL(window.location.href);
+    // currentUrl.searchParams.set('location', localStorage.getItem('location'));
+    // window.history.pushState({}, '', currentUrl);
 }
 
 
@@ -39,13 +39,11 @@ document.getElementById('location-btn').addEventListener('click', function() {
     if (location && location !== previousLocation) {
         localStorage.setItem('location', location);
         popup.style.display = 'none';
-        // write code to add location to the existing url at the end of the url
-        const currentUrl = new URL(window.location.href);
-        if (!currentUrl.searchParams.has('location')) {
-            window.location.href = `${window.location.href}?location=${location}`;
-        }else {
-            window.location.href = `${window.location.href.split('?')[0] + '?location=' + location}`;
-        }
+        // send a GET request with the value location to the URL "landingpage"
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', `/?location=${location}`, true);
+        xhr.send();
+        window.location.reload();
     } else if (!location) {
         popup.style.display = 'flex';
     } else {

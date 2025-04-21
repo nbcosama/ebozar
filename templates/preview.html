@@ -86,7 +86,7 @@
                 </a>
                 <div class="main_search_box" id="search_box" style="margin:0px; width:60%">
                     <div class="search-bar">
-                        <form method="GET" action="{% url 'landingpage' %}" id="searchForm">
+                        <form method="GET" action="{% url 'search-result' %}" id="searchForm">
                             <input type="search" autocomplete="off" name="q" value="{{ request.GET.q }}" id="searchInput" placeholder="Search saman or pasal">
                         </form>
                         <img src="/static/assets/serchicon.svg" alt="Search Icon" class="search-icon">

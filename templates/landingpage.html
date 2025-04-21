@@ -1,14 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% if query %}
-        <title>{{ query }}- Explore Local Markets: Buy, Browse & Discover Deals Near You | eKhoji</title>
-    {% else %}
-        <title>eKhoji - Your Local Marketplace in Nepal: Search, Shop, & Discover Nearby | Shop Mobiles, Books, Watches, Shoes and More - ekhoji.com</title>
-    {% endif %}
+    <title>eKhoji - Your Local Marketplace in Nepal: Search, Shop, & Discover Nearby in Nepal | Shop Mobiles, Books, Watches, Shoes and More - eKhoji</title>
     <meta name="description" content="Discover your local market from home and buy best products at resonable price through eKhoji, Nepal's premier local marketplace. Shop products near you today!">
     <meta name="keywords" content="eKhoji, online shopping Nepal, local products Nepal, buy mobiles Nepal, fashion deals Nepal, marketplace Nepal">
     <!-- Canonical Link: To avoid duplicate content issues -->
@@ -109,7 +104,7 @@
         <span id="sub_h">Explore local favorites, browse products, and connect directly with stores near you</span>
         <div class="main_search_box" id="search_box" >
             <div class="search-bar">
-                <form method="GET" action="{% url 'landingpage' %}" id="searchForm">
+                <form method="GET" action="{% url 'search-result' %}" id="searchForm">
                     <input type="search" autocomplete="off" name="q" value="{{ request.GET.q }}" id="searchInput" placeholder="Search saman or pasal">
                 </form>
                 <img src="/static/assets/serchicon.svg" alt="Search Icon" class="search-icon">
@@ -201,6 +196,32 @@
     {% if products %}
         <section class="main">
             <div class="product-grid">
+                {% for product in personalizedPrduct %}
+                <!-- Card 1 -->
+                <a href="/preview/{{product.slug}}">
+                    <div class="product-card">
+                        <div class="store-name">
+                            <div class="circle">
+                                <img src="/static/assets/icon-store.svg" alt="Store Icon">
+                            </div>
+                            <p>{{product.store_name}}</p>
+                            {% if product.profileverified == True %}
+                                <img class="verifedbanner" src="/static/assets/tag.svg" alt="Store Icon">
+                            {% endif %}
+                        </div>
+                        {% if product.product_image %}
+                        <img class="prd-img" src="{{product.product_image.url}}" alt="{{product.product_name}}">
+                        {% else %}
+                        <h1>Image not found</h1>
+                        {% endif %}
+                        
+                    </div>
+                    <div class="product-info">
+                        <h3>{{product.product_name}}</h3>
+                        <p id="priceamount">{{product.price}}</p>
+                    </div>
+                </a>
+                {% endfor %}
                 {% for product in products %}
                 <!-- Card 1 -->
                 <a href="/preview/{{product.slug}}">
@@ -273,7 +294,7 @@
             <h2>Welcome to eKhoji</h2>
             <span class="close" id="closeButton">&times;</span>
         </div>
-        <p>Please select your loction to see nearby stores and products</p>
+        <p>To personalize your experience, please select your location. This helps us show relevant stores and products in your area. Your location preference will be saved for future visits.</p>
         <div class="location">
             <select class="location-select" >
                 <option value="Kathmandu">Kathmandu</option>

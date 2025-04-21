@@ -39,4 +39,5 @@ urlpatterns = [
     path('subscribeus', views.subscribeus, name='subscribeus'),
     path('allstores/', views.allstores, name='allstores'),
     path('blog/', views.blog, name='blog'),
+    path('search-result/', views.searchresult, name='search-result'),
     ]

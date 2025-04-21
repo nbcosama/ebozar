@@ -4,6 +4,17 @@ from django.http import JsonResponse
 from .models import *
 import re
 import random, string
+from django.db.models import Count
+from django.db.models import Count
+from itertools import chain
+
+from datetime import timedelta
+from django.utils import timezone
+from django.core.cache import cache
+import logging
+logger = logging.getLogger(__name__)
+
+
 
 # Function to send email to user
 def sendemail(request, email, random_number):
@@ -115,3 +126,97 @@ def generate_sku(product_name, brand, color, description):
     # remove any spaces
     sku = sku.replace(" ", "")
     return sku
+
+
+
+
+
+
+
+
+def SaveUserActivity(request, device_id, product_id):
+    if not device_id or not product_id:
+        return JsonResponse({"message": "Missing required fields", "status": "Failed"})
+
+
+    cooldown = timezone.now() - timedelta( minutes=1)
+    recent_view = UserActivity.objects.filter(
+        device_id=device_id,
+        product_id=product_id,
+        viewed_at__gte=cooldown
+    ).exists()
+
+
+    try:
+        if device_id and not recent_view:
+            # Bot detection checks
+            user_agent = request.META.get('HTTP_USER_AGENT', '').lower()
+            bot_indicators = ['bot', 'crawler', 'spider', 'headless', 'selenium', 'puppeteer', 'phantom']
+            
+            # Check if request has typical bot characteristics
+            is_bot = any(indicator in user_agent for indicator in bot_indicators)
+            
+            # Additional bot detection checks
+            request_frequency = cache.get(f"req_freq_{device_id}", 0)
+            cache.set(f"req_freq_{device_id}", request_frequency + 1, 60)  # Track requests per minute
+            
+            # Check for missing headers that browsers typically include
+            has_accept_header = 'HTTP_ACCEPT' in request.META
+            has_language_header = 'HTTP_ACCEPT_LANGUAGE' in request.META
+            
+            # Consider it a bot if it fails multiple checks
+            if is_bot or request_frequency > 30 or (not has_accept_header and not has_language_header):
+                return JsonResponse({"message": "Request appears automated", "status": "Rejected"}, status=403)
+            
+            # Proceed with normal activity tracking
+            product = Product.objects.get(id=product_id)
+            user_activity = UserActivity(device_id=device_id, product=product)
+            user_activity.save()
+            return JsonResponse({"message": "User activity saved successfully", "status": "Success"})
+    except Product.DoesNotExist:
+        return JsonResponse({"message": "Product not found", "status": "Failed"}, status=404)
+    except Exception as e:
+        logger.error(f"Error tracking user activity: {str(e)}")
+        return JsonResponse({"message": "Error processing request", "status": "Failed"}, status=500)
+
+
+
+
+def get_recommendations(device_id, limit=6):
+    # Get all categories the user viewed, sorted by most viewed
+    top_categories = (
+        UserActivity.objects.filter(device_id=device_id)
+        .values('product__product_category')
+        .annotate(view_count=Count('product'))
+        .order_by('-view_count')
+    )
+
+    viewed_product_ids = set(
+        UserActivity.objects.filter(device_id=device_id)
+        .values_list('product_id', flat=True)
+    )
+
+    
+    recommended_products = []
+    for category in top_categories:
+        category_id = category['product__product_category']
+        
+        # Randomize products within category, exclude already viewed
+        products = Product.objects.filter(product_category_id=category_id).order_by('?')[:limit]
+
+        for product in products:
+            if product.id not in [p.id for p in recommended_products]:
+                recommended_products.append(product)
+                if len(recommended_products) >= limit:
+                    break
+
+        if len(recommended_products) >= limit:
+            break
+
+    # Fallback: fill with random products if limit not reached
+    if len(recommended_products) < limit:
+        needed = limit - len(recommended_products)
+        fallback = Product.objects.exclude(id__in=[p.id for p in recommended_products]).order_by('?')[:needed]
+        recommended_products = list(chain(recommended_products, fallback))
+
+    return recommended_products

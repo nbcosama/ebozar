@@ -207,6 +207,8 @@ body {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    width: 100%;
+    text-align: start;
 }
 
 .circle {
@@ -371,12 +373,12 @@ body {
 }
 
 .verifedbanner{
-    position: relative;
-    left: 50px;
-    height: 20px;
+    height: 17px;
 }
 
 .bigtag{
+    position: relative;
+    left: 71px;
     height: 30px;
 }
 
