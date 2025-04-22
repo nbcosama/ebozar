@@ -158,11 +158,11 @@ def SaveUserActivity(request, device_id, product_id):
     except Exception as e:
         return JsonResponse({"message": f"Error: {str(e)}", "status": "Failed"})
 
-        
 
 
 
-def get_recommendations(device_id, limit=6):
+
+def get_recommendations(device_id, limit=10):
     # Get all categories the user viewed, sorted by most viewed
     top_categories = (
         UserActivity.objects.filter(device_id=device_id)
