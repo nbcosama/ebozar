@@ -149,36 +149,16 @@ def SaveUserActivity(request, device_id, product_id):
 
     try:
         if device_id and not recent_view:
-            # Bot detection checks
-            user_agent = request.META.get('HTTP_USER_AGENT', '').lower()
-            bot_indicators = ['bot', 'crawler', 'spider', 'headless', 'selenium', 'puppeteer', 'phantom']
-            
-            # Check if request has typical bot characteristics
-            is_bot = any(indicator in user_agent for indicator in bot_indicators)
-            
-            # Additional bot detection checks
-            request_frequency = cache.get(f"req_freq_{device_id}", 0)
-            cache.set(f"req_freq_{device_id}", request_frequency + 1, 60)  # Track requests per minute
-            
-            # Check for missing headers that browsers typically include
-            has_accept_header = 'HTTP_ACCEPT' in request.META
-            has_language_header = 'HTTP_ACCEPT_LANGUAGE' in request.META
-            
-            # Consider it a bot if it fails multiple checks
-            if is_bot or request_frequency > 30 or (not has_accept_header and not has_language_header):
-                return JsonResponse({"message": "Request appears automated", "status": "Rejected"}, status=403)
-            
-            # Proceed with normal activity tracking
             product = Product.objects.get(id=product_id)
             user_activity = UserActivity(device_id=device_id, product=product)
             user_activity.save()
             return JsonResponse({"message": "User activity saved successfully", "status": "Success"})
     except Product.DoesNotExist:
-        return JsonResponse({"message": "Product not found", "status": "Failed"}, status=404)
+        return JsonResponse({"message": "Product not found", "status": "Failed"})
     except Exception as e:
-        logger.error(f"Error tracking user activity: {str(e)}")
-        return JsonResponse({"message": "Error processing request", "status": "Failed"}, status=500)
+        return JsonResponse({"message": f"Error: {str(e)}", "status": "Failed"})
 
+        
 
 
 
