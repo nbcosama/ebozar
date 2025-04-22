@@ -635,13 +635,16 @@ def preview(request, slug):
     id = slug[0].prooduct_id
     products =[]
     sec_images = []
-    device_id = request.session['device_id']
+    # device_id = request.session['device_id']
     
     if not id:
         return redirect('landingpage')
     else:
         product = Product.objects.get(id=id)
-        
+        # try:
+        #     SaveUserActivity(request, device_id,  product.id)
+        # except Exception as e:
+        #     print(e)
         profileverified = VerifiedProfile.objects.filter(profile=product.user).first()
         vpd = profileverified.is_verified if profileverified else False
         discounted_amt = int(float(product.price)) - int((int(float(product.price)) * int(float(product.discount)) / 100))
